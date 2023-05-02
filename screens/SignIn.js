@@ -87,7 +87,6 @@ export default function SignIn() {
 
       <View style={styles.form}>
         <Title title={"Sign in"} />
-
         <Input
           label={"Email"}
           iconName={"email-outline"}
@@ -110,9 +109,7 @@ export default function SignIn() {
           }}
           error={errors.password}
         />
-
         <Button title={"Sign in"} onPress={signIn} />
-
         {/* Link to Sign Up Screen */}
         <TextLink
           text={"Haven't got an Account yet? "}

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   buttonText: {
-    color: "whitesmoke",
+    color: Colours.light,
     fontWeight: "bold",
     fontSize: 14,
   },

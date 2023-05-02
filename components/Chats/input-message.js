@@ -26,7 +26,7 @@ const InputMessage = () => {
 
       {/* Send Icon */}
       <View style={styles.send}>
-        <Feather name="send" size={24} color={"whitesmoke"} onPress={onSend} />
+        <Feather name="send" size={24} color={Colours.light} onPress={onSend} />
       </View>
     </SafeAreaView>
   );
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "whitesmoke",
+    backgroundColor: Colours.light,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   send: {
     backgroundColor: Colours.blue,
-    color: "whitesmoke",
+    color: Colours.light,
     padding: 7,
     borderRadius: 10,
     overflow: "hidden",
