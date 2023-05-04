@@ -8,7 +8,12 @@ const ContactListItem = ({ chat }) => {
   return (
     <Pressable
       style={styles.contact}
-      // onPress={() => Navigation.navigate("Contact Profile")}
+      onPress={() =>
+        Navigation.navigate("Contact Details", {
+          name: chat.user.name,
+          email: chat.user.email,
+        })
+      }
     >
       <Image style={styles.image} source={{ uri: chat.user.image }} />
 
@@ -18,7 +23,7 @@ const ContactListItem = ({ chat }) => {
         </Text>
 
         <Text style={styles.email} numberOfLines={1}>
-          {chat.user.name}
+          {chat.user.email}
         </Text>
       </View>
     </Pressable>

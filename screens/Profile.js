@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import ProfileItem from "../components/Profile/profile-details";
 import Button from "../components/Reusable/button";
 import Loader from "../components/Reusable/loader";
+import Colours from "../components/Reusable/colours";
 
 const Profile = () => {
   const Navigation = useNavigation();
@@ -25,9 +26,10 @@ const Profile = () => {
     <View style={styles.container}>
       <Loader visible={loading} loadingMessage={"Logging out"} />
       <ProfileItem
-        firstname={"Yusi"}
-        lastname={"Abz"}
-        email={"yusi@gmail.com"}
+        firstname={firstname}
+        lastname={lastname}
+        email={email}
+        buttonText={"Edit Profile"}
         onPress={() => {
           Navigation.navigate("Edit Profile", {
             firstname: firstname,
@@ -37,7 +39,7 @@ const Profile = () => {
         }}
       />
 
-      <Button title={"Log out"} onPress={logOut} />
+      <Button title={"Log out"} onPress={logOut} style={{ margin: 24 }} />
     </View>
   );
 };
@@ -48,6 +50,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    padding: 48,
+    paddingBottom: 12,
   },
 });

@@ -77,6 +77,7 @@ export default function SignIn() {
 
       <View style={styles.form}>
         <Title title={"Sign in"} />
+
         <Input
           label={"Email"}
           iconName={"email-outline"}

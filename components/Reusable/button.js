@@ -2,9 +2,13 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import Colours from "./colours";
 
-const Button = ({ title, ...props }) => {
+const Button = ({ title, style, ...props }) => {
   return (
-    <TouchableOpacity style={styles.button} activeOpacity={0.7} {...props}>
+    <TouchableOpacity
+      style={[styles.button, style]}
+      activeOpacity={0.7}
+      {...props}
+    >
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );
@@ -15,7 +19,7 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     height: 50,
-    width: "100%",
+    maxWidth: "100%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colours.blue,

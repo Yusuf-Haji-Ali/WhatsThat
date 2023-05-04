@@ -1,7 +1,8 @@
 const Colours = {
   blue: "#0058BE",
   light: "whitesmoke",
-  darkBlue: "darkblue",
+  lightgray: "E8E8E8",
+  gray: "#808080",
   lightBlue: "",
 };
 

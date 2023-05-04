@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 10,
+    outlineStyle: "none",
+    flex: 1,
   },
   send: {
     backgroundColor: Colours.blue,

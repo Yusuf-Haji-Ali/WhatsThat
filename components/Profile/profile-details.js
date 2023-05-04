@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import Colours from "../Reusable/colours";
 
-const ProfileItem = ({ firstname, lastname, email, ...props }) => {
+const ProfileItem = ({ firstname, lastname, email, buttonText, ...props }) => {
   return (
     <View style={styles.container}>
       <View style={styles.image} />
@@ -14,7 +15,7 @@ const ProfileItem = ({ firstname, lastname, email, ...props }) => {
       </View>
 
       <TouchableOpacity style={styles.button} {...props}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
+        <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -25,6 +26,9 @@ export default ProfileItem;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    padding: 25,
+    width: "100%",
+    backgroundColor: Colours.lightgray,
   },
   image: {
     width: 125,
@@ -43,6 +47,7 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 16,
     marginTop: 10,
+    color: Colours.gray,
   },
   button: {
     borderWidth: 1.5,

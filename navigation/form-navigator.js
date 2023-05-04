@@ -22,7 +22,6 @@ const FormNavigator = () => {
     >
       <Tab.Screen name="sign-in" component={SignIn} />
       <Tab.Screen name="sign-up" component={SignUp} />
-      <Tab.Screen name="tab-navigation" component={TabNavigator} />
     </Tab.Navigator>
   );
 };

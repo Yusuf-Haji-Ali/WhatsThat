@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./tab-navigator";
 import ChatScreen from "../screens/ChatScreen";
 import Contacts from "../screens/Contacts";
+import ContactDetails from "../screens/ContactDetails";
 import EditProfile from "../screens/EditProfile";
 import Profile from "../screens/Profile";
 import FormNavigator from "./form-navigator";
@@ -37,11 +38,11 @@ const StackNavigator = () => {
           component={EditProfile}
           options={{ headerShown: true }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Contact Details"
           component={ContactDetails}
-          option={{ headerShown: true }}
-        /> */}
+          options={{ headerShown: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
