@@ -22,7 +22,7 @@ const Chats = () => {
   const [chatData, setChatData] = useState();
 
   async function getChats() {
-    console.log("getChats clicked!");
+    console.log("loading chats...");
     const { data } = await axios.get("http://localhost:3333/api/1.0.0/chat", {
       headers: {
         "X-Authorization": "1629f00ad8c5209974f48116e85db6cf",

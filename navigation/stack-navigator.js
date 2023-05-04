@@ -10,6 +10,7 @@ import EditProfile from "../screens/EditProfile";
 import Profile from "../screens/Profile";
 import FormNavigator from "./form-navigator";
 import SignUpConfirmation from "../screens/SignUpConfirmation";
+import Colours from "../components/Reusable/colours";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,28 +19,29 @@ const StackNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerStyle: { backgroundColor: "#0058BE" },
+          headerStyle: { backgroundColor: Colours.blue },
           headerTintColor: "white",
+          headerShown: false,
         }}
       >
+        <Stack.Screen name="Registration" component={FormNavigator} />
+        <Stack.Screen name="Home" component={TabNavigator} />
+        <Stack.Screen name="Confirmation" component={SignUpConfirmation} />
         <Stack.Screen
-          name="Registration"
-          component={FormNavigator}
-          options={{ headerShown: false }}
+          name="ChatScreen"
+          component={ChatScreen}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
-          name="Home"
-          component={TabNavigator}
-          options={{ headerShown: false }}
+          name="Edit Profile"
+          component={EditProfile}
+          options={{ headerShown: true }}
         />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
-        <Stack.Screen
-          name="RegistrationConfirmation"
-          component={SignUpConfirmation}
-          options={{ headerShown: false }}
-        />
-        {/* <Stack.Screen name="Contact Details" component={ContactDetails} /> */}
-        <Stack.Screen name="Edit Profile" component={EditProfile} />
+        {/* <Stack.Screen
+          name="Contact Details"
+          component={ContactDetails}
+          option={{ headerShown: true }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -97,10 +97,9 @@ export default function SignUp() {
           onPress={() => {
             console.log("It worked");
             setLoading(true);
-            console.log(loading);
             setTimeout(() => {
               setLoading(false);
-              Navigation.navigate("RegistrationConfirmation");
+              Navigation.navigate("Confirmation");
             }, 1500);
           }}
         />

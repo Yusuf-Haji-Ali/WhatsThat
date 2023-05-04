@@ -23,38 +23,28 @@ import Loader from "../components/Reusable/loader";
 export default function SignIn() {
   const Navigation = useNavigation();
 
-  const [loginDetails, setLoginDetails] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   // Validation of form inputs
-  const validate = () => {
-    console.log(loginDetails);
-    let valid = true;
-
+  const validate = async () => {
+    let isValid = true;
     if (!loginDetails.email) {
-      setErrors({ ...errors, email: "Please input an email" });
-      valid = false;
-    } else if (!loginDetails.email.match("yusi")) {
-      setErrors({ ...errors, email: "Please input a valid email" });
+      handleError("Please input email", "email");
+      isValid = false;
     }
-
     if (!loginDetails.password) {
-      setErrors({ ...errors, password: "Please input an password" });
-      valid = false;
-    } else if (!loginDetails.password.match("yusi")) {
-      setErrors({ ...errors, password: "Please input a valid password" });
+      handleError("Please input password", "password");
+      isValid = false;
     }
-
-    console.log(errors);
-    // if no errors then start sign in process
-    if (valid) {
+    if (isValid) {
       signIn();
     }
+  };
+
+  const handleError = (error, input) => {
+    setErrors((errors) => ({ ...errors, [input]: error }));
   };
 
   async function signIn() {
@@ -109,7 +99,9 @@ export default function SignIn() {
           }}
           error={errors.password}
         />
-        <Button title={"Sign in"} onPress={signIn} />
+
+        <Button title={"Sign in"} onPress={validate} />
+
         {/* Link to Sign Up Screen */}
         <TextLink
           text={"Haven't got an Account yet? "}
