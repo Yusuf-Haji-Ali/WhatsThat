@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import TabNavigator from "./tab-navigator";
 import ChatScreen from "../screens/ChatScreen";
@@ -31,8 +32,24 @@ const StackNavigator = () => {
         <Stack.Screen
           name="ChatScreen"
           component={ChatScreen}
-          options={{ headerShown: true }}
+          options={{
+            headerShown: true,
+            headerRight: () => (
+              <MaterialIcons
+                name="menu-open"
+                size={24}
+                color="white"
+                style={{ marginRight: 10 }}
+                onPress={() => console.log("Loading chat details...")}
+              />
+            ),
+          }}
         />
+        {/* <Stack.Screen
+          name="Chat Details"
+          component={ChatDetails}
+          options={{ headerShown: true }}
+        /> */}
         <Stack.Screen
           name="Edit Profile"
           component={EditProfile}

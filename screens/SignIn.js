@@ -27,7 +27,7 @@ export default function SignIn() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Validation of form inputs
+  // Basic Validation of form inputs
   const validate = async () => {
     let isValid = true;
     if (!loginDetails.email) {

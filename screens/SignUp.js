@@ -27,8 +27,37 @@ export default function SignUp() {
     email: "",
     password: "",
   });
-
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // Basic Validation of form inputs
+  const validate = async () => {
+    let isValid = true;
+    if (!signUpDetails.email) {
+      handleError("Please input an email", "email");
+      isValid = false;
+    }
+    if (!signUpDetails.first_name) {
+      handleError("Please input your first name", "first_name");
+      isValid = false;
+    }
+    if (!signUpDetails.last_name) {
+      handleError("Please input your last name", "last_name");
+      isValid = false;
+    }
+    if (!signUpDetails.password) {
+      handleError("Please input a password", "password");
+      isValid = false;
+    }
+
+    // if (isValid) {
+    //   signUp();
+    // }
+  };
+
+  const handleError = (error, input) => {
+    setErrors((errors) => ({ ...errors, [input]: error }));
+  };
 
   const submitSignUp = () => {
     // Validation function
@@ -62,6 +91,7 @@ export default function SignUp() {
           onChangeText={(first_name) =>
             setSignUpDetails({ ...signUpDetails, first_name: first_name })
           }
+          error={errors.email}
         />
 
         <Input
@@ -71,6 +101,7 @@ export default function SignUp() {
           onChangeText={(last_name) =>
             setSignUpDetails({ ...signUpDetails, last_name: last_name })
           }
+          error={errors.first_name}
         />
 
         <Input
@@ -80,6 +111,7 @@ export default function SignUp() {
           onChangeText={(email) =>
             setSignUpDetails({ ...signUpDetails, email: email })
           }
+          error={errors.last_name}
         />
 
         <Input
@@ -90,17 +122,19 @@ export default function SignUp() {
           onChangeText={(password) =>
             setSignUpDetails({ ...signUpDetails, password: password })
           }
+          error={errors.password}
         />
 
         <Button
           title={"Sign up"}
           onPress={() => {
-            console.log("It worked");
-            setLoading(true);
-            setTimeout(() => {
-              setLoading(false);
-              Navigation.navigate("Confirmation");
-            }, 1500);
+            // console.log("It worked");
+            // setLoading(true);
+            // setTimeout(() => {
+            //   setLoading(false);
+            //   Navigation.navigate("Confirmation");
+            // }, 1500);
+            validate();
           }}
         />
 
