@@ -31,6 +31,10 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
 
   // Basic Validation of form inputs
+  const handleError = (error, input) => {
+    setErrors((errors) => ({ ...errors, [input]: error }));
+  };
+
   const validate = async () => {
     let isValid = true;
     if (!signUpDetails.email) {
@@ -50,20 +54,9 @@ export default function SignUp() {
       isValid = false;
     }
 
-    // if (isValid) {
-    //   signUp();
-    // }
-  };
-
-  const handleError = (error, input) => {
-    setErrors((errors) => ({ ...errors, [input]: error }));
-  };
-
-  const submitSignUp = () => {
-    // Validation function
-    // if validation passes... call postSignUp function
-    // retrieve id number... print successfull sign up message
-    // navigate to login page
+    if (isValid) {
+      postSignUp();
+    }
   };
 
   // post request for signing up
@@ -74,6 +67,13 @@ export default function SignUp() {
     //   signUpDetails
     // );
     // console.log(data);
+
+    // console.log("It worked");
+    // setLoading(true);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   Navigation.navigate("Confirmation");
+    // }, 1500);
   }
 
   return (
@@ -91,7 +91,8 @@ export default function SignUp() {
           onChangeText={(first_name) =>
             setSignUpDetails({ ...signUpDetails, first_name: first_name })
           }
-          error={errors.email}
+          error={errors.first_name}
+          onFocus={() => setErrors({ ...errors, first_name: null })}
         />
 
         <Input
@@ -101,7 +102,8 @@ export default function SignUp() {
           onChangeText={(last_name) =>
             setSignUpDetails({ ...signUpDetails, last_name: last_name })
           }
-          error={errors.first_name}
+          error={errors.last_name}
+          onFocus={() => setErrors({ ...errors, last_name: null })}
         />
 
         <Input
@@ -111,7 +113,8 @@ export default function SignUp() {
           onChangeText={(email) =>
             setSignUpDetails({ ...signUpDetails, email: email })
           }
-          error={errors.last_name}
+          error={errors.email}
+          onFocus={() => setErrors({ ...errors, email: null })}
         />
 
         <Input
@@ -123,20 +126,10 @@ export default function SignUp() {
             setSignUpDetails({ ...signUpDetails, password: password })
           }
           error={errors.password}
+          onFocus={() => setErrors({ ...errors, password: null })}
         />
 
-        <Button
-          title={"Sign up"}
-          onPress={() => {
-            // console.log("It worked");
-            // setLoading(true);
-            // setTimeout(() => {
-            //   setLoading(false);
-            //   Navigation.navigate("Confirmation");
-            // }, 1500);
-            validate();
-          }}
-        />
+        <Button title={"Sign up"} onPress={validate} />
 
         <TextLink
           text={"Already got an account? "}

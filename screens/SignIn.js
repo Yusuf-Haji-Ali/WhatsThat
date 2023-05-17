@@ -39,7 +39,7 @@ export default function SignIn() {
       isValid = false;
     }
     if (isValid) {
-      signIn();
+      postSignIn();
     }
   };
 
@@ -47,7 +47,7 @@ export default function SignIn() {
     setErrors((errors) => ({ ...errors, [input]: error }));
   };
 
-  async function signIn() {
+  async function postSignIn() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
