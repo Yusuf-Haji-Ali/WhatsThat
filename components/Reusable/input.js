@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   input: {
     padding: 15,
     flex: 1,
-    outlineStyle: "none",
+    // outlineStyle: "none",
     color: Colours.blue,
   },
   error: {

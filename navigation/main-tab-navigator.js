@@ -17,7 +17,7 @@ import Header from "../components/Reusable/header";
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const MainTabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Chats"
@@ -57,7 +57,7 @@ const TabNavigator = () => {
         name="Chats"
         component={Chats}
         options={{
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialIcons
               name="chat-bubble-outline"
               size={size}
@@ -87,4 +87,4 @@ const TabNavigator = () => {
   );
 };
 
-export default TabNavigator;
+export default MainTabNavigator;

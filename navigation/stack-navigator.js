@@ -1,10 +1,9 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import TabNavigator from "./tab-navigator";
+import MainTabNavigator from "./main-tab-navigator";
 import ChatScreen from "../screens/ChatScreen";
 import Contacts from "../screens/Contacts";
 import ContactDetails from "../screens/ContactDetails";
@@ -27,8 +26,8 @@ const StackNavigator = () => {
         }}
       >
         <Stack.Screen name="Registration" component={FormNavigator} />
-        <Stack.Screen name="Home" component={TabNavigator} />
         <Stack.Screen name="Confirmation" component={SignUpConfirmation} />
+        <Stack.Screen name="Home" component={MainTabNavigator} />
         <Stack.Screen
           name="ChatScreen"
           component={ChatScreen}
@@ -51,13 +50,13 @@ const StackNavigator = () => {
           options={{ headerShown: true }}
         /> */}
         <Stack.Screen
-          name="Edit Profile"
-          component={EditProfile}
+          name="Contact Details"
+          component={ContactDetails}
           options={{ headerShown: true }}
         />
         <Stack.Screen
-          name="Contact Details"
-          component={ContactDetails}
+          name="Edit Profile"
+          component={EditProfile}
           options={{ headerShown: true }}
         />
       </Stack.Navigator>

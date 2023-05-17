@@ -17,32 +17,48 @@ import {
 } from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Chats = () => {
   const [chatData, setChatData] = useState();
 
-  async function getChats() {
+  getChats = async () => {
     console.log("loading chats...");
-    const { data } = await axios.get("http://localhost:3333/api/1.0.0/chat", {
-      headers: {
-        "X-Authorization": "1629f00ad8c5209974f48116e85db6cf",
-      },
-    });
-    setChatData(data);
-    console.log(data);
-  }
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    await axios
+      .get("http://localhost:3333/api/1.0.0/chat", {
+        headers: {
+          "X-Authorization": userToken,
+          // "X-Authorization": "1629f00ad8c5209974f48116e85db6cf",
+        },
+      })
+      .then((response) => {
+        console.log(response.status);
+        console.log(response.data);
+        setChatData(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+  // console.log(chatData);
 
   useEffect(() => {
     getChats();
   }, []);
 
-  return (
+  return chatData ? (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={chatData}
         renderItem={({ item }) => <ChatListItem chat={item} />}
       />
     </SafeAreaView>
+  ) : (
+    <>
+      <Text>No chats</Text>
+    </>
   );
 };
 

@@ -62,18 +62,38 @@ export default function SignUp() {
   // post request for signing up
   async function postSignUp() {
     console.log(signUpDetails);
-    // const { data } = await axios.post(
-    //   "http://localhost:3333/api/1.0.0/user",
-    //   signUpDetails
-    // );
-    // console.log(data);
+    setLoading(true);
 
-    // console.log("It worked");
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   Navigation.navigate("Confirmation");
-    // }, 1500);
+    // hit signup end point with POST method
+    const response = await axios
+      .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
+      .catch((error) => {
+        if (error.response) {
+          /* The request was made and the server responded with a status code
+          that falls out of the range of 2xx */
+          console.log(error.response.status);
+          console.log(error.response.data);
+        } else if (error.request) {
+          /* The request was made but no response was received
+          `error.request` is an instance of XMLHttpRequest in the browser
+          and an instance of http.ClientRequest in node.js */
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+      });
+
+    // log data response
+    console.log(response.data);
+
+    if (response.status === 201) {
+      console.log("Signing up...");
+      setTimeout(() => {
+        setLoading(false);
+        Navigation.navigate("Confirmation");
+      }, 1500);
+    }
   }
 
   return (

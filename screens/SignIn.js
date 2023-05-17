@@ -7,10 +7,12 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Components
 import Header from "../components/Reusable/header";
@@ -22,13 +24,18 @@ import Loader from "../components/Reusable/loader";
 
 export default function SignIn() {
   const Navigation = useNavigation();
-
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   // Basic Validation of form inputs
+  const handleError = (error, input) => {
+    setErrors((errors) => ({ ...errors, [input]: error }));
+  };
+
   const validate = async () => {
+    console.log(loginDetails);
+
     let isValid = true;
     if (!loginDetails.email) {
       handleError("Please input email", "email");
@@ -38,37 +45,48 @@ export default function SignIn() {
       handleError("Please input password", "password");
       isValid = false;
     }
+
     if (isValid) {
       postSignIn();
     }
   };
 
-  const handleError = (error, input) => {
-    setErrors((errors) => ({ ...errors, [input]: error }));
-  };
-
+  // Signing in...
   async function postSignIn() {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      Navigation.navigate("Home");
-    }, 1500);
-    // const { data } = await axios.post(
-    //   "http://localhost:3333/api/1.0.0/login",
-    //   loginDetails
-    // );
-    // const { status } = await axios.post(
-    //   "http://localhost:3333/api/1.0.0/login",
-    //   loginDetails
-    // );
-    // console.log(data);
-    // console.log(status);
-    // if (status === 201) {
-    //   Navigation.navigate("Home");
-    // }
-    console.log(loginDetails);
+
+    // Hit log in endpoint with POST method
+    await axios
+      .post("http://localhost:3333/api/1.0.0/login", loginDetails)
+      .then(async (response) => {
+        console.log(response.status, ": Successfull Login!");
+        console.log(response.data);
+
+        // store user's data in asyncStorage...
+        await AsyncStorage.setItem(
+          "@user_id",
+          JSON.stringify(response.data.id)
+        );
+        await AsyncStorage.setItem(
+          "@session_token",
+          JSON.stringify(response.data.token)
+        );
+
+        setTimeout(() => {
+          setLoading(false);
+          Navigation.navigate("Home");
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+      });
   }
 
+  //Main Frontend Rendering
   return (
     <View styles={styles.container}>
       <Loader visible={loading} loadingMessage={"Signing in"} />

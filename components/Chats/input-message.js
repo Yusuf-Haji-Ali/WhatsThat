@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 10,
-    outlineStyle: "none",
+    // outlineStyle: "none",
     flex: 1,
   },
   send: {

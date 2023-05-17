@@ -1,10 +1,9 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
-import TabNavigator from "./tab-navigator";
+import MainTabNavigator from "./main-tab-navigator";
 import { NavigationContainer } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
