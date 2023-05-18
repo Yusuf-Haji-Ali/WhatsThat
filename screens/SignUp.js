@@ -65,8 +65,18 @@ export default function SignUp() {
     setLoading(true);
 
     // hit signup end point with POST method
-    const response = await axios
+    await axios
       .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
+      .then((response) => {
+        console.log(
+          `Status: ${response.status} - New User created with ID: ${response.data}`
+        );
+        console.log("Signing up...");
+        setTimeout(() => {
+          setLoading(false);
+          Navigation.navigate("Confirmation");
+        }, 1500);
+      })
       .catch((error) => {
         if (error.response) {
           /* The request was made and the server responded with a status code
@@ -83,21 +93,10 @@ export default function SignUp() {
           console.log("Error", error.message);
         }
       });
-
-    // log data response
-    console.log(response.data);
-
-    if (response.status === 201) {
-      console.log("Signing up...");
-      setTimeout(() => {
-        setLoading(false);
-        Navigation.navigate("Confirmation");
-      }, 1500);
-    }
   }
 
   return (
-    <View>
+    <>
       <Loader visible={loading} loadingMessage={"Signing you up"} />
       <Header subTitle="Hello there!" />
 
@@ -159,16 +158,13 @@ export default function SignUp() {
       </ScrollView>
 
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 24,
-  },
   form: {
-    margin: 30,
+    marginHorizontal: 30,
+    marginVertical: 10,
   },
 });

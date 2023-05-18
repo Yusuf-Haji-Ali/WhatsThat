@@ -38,6 +38,7 @@ const Input = ({
           onBlur={() => {
             setIsFocused(false);
           }}
+          // true by default if password is passed into the input
           secureTextEntry={hidePassword}
         />
 

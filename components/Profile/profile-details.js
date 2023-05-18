@@ -5,7 +5,9 @@ import Colours from "../Reusable/colours";
 const ProfileItem = ({ firstname, lastname, email, buttonText, ...props }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.image} />
+      <View style={styles.image}>
+        <Text style={styles.imageText}>{firstname[0]}</Text>
+      </View>
 
       <View style={styles.content}>
         <Text style={styles.name}>
@@ -35,6 +37,14 @@ const styles = StyleSheet.create({
     height: 125,
     borderRadius: 125 / 2,
     backgroundColor: "black",
+    justifyContent: "center",
+  },
+  imageText: {
+    textAlign: "center",
+    color: Colours.light,
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   content: {
     margin: 24,
