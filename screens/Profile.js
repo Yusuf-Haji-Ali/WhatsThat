@@ -12,7 +12,12 @@ import Colours from "../components/Reusable/colours";
 
 const Profile = () => {
   const Navigation = useNavigation();
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    id: "",
+  });
   const [loading, setLoading] = useState(false);
 
   async function getUserInfo() {
@@ -41,27 +46,42 @@ const Profile = () => {
     getUserInfo();
   }, []);
 
-  const logOut = () => {
+  async function logOut() {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      Navigation.navigate("Registration");
-    }, 1500);
-  };
+
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
+    await axios
+      .post("http://localhost:3333/api/1.0.0/logout", {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then(() => {
+        setTimeout(async () => {
+          setLoading(false);
+          await AsyncStorage.removeItem("@session_token");
+          Navigation.navigate("Registration");
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
 
   return (
     <View style={styles.container}>
       <Loader visible={loading} loadingMessage={"Logging out"} />
       <ProfileItem
-        firstname={"userInfo.first_name"}
-        lastname={"userInfo.last_name"}
-        email={"userInfo.email"}
+        firstname={userInfo.first_name}
+        lastname={userInfo.last_name}
+        email={userInfo.email}
         buttonText={"Edit Profile"}
         onPress={() => {
           Navigation.navigate("Edit Profile", {
-            firstname: "userInfo.first_name",
-            lastname: "userInfo.last_name",
-            email: "userInfo.email",
+            firstname: userInfo.first_name,
+            lastname: userInfo.last_name,
+            email: userInfo.email,
           });
         }}
       />
