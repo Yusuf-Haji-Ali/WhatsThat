@@ -6,18 +6,13 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import chats from "../assets/data/chats.json";
 import ChatListItem from "../components/Chats/chat-list-item";
-import {
-  Feather,
-  MaterialIcons,
-  Ionicons,
-  AntDesign,
-  Entypo,
-} from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NoChatsImage from "../assets/images/no_chats.png";
+import Button from "../components/Reusable/button";
+import EmptyTemplate from "../components/Reusable/empty-template";
 
 const Chats = () => {
   const [chatData, setChatData] = useState();
@@ -42,7 +37,6 @@ const Chats = () => {
         console.log(error.response.data);
       });
   };
-  // console.log(chatData);
 
   useEffect(() => {
     getChats();
@@ -56,9 +50,13 @@ const Chats = () => {
       />
     </SafeAreaView>
   ) : (
-    <>
-      <Text>No chats</Text>
-    </>
+    // If the user has no chats yet... render empty template message showing that
+    <EmptyTemplate
+      image={NoChatsImage}
+      text={"You have no chats :("}
+      buttonTitle={"Create new chat"}
+      onPressFunction={() => console.log("Clicked")}
+    />
   );
 };
 
