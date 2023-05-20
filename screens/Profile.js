@@ -47,7 +47,7 @@ const Profile = () => {
   }, []);
 
   async function logOut() {
-    setLoading(true);
+    // setLoading(true);
 
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
     console.log(userToken);
@@ -57,7 +57,7 @@ const Profile = () => {
           "X-Authorization": userToken,
         },
       })
-      .then(() => {
+      .then((response) => {
         setTimeout(async () => {
           setLoading(false);
           await AsyncStorage.removeItem("@session_token");

@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 25,
     width: "100%",
-    backgroundColor: Colours.lightgray,
   },
   image: {
     width: 125,
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
   imageText: {
     textAlign: "center",
     color: Colours.light,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
     textTransform: "uppercase",
   },
