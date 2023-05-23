@@ -15,6 +15,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import bg from "../assets/images/BG.png";
 import Message from "../components/Chats/message-list-item";
 import InputMessage from "../components/Chats/input-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatScreen = () => {
   const Route = useRoute();
@@ -30,16 +31,23 @@ const ChatScreen = () => {
   const [messageData, setMessageData] = useState();
 
   async function getMessages() {
-    const { data } = await axios.get(
-      "http://localhost:3333/api/1.0.0/chat/" + chatId,
-      {
-        headers: {
-          "X-Authorization": "1629f00ad8c5209974f48116e85db6cf",
-        },
-      }
-    );
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
-    setMessageData(data.messages);
+    // request data from get chat by id endpoint
+    await axios
+      .get("http://localhost:3333/api/1.0.0/chat/" + chatId, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        setMessageData(response.data.messages);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+
     console.log(messageData);
   }
 
