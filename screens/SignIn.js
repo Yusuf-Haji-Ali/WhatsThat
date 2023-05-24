@@ -62,6 +62,9 @@ export default function SignIn() {
         console.log(response.status, ": Successfull Login!");
         console.log(response.data);
 
+        // Mark user as logged in
+        await AsyncStorage.setItem("@logged_in", JSON.stringify(true));
+
         // store user's data in asyncStorage...
         await AsyncStorage.setItem(
           "@user_id",

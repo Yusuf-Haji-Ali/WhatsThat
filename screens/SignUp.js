@@ -11,6 +11,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
+
+// Components
 import Header from "../components/Reusable/header";
 import Input from "../components/Reusable/input";
 import TextLink from "../components/Reusable/text-link";
@@ -21,14 +23,14 @@ import Loader from "../components/Reusable/loader";
 export default function SignUp() {
   const Navigation = useNavigation();
 
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [signUpDetails, setSignUpDetails] = useState({
     first_name: "",
     last_name: "",
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
   // Basic Validation of form inputs
   const handleError = (error, input) => {
@@ -69,7 +71,7 @@ export default function SignUp() {
       .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
       .then((response) => {
         console.log(
-          `Status: ${response.status} - New User created with ID: ${response.data}`
+          `Status: ${response.status} - New User created with ID: ${response.data.id}`
         );
         console.log("Signing up...");
         setTimeout(() => {
@@ -78,20 +80,13 @@ export default function SignUp() {
         }, 1500);
       })
       .catch((error) => {
-        if (error.response) {
-          /* The request was made and the server responded with a status code
+        /* The request was made and the server responded with a status code
           that falls out of the range of 2xx */
-          console.log(error.response.status);
-          console.log(error.response.data);
-        } else if (error.request) {
-          /* The request was made but no response was received
-          `error.request` is an instance of XMLHttpRequest in the browser
-          and an instance of http.ClientRequest in node.js */
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
+        console.log(error.response.status);
+        console.log(error.response.data);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
       });
   }
 

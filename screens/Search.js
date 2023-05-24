@@ -1,6 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import React from "react";
-import { MaterialIcons } from "@expo/vector-icons";
 import Input from "../components/Reusable/input";
 
 const Search = () => {

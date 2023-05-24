@@ -24,7 +24,7 @@ const ChatScreen = () => {
   useEffect(() => {
     Navigation.setOptions({ title: Route.params.name });
     getMessages();
-  }, [Route.params.name]);
+  }, [Route.params.name, messageData]);
 
   const chatId = Route.params.id;
 
@@ -41,14 +41,12 @@ const ChatScreen = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data.messages);
         setMessageData(response.data.messages);
       })
       .catch((error) => {
         console.log(error.response.data);
       });
-
-    console.log(messageData);
   }
 
   return (

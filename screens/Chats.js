@@ -25,7 +25,6 @@ const Chats = () => {
       .get("http://localhost:3333/api/1.0.0/chat", {
         headers: {
           "X-Authorization": userToken,
-          // "X-Authorization": "1629f00ad8c5209974f48116e85db6cf",
         },
       })
       .then((response) => {

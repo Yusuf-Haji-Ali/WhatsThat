@@ -18,17 +18,17 @@ const Profile = () => {
     last_name: "",
     email: "",
     id: "",
+    profile_photo: "",
   });
 
   useEffect(() => {
-    getUserInfo();
+    getUserDetails();
   }, []);
 
-  async function getUserInfo() {
+  async function getUserDetails() {
     // Retrieve user authentication details
     const userId = JSON.parse(await AsyncStorage.getItem("@user_id"));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
-    console.log(userId, userToken);
 
     // Request user details from user endpoint using user's ID and Authentication token
     await axios
@@ -42,6 +42,27 @@ const Profile = () => {
         console.log(response.data);
         // store user data pulled...
         setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+
+    // Get user's profile photo if exists
+    await axios
+      .get(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response.status);
+        if (!response.data) {
+          console.log("No image found");
+        } else {
+          console.log(response.data);
+          // add user photo pulled into user's details...
+          setUserInfo({ ...userInfo, profile_photo: response.data });
+        }
       })
       .catch((error) => {
         console.log(error.response.data);

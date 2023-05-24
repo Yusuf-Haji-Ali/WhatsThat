@@ -1,25 +1,31 @@
 import { View, Text, StyleSheet } from "react-native";
 import * as React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Message = ({ message }) => {
-  const myMessage = () => {
-    return message.author.user_id === "u1";
-  };
+  // Check if message was from current logged in user
+  async function myMessage() {
+    const myUserId = JSON.parse(await AsyncStorage.getItem("@user_id"));
+    return myUserId;
+  }
 
+  console.log(myMessage());
   return (
     <View
       style={[
         styles.container,
         // if it's my message show message on right with blue background, else left and white background
         {
-          backgroundColor: myMessage() ? "#4194E1" : "white",
-          alignSelf: myMessage() ? "flex-end" : "flex-start",
+          backgroundColor: myMessage ? "#4194E1" : "white",
+          alignSelf: myMessage ? "flex-end" : "flex-start",
         },
       ]}
     >
-      <Text style={styles.author}>
-        {message.author.first_name} {message.author.last_name}
-      </Text>
+      {!myMessage && (
+        <Text style={styles.author}>
+          {message.author.first_name} {message.author.last_name}
+        </Text>
+      )}
       <Text style={styles.message}>{message.message}</Text>
       <Text style={styles.timestamp}>{message.timestamp}</Text>
     </View>

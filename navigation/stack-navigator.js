@@ -15,10 +15,12 @@ import Colours from "../components/Reusable/colours";
 
 const Stack = createNativeStackNavigator();
 
-const StackNavigator = () => {
+const StackNavigator = ({ initialRoute }) => {
+  console.log(initialRoute);
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName={initialRoute}
         screenOptions={{
           headerStyle: { backgroundColor: Colours.blue },
           headerTintColor: "white",
