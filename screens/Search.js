@@ -25,7 +25,6 @@ const Search = () => {
         }
       )
       .then((response) => {
-        console.log(response.status);
         console.log(response.data);
         setSearchResults(response.data);
       })

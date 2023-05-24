@@ -17,7 +17,7 @@ import EmptyTemplate from "../components/Reusable/empty-template";
 const Chats = () => {
   const [chatData, setChatData] = useState();
 
-  getChats = async () => {
+  const getChats = async () => {
     console.log("loading chats...");
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
