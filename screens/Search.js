@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Input from "../components/Reusable/input";
-import ContactListItem from "../components/Contacts/contact-list-item";
+import SearchListItem from "../components/Contacts/search-list-item";
 import Button from "../components/Reusable/button";
 
 const Search = () => {
@@ -12,7 +12,7 @@ const Search = () => {
   const [offset, setOffset] = useState(0);
   const [searchResults, setSearchResults] = useState("");
 
-  const searchFor = async (searchValue, searchIn) => {
+  const searchFor = async (searchValue, searchIn, offset) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
     await axios
@@ -54,7 +54,7 @@ const Search = () => {
       </View>
       <FlatList
         data={searchResults}
-        renderItem={({ item }) => <ContactListItem contact={item} />}
+        renderItem={({ item }) => <SearchListItem contact={item} />}
       />
     </View>
   );
@@ -65,7 +65,8 @@ export default Search;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    paddingTop: 24,
+    paddingHorizontal: 24,
   },
   searchIn: {
     width: "100%",
