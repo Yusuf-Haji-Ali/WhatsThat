@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import Colours from "../Reusable/colours";
 
 const ContactListItem = ({ contact }) => {
   const Navigation = useNavigation();
@@ -10,20 +11,22 @@ const ContactListItem = ({ contact }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          name: contact.user.name,
-          email: contact.user.email,
+          name: contact.given_name,
+          email: contact.email,
         })
       }
     >
-      <Image style={styles.image} source={{ uri: contact.user.image }} />
+      <View style={styles.image}>
+        <Text style={styles.imageText}>{contact.given_name[0]}</Text>
+      </View>
 
       <View style={styles.contactDetails}>
         <Text style={styles.name} numberOfLines={1}>
-          {contact.user.name}
+          {contact.given_name} {contact.family_name}
         </Text>
 
         <Text style={styles.email} numberOfLines={1}>
-          {contact.user.email}
+          {contact.email}
         </Text>
       </View>
     </Pressable>
@@ -35,7 +38,6 @@ export default ContactListItem;
 const styles = StyleSheet.create({
   contact: {
     flexDirection: "row",
-    marginHorizontal: 10,
     marginVertical: 5,
     height: 80,
     padding: 10,
@@ -48,6 +50,15 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 10,
+    backgroundColor: "#242424",
+    justifyContent: "center",
+  },
+  imageText: {
+    textAlign: "center",
+    color: Colours.light,
+    fontSize: 14,
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   name: {
     fontWeight: "bold",

@@ -1,7 +1,10 @@
 import { View, Text, TextInput, StyleSheet, FlatList } from "react-native";
 import React, { useState } from "react";
-import Input from "../components/Reusable/input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import Input from "../components/Reusable/input";
+import ContactListItem from "../components/Contacts/contact-list-item";
+import Button from "../components/Reusable/button";
 
 const Search = () => {
   // default search in -> "all" / offset -> 0
@@ -14,7 +17,12 @@ const Search = () => {
 
     await axios
       .get(
-        `http://localhost:3333/api/1.0.0/search?q=${searchValue}&search_in=${searchIn}&limit=20&offset=${offset}`
+        `http://localhost:3333/api/1.0.0/search?q=${searchValue}&search_in=${searchIn}&limit=20&offset=${offset}`,
+        {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
       )
       .then((response) => {
         console.log(response.status);
@@ -31,11 +39,23 @@ const Search = () => {
       <Input
         iconName={"account-search-outline"}
         placeholder={"Who are you looking for?"}
-        onChangeText={(value) => searchFor(value)}
+        onChangeText={(value) => searchFor(value, searchIn, offset)}
       />
+      <View style={styles.searchIn}>
+        <Button
+          title={"Contacts"}
+          style={{ width: "45%" }}
+          onPress={() => setSearchIn("contacts")}
+        />
+        <Button
+          title={"All"}
+          style={{ width: "45%" }}
+          onPress={() => setSearchIn("all")}
+        />
+      </View>
       <FlatList
         data={searchResults}
-        renderItem={({ item }) => <ChatListItem contact={item} />}
+        renderItem={({ item }) => <ContactListItem contact={item} />}
       />
     </View>
   );
@@ -47,5 +67,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+  },
+  searchIn: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });
