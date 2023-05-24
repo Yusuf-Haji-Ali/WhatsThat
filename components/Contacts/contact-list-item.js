@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const ContactListItem = ({ chat }) => {
+const ContactListItem = ({ contact }) => {
   const Navigation = useNavigation();
 
   return (
@@ -10,20 +10,20 @@ const ContactListItem = ({ chat }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          name: chat.user.name,
-          email: chat.user.email,
+          name: contact.user.name,
+          email: contact.user.email,
         })
       }
     >
-      <Image style={styles.image} source={{ uri: chat.user.image }} />
+      <Image style={styles.image} source={{ uri: contact.user.image }} />
 
       <View style={styles.contactDetails}>
         <Text style={styles.name} numberOfLines={1}>
-          {chat.user.name}
+          {contact.user.name}
         </Text>
 
         <Text style={styles.email} numberOfLines={1}>
-          {chat.user.email}
+          {contact.user.email}
         </Text>
       </View>
     </Pressable>

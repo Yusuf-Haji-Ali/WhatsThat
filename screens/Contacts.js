@@ -19,7 +19,7 @@ const Contacts = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={chats}
-        renderItem={({ item }) => <ContactListItem chat={item} />}
+        renderItem={({ item }) => <ContactListItem contact={item} />}
       />
     </SafeAreaView>
   );

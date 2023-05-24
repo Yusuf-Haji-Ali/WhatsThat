@@ -9,7 +9,9 @@ export default function App() {
   const [initialRouteName, setInitialRouteName] = useState("");
 
   useEffect(() => {
-    authUser();
+    setTimeout(() => {
+      authUser();
+    }, 1000);
   }, []);
 
   const authUser = async () => {
