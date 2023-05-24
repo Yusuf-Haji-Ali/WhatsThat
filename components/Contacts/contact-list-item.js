@@ -11,18 +11,18 @@ const ContactListItem = ({ contact }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          name: contact.given_name,
+          name: contact.first_name,
           email: contact.email,
         })
       }
     >
       <View style={styles.image}>
-        <Text style={styles.imageText}>{contact.given_name[0]}</Text>
+        <Text style={styles.imageText}>{contact.first_name[0]}</Text>
       </View>
 
       <View style={styles.contactDetails}>
         <Text style={styles.name} numberOfLines={1}>
-          {contact.given_name} {contact.family_name}
+          {contact.first_name} {contact.last_name}
         </Text>
 
         <Text style={styles.email} numberOfLines={1}>

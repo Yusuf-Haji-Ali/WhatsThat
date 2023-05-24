@@ -5,7 +5,7 @@ import Button from "./button";
 const EmptyTemplate = ({ image, text, buttonTitle, onPressFunction }) => {
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
+      {image && <Image source={image} style={styles.image} />}
       <Text style={styles.text}>{text}</Text>
       <Button title={buttonTitle} onPress={onPressFunction} />
     </View>
