@@ -1,9 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, SafeAreaView, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import StackNavigator from "./navigation/stack-navigator";
+import StackNavigator from "./navigation/main-stack-navigator";
 
 export default function App() {
   const [initialRouteName, setInitialRouteName] = useState("");
@@ -31,10 +29,3 @@ export default function App() {
 
   return <StackNavigator initialRoute={initialRouteName} />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});

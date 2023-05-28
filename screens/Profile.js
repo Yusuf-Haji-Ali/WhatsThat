@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -8,7 +8,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProfileItem from "../components/Profile/profile-details";
 import Button from "../components/Reusable/button";
 import Loader from "../components/Reusable/loader";
-import Colours from "../components/Reusable/colours";
 
 const Profile = () => {
   const Navigation = useNavigation();

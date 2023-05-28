@@ -1,14 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-  Pressable,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
@@ -134,7 +125,7 @@ export default function SignIn() {
         <TextLink
           text={"Haven't got an Account yet? "}
           linkText={"Sign up"}
-          onPress={() => Navigation.navigate("sign-up")}
+          onPress={() => Navigation.navigate("Sign Up")}
         />
       </View>
       <StatusBar style="auto" />

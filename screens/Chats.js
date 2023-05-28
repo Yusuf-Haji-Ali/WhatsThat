@@ -1,28 +1,17 @@
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  Image,
-  StyleSheet,
-} from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-
-import ChatListItem from "../components/Chats/chat-list-item";
-import axios from "axios";
+import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoChatsImage from "../assets/images/no_chats.png";
-import Button from "../components/Reusable/button";
+import axios from "axios";
+
+// Components
 import EmptyTemplate from "../components/Reusable/empty-template";
-import { useNavigation } from "@react-navigation/native";
+import ChatListItem from "../components/Chats/chat-list-item";
 
 const Chats = () => {
-  const Navigation = useNavigation();
   const [chatData, setChatData] = useState();
 
   const getChats = async () => {
-    console.log("loading chats...");
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
     await axios

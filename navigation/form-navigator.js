@@ -1,27 +1,24 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
-import MainTabNavigator from "./main-tab-navigator";
-import { NavigationContainer } from "@react-navigation/native";
+import SignUpConfirmation from "../screens/SignUpConfirmation";
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const FormNavigator = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="sign-in"
+    <Stack.Navigator
+      initialRouteName="Sign In"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          display: "none",
-        },
       }}
     >
-      <Tab.Screen name="sign-in" component={SignIn} />
-      <Tab.Screen name="sign-up" component={SignUp} />
-    </Tab.Navigator>
+      <Stack.Screen name="Sign In" component={SignIn} />
+      <Stack.Screen name="Sign Up" component={SignUp} />
+      <Stack.Screen name="Confirmation" component={SignUpConfirmation} />
+    </Stack.Navigator>
   );
 };
 

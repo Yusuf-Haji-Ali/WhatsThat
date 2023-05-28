@@ -9,7 +9,6 @@ import FormNavigator from "./form-navigator";
 import ChatScreen from "../screens/ChatScreen";
 import ContactDetails from "../screens/ContactDetails";
 import EditProfile from "../screens/EditProfile";
-import SignUpConfirmation from "../screens/SignUpConfirmation";
 import ChatDetails from "../screens/ChatDetails";
 // Components
 import Colours from "../components/Reusable/colours";
@@ -35,9 +34,8 @@ const StackNavigator = ({ initialRoute }) => {
             headerBackTitleVisible: false,
           }}
         >
-          <Stack.Screen name="Registration" component={FormNavigator} />
-          <Stack.Screen name="Confirmation" component={SignUpConfirmation} />
           <Stack.Screen name="Home" component={MainTabNavigator} />
+          <Stack.Screen name="Registration" component={FormNavigator} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="Chat Details" component={ChatDetails} />
           <Stack.Screen name="Contact Details" component={ContactDetails} />

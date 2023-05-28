@@ -3,7 +3,7 @@ import * as React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Message = ({ message, myUserId }) => {
-  // Check if message was from current logged in user
+  // Check if message is from current logged in user
   const myMessage = message.author.user_id === myUserId;
 
   return (
