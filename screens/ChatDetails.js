@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import ContactListItem from "../components/Contacts/contact-list-item";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+
+// Components
+import ContactListItem from "../components/Contacts/contact-list-item";
 import Input from "../components/Reusable/input";
 import Colours from "../components/Reusable/colours";
 
@@ -62,7 +64,6 @@ const ChatDetails = () => {
     return chatDetails ? chatDetails.creator.user_id === myId : false;
   };
 
-  //   console.log(isUserCreator());
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -140,5 +141,6 @@ const styles = StyleSheet.create({
   creator: {
     fontStyle: "italic",
     fontWeight: "bold",
+    fontSize: 12,
   },
 });

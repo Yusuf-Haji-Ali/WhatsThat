@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
 import * as React from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Message = ({ message, myUserId }) => {
   // Check if message is from current logged in user

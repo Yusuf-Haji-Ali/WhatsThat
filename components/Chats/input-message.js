@@ -1,32 +1,65 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, MaterialIcons, Feather } from "@expo/vector-icons";
+import { View, StyleSheet, SafeAreaView, Alert } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+
+// Components
 import Colours from "../Reusable/colours";
 import Input from "../Reusable/input";
 
-const InputMessage = () => {
-  const [newMessage, setNewMessage] = useState("");
+const InputMessage = ({ chatId, getMessages }) => {
+  const [message, setMessage] = useState({ message: "" });
 
-  const onSend = () => {
-    console.warn("Sending a message: ", newMessage);
-    setNewMessage("");
+  const sendMessage = async () => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    // POST message to chat
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/chat/${chatId}/message`, message, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response.status, response.data);
+        console.log("Sending message:", message.message);
+        // once message is sent... empty message input box
+        setMessage({ ...message, message: "" });
+        // Rerender chatscreen
+        getMessages();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        Alert.alert("Error", error.response.data);
+      });
   };
 
   return (
-    <SafeAreaView edges={["bottom"]} style={styles.container}>
-      {/* Input Box */}
-      <View style={styles.inputWrapper}>
-        <Input
-          style={styles.input}
-          placeholder={"Type your message"}
-          onChangeText={(value) => setNewMessage(value)}
-        />
-      </View>
+    <SafeAreaView edges={["bottom"]} style={{ backgroundColor: Colours.light }}>
+      <View style={styles.container}>
+        {/* Input Box */}
+        <View style={styles.inputWrapper}>
+          <Input
+            style={styles.input}
+            placeholder={"Type your message"}
+            onChangeText={(value) => setMessage({ ...message, message: value })}
+            defaultValue={message.message}
+          />
+        </View>
 
-      {/* Send Icon */}
-      <View style={styles.send}>
-        <Feather name="send" size={24} color={Colours.light} onPress={onSend} />
+        {/* Send Icon */}
+        {message.message && (
+          // Render if message box is not empty
+          <View style={styles.send}>
+            <Feather
+              name="send"
+              size={24}
+              color={Colours.light}
+              onPress={sendMessage}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -38,9 +71,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colours.light,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 12,
   },
   inputWrapper: {
     flex: 1,
@@ -49,7 +80,6 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 10,
-    // outlineStyle: "none",
     flex: 1,
   },
   send: {

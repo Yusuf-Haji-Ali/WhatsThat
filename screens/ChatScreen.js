@@ -11,6 +11,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Components
 import bg from "../assets/images/BG.png";
 import Message from "../components/Chats/message-list-item";
 import InputMessage from "../components/Chats/input-message";
@@ -56,7 +57,7 @@ const ChatScreen = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.messages);
+        console.log(response.status);
         setMessageData(response.data.messages);
       })
       .catch((error) => {
@@ -67,7 +68,7 @@ const ChatScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
       style={styles.bg}
     >
       <ImageBackground source={bg} style={styles.bg}>
@@ -79,7 +80,7 @@ const ChatScreen = () => {
           style={styles.list}
           inverted
         />
-        <InputMessage />
+        <InputMessage chatId={chatId} getMessages={getMessages} />
       </ImageBackground>
     </KeyboardAvoidingView>
   );
