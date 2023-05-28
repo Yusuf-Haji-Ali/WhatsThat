@@ -38,12 +38,12 @@ export default ContactListItem;
 const styles = StyleSheet.create({
   contact: {
     flexDirection: "row",
+    alignItems: "center",
     marginVertical: 5,
     height: 80,
     padding: 10,
     backgroundColor: "#E8E8E8",
     borderRadius: 5,
-    alignItems: "center",
   },
   image: {
     width: 50,

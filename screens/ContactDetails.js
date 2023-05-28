@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import ProfileItem from "../components/Profile/profile-details";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ContactDetails = () => {
   const Route = useRoute();
-
+  const Navigation = useNavigation();
+  Navigation.setOptions({
+    headerShown: true,
+  });
   const name = Route.params.name;
   const email = Route.params.email;
   return (

@@ -29,7 +29,12 @@ const ChatScreen = () => {
           size={24}
           color="white"
           style={{ marginRight: 10 }}
-          onPress={() => Navigation.navigate("Chat Details")}
+          onPress={() =>
+            Navigation.navigate("Chat Details", {
+              // pass Chat ID into route for chat details
+              chatId: chatId,
+            })
+          }
         />
       ),
     });
@@ -45,7 +50,7 @@ const ChatScreen = () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
     // request data from get chat by id endpoint
     await axios
-      .get("http://localhost:3333/api/1.0.0/chat/" + chatId, {
+      .get(`http://localhost:3333/api/1.0.0/chat/${chatId}`, {
         headers: {
           "X-Authorization": userToken,
         },
