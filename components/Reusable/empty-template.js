@@ -18,17 +18,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "center",
-    padding: 60,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    padding: 75,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 12,
   },
   image: {
     width: "100%",
-    height: 400,
+    height: "70%",
+    overflow: "visible",
   },
 });

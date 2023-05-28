@@ -8,10 +8,8 @@ import MainTabNavigator from "./main-tab-navigator";
 import FormNavigator from "./form-navigator";
 // Screens
 import ChatScreen from "../screens/ChatScreen";
-import Contacts from "../screens/Contacts";
 import ContactDetails from "../screens/ContactDetails";
 import EditProfile from "../screens/EditProfile";
-import Profile from "../screens/Profile";
 import SignUpConfirmation from "../screens/SignUpConfirmation";
 // Components
 import Colours from "../components/Reusable/colours";

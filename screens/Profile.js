@@ -48,71 +48,86 @@ const Profile = () => {
       });
 
     // Get user's profile photo if exists
-    await axios
-      .get(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-        headers: {
-          "X-Authorization": userToken,
-        },
-      })
-      .then((response) => {
-        console.log(response.status);
-        if (!response.data) {
-          console.log("No image found");
-        } else {
-          console.log(response.data);
-          // add user photo pulled into user's details...
-          setUserInfo({ ...userInfo, profile_photo: response.data });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+    // await axios
+    //   .get(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+    //     headers: {
+    //       "X-Authorization": userToken,
+    //       // accept: JSON.parse("*/*"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     console.log(response.status);
+    //     if (!response.data) {
+    //       console.log("No image found");
+    //     } else {
+    //       console.log(response.data);
+    //       // add user photo pulled into user's details...
+    //       setUserInfo({ ...userInfo, profile_photo: response.data });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response.data);
+    //   });
   }
 
   async function logOut() {
+    await AsyncStorage.removeItem("@session_token");
+    await AsyncStorage.removeItem("@user_id");
+    await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      Navigation.navigate("Registration");
+    }, 1500);
+
+    // TO BE FINISHED!
+
     // setLoading(true);
 
-    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
-    console.log("User Token: ", userToken);
-    await axios
-      .post("http://localhost:3333/api/1.0.0/logout", {
-        headers: {
-          "X-Authorization": userToken,
-        },
-      })
-      .then(async (response) => {
-        console.log(response.data);
-        await AsyncStorage.removeItem("@session_token");
-        setTimeout(() => {
-          setLoading(false);
-          Navigation.navigate("Registration");
-        }, 1500);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+    // let userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    // console.log("User Token: ", userToken);
+    // await axios
+    //   .post("http://localhost:3333/api/1.0.0/logout", {
+    //     headers: {
+    //       "X-Authorization": userToken,
+    //     },
+    //   })
+    //   .then(async (response) => {
+    //     console.log(response.data);
+    //     await AsyncStorage.removeItem("@session_token");
+    //     setTimeout(() => {
+    //       setLoading(false);
+    //       Navigation.navigate("Registration");
+    //     }, 1500);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response.data);
+    //   });
   }
 
   return (
-    <View style={styles.container}>
+    <>
       <Loader visible={loading} loadingMessage={"Logging out"} />
-      <ProfileItem
-        firstname={userInfo.first_name}
-        lastname={userInfo.last_name}
-        email={userInfo.email}
-        buttonText={"Edit Profile"}
-        onPress={() => {
-          Navigation.navigate("Edit Profile", {
-            // pass user details as parameters into profile edit
-            firstname: userInfo.first_name,
-            lastname: userInfo.last_name,
-            email: userInfo.email,
-          });
-        }}
-      />
+      <View style={styles.container}>
+        <ProfileItem
+          firstname={userInfo.first_name}
+          lastname={userInfo.last_name}
+          email={userInfo.email}
+          buttonText={"Edit Profile"}
+          onPress={() => {
+            Navigation.navigate("Edit Profile", {
+              // pass user details as parameters into profile edit
+              firstname: userInfo.first_name,
+              lastname: userInfo.last_name,
+              email: userInfo.email,
+            });
+          }}
+        />
 
-      <Button title={"Log out"} onPress={logOut} style={{ margin: 24 }} />
-    </View>
+        <Button title={"Log out"} onPress={logOut} />
+      </View>
+    </>
   );
 };
 

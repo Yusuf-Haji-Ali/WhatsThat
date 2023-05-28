@@ -19,7 +19,7 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     height: 50,
-    maxWidth: "100%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colours.blue,

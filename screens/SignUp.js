@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -38,6 +39,8 @@ export default function SignUp() {
   };
 
   const validate = async () => {
+    console.log(signUpDetails);
+
     let isValid = true;
     if (!signUpDetails.email) {
       handleError("Please input an email", "email");
@@ -63,7 +66,6 @@ export default function SignUp() {
 
   // post request for signing up
   async function postSignUp() {
-    console.log(signUpDetails);
     setLoading(true);
 
     // hit signup end point with POST method
@@ -84,8 +86,10 @@ export default function SignUp() {
           that falls out of the range of 2xx */
         console.log(error.response.status);
         console.log(error.response.data);
+
         setTimeout(() => {
           setLoading(false);
+          Alert.alert("Error", error.response.data);
         }, 1500);
       });
   }

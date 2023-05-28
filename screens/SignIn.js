@@ -81,10 +81,16 @@ export default function SignIn() {
         }, 1500);
       })
       .catch((error) => {
+        let errorMessage;
         console.log(error.response.data);
+
+        if (error.response.status === 400) {
+          errorMessage = "Invalid email/password supplied!";
+        }
 
         setTimeout(() => {
           setLoading(false);
+          Alert.alert("Error", errorMessage);
         }, 1500);
       });
   }
