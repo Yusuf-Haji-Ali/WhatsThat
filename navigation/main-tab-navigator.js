@@ -1,19 +1,11 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { Feather, MaterialIcons, AntDesign, Entypo } from "@expo/vector-icons";
+import Colours from "../components/Reusable/colours";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  Feather,
-  MaterialIcons,
-  Ionicons,
-  AntDesign,
-  Entypo,
-} from "@expo/vector-icons";
 
 import Contacts from "../screens/Contacts";
 import Search from "../screens/Search";
 import Chats from "../screens/Chats";
 import Profile from "../screens/Profile";
-import Header from "../components/Reusable/header";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,11 +15,11 @@ const MainTabNavigator = () => {
       initialRouteName="Chats"
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#0058BE",
+          backgroundColor: Colours.blue,
         },
         tabBarInactiveTintColor: "#F2E8E8E8",
         tabBarActiveTintColor: "white",
-        headerStyle: { backgroundColor: "#0058BE" },
+        headerStyle: { backgroundColor: Colours.blue },
         headerTitleStyle: {
           color: "white",
           textTransform: "uppercase",

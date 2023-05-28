@@ -6,6 +6,8 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import ChatListItem from "../components/Chats/chat-list-item";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -13,8 +15,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoChatsImage from "../assets/images/no_chats.png";
 import Button from "../components/Reusable/button";
 import EmptyTemplate from "../components/Reusable/empty-template";
+import { useNavigation } from "@react-navigation/native";
 
 const Chats = () => {
+  const Navigation = useNavigation();
   const [chatData, setChatData] = useState();
 
   const getChats = async () => {

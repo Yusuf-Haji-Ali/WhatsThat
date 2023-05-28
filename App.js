@@ -17,7 +17,7 @@ export default function App() {
   const authUser = async () => {
     try {
       let loggedIn = JSON.parse(await AsyncStorage.getItem("@logged_in"));
-      console.log(loggedIn);
+      console.log("Logged in:", loggedIn);
       if (loggedIn) {
         setInitialRouteName("Home");
         console.log(initialRouteName);

@@ -2,14 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import * as React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Message = ({ message }) => {
+const Message = ({ message, myUserId }) => {
   // Check if message was from current logged in user
-  async function myMessage() {
-    const myUserId = JSON.parse(await AsyncStorage.getItem("@user_id"));
-    return myUserId;
-  }
+  const myMessage = message.author.user_id === myUserId;
 
-  console.log(myMessage());
   return (
     <View
       style={[
@@ -21,11 +17,14 @@ const Message = ({ message }) => {
         },
       ]}
     >
-      {!myMessage && (
-        <Text style={styles.author}>
-          {message.author.first_name} {message.author.last_name}
-        </Text>
-      )}
+      {
+        // Only show authors name if it's not my message
+        !myMessage && (
+          <Text style={styles.author}>
+            {message.author.first_name} {message.author.last_name}
+          </Text>
+        )
+      }
       <Text style={styles.message}>{message.message}</Text>
       <Text style={styles.timestamp}>{message.timestamp}</Text>
     </View>
