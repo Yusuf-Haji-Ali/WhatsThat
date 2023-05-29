@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -27,7 +27,9 @@ const Search = () => {
         }
       )
       .then((response) => {
-        console.log(`Status: ${response.status} ~ Searching... ${searchValue}`);
+        console.log(
+          `Status: ${response.status} ~ Searching: ${searchValue} ~ In: ${searchIn}`
+        );
         setSearchResults(response.data);
       })
       .catch((error) => {
@@ -47,12 +49,14 @@ const Search = () => {
       <View style={styles.searchIn}>
         <Button
           title={"Contacts"}
-          style={{ width: "45%" }}
-          onPress={() => setSearchIn("contacts")}
+          extraStyle={{ width: "45%" }}
+          onPress={() => {
+            setSearchIn("contacts");
+          }}
         />
         <Button
           title={"All"}
-          style={{ width: "45%" }}
+          extraStyle={{ width: "45%" }}
           onPress={() => setSearchIn("all")}
         />
       </View>

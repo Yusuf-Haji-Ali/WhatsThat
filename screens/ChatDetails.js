@@ -23,14 +23,6 @@ const ChatDetails = () => {
 
   Navigation.setOptions({
     headerShown: true,
-    headerRight: () => (
-      <MaterialIcons
-        name="edit"
-        size={20}
-        color="white"
-        onPress={() => setEdit(!edit)}
-      />
-    ),
   });
 
   useEffect(() => {

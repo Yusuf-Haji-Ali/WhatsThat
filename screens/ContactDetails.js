@@ -5,13 +5,19 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import ProfileDetails from "../components/Profile/profile-details";
 import ProfileOption from "../components/Profile/profile-option";
 import Colours from "../components/Reusable/colours";
-import { addUser, deleteUser } from "../components/Contacts/contact-requests";
+// Contact requests to API
+import {
+  addUser,
+  deleteUser,
+  blockUser,
+  unblockUser,
+} from "../components/Contacts/contact-requests";
 
 const ContactDetails = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
   const [isContact, setIsContact] = useState(Route.params.isContact);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(Route.params.isBlocked);
   const user_id = Route.params.user_id;
 
   useEffect(() => {
@@ -27,45 +33,63 @@ const ContactDetails = () => {
         lastname={Route.params.last_name}
         email={Route.params.email}
       />
-
       <View style={styles.options}>
-        {isContact ? (
-          <ProfileOption
-            iconName={"account-remove"}
-            optionText={"Delete Contact"}
-            optionColor={"red"}
-            onPress={() => {
-              // Delete user
-              deleteUser(user_id);
-              console.log("Delete contact");
-            }}
-          />
-        ) : (
-          <ProfileOption
-            iconName={"account-plus"}
-            optionText={"Add Contact"}
-            optionColor={Colours.blue}
-            onPress={() => {
-              // Add user
-              console.log("Add contact");
-              addUser(user_id);
-            }}
-          />
-        )}
+        {
+          // Check if the user is a contact
+          isContact ? (
+            // if so render the options of delete and block user
+            <>
+              <ProfileOption
+                iconName={"account-remove"}
+                optionText={"Delete Contact"}
+                optionColor={"red"}
+                onPress={() => {
+                  // Delete user
+                  deleteUser(user_id);
+                  console.log("Delete contact");
+                }}
+              />
+              <View style={styles.divider} />
 
-        <View style={styles.divider} />
-
-        <ProfileOption
-          iconName={"account-cancel"}
-          optionText={isBlocked ? "Unblock Contact" : "Block Contact"}
-          optionColor={"gray"}
-          onPress={() => {
-            // If the user is not blocked then call block function
-            blockUser();
-            console.log("Block contact");
-            // Else Call unblock function
-          }}
-        />
+              <ProfileOption
+                iconName={"account-cancel"}
+                optionText={isBlocked ? "Unblock Contact" : "Block Contact"}
+                optionColor={"gray"}
+                onPress={() => {
+                  // If the user is not blocked then call block function
+                  blockUser(user_id);
+                  console.log("Block contact");
+                  // Else Call unblock function
+                }}
+              />
+            </>
+          ) : // otherwise check if the user is blocked
+          isBlocked ? (
+            // if so show option to unblock
+            <ProfileOption
+              iconName={"account-plus"}
+              optionText={"Unblock User"}
+              optionColor={Colours.blue}
+              onPress={() => {
+                // Add user
+                console.log("unblock contact");
+                unblockUser(user_id);
+              }}
+            />
+          ) : (
+            // else show button to add
+            <ProfileOption
+              iconName={"account-plus"}
+              optionText={"Add Contact"}
+              optionColor={Colours.blue}
+              onPress={() => {
+                // Add user
+                console.log("Add contact");
+                addUser(user_id);
+              }}
+            />
+          )
+        }
       </View>
     </View>
   );

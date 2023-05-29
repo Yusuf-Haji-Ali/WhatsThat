@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 
-const ContactListItem = ({ contact, isContact }) => {
+const ContactListItem = ({ contact, isContact, isBlocked }) => {
   const Navigation = useNavigation();
 
   return (
@@ -16,6 +16,7 @@ const ContactListItem = ({ contact, isContact }) => {
           last_name: contact.last_name || contact.family_name,
           email: contact.email,
           isContact: isContact,
+          isBlocked: isBlocked,
         })
       }
     >

@@ -147,6 +147,7 @@ const Profile = () => {
               optionColor={"gray"}
               optionText={"Blocked Users"}
               iconName={"account-cancel"}
+              onPress={() => Navigation.navigate("Blocked Users")}
             />
           </View>
         </View>

@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import Alert from "react-native";
+import { Alert } from "react-native";
 
 // ADD USER
-export const addUser = async (user_id) => {
+const addUser = async (user_id) => {
   const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
   console.log(userToken);
   // POST user details to be added as contact
@@ -24,7 +24,7 @@ export const addUser = async (user_id) => {
 };
 
 // DELETE USER
-export const deleteUser = async (user_id) => {
+const deleteUser = async (user_id) => {
   const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
   console.log(userToken);
   // POST user details to be added as contact
@@ -45,7 +45,7 @@ export const deleteUser = async (user_id) => {
 };
 
 // BLOCK USER
-export const blockUser = async (user_id) => {
+const blockUser = async (user_id) => {
   const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
   console.log(userToken);
   // POST user details to be added as contact
@@ -66,7 +66,7 @@ export const blockUser = async (user_id) => {
 };
 
 // UNBLOCK USER
-export const unblockUser = async (user_id) => {
+const unblockUser = async (user_id) => {
   const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
   console.log(userToken);
   // POST user details to be added as contact
@@ -85,3 +85,5 @@ export const unblockUser = async (user_id) => {
       Alert.alert("Error", error.response.data);
     });
 };
+
+export { addUser, deleteUser, blockUser, unblockUser };

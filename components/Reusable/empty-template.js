@@ -7,7 +7,7 @@ const EmptyTemplate = ({ image, text, buttonTitle, onPressFunction }) => {
     <View style={styles.container}>
       {image && <Image source={image} style={styles.image} />}
       <Text style={styles.text}>{text}</Text>
-      <Button title={buttonTitle} onPress={onPressFunction} />
+      {buttonTitle && <Button title={buttonTitle} onPress={onPressFunction} />}
     </View>
   );
 };
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     padding: 75,
   },
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
+    marginVertical: 16,
   },
   image: {
     width: "100%",
