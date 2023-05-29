@@ -144,7 +144,7 @@ const Profile = () => {
             />
             <View style={styles.divider} />
             <ProfileOption
-              optionColor={"red"}
+              optionColor={"gray"}
               optionText={"Blocked Users"}
               iconName={"account-cancel"}
             />
@@ -167,12 +167,10 @@ const styles = StyleSheet.create({
   },
   options: {
     flexDirection: "row",
-    justifyContent: "space-around",
   },
   divider: {
     backgroundColor: "lightgray",
     width: 1,
     height: "100%",
-    marginHorizontal: 12,
   },
 });

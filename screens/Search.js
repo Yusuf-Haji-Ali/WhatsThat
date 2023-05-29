@@ -2,9 +2,10 @@ import { View, Text, TextInput, StyleSheet, FlatList } from "react-native";
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+// Components
 import Input from "../components/Reusable/input";
-import SearchListItem from "../components/Contacts/search-list-item";
 import Button from "../components/Reusable/button";
+import ContactListItem from "../components/Contacts/contact-list-item";
 
 const Search = () => {
   // default search in -> "all" / offset -> 0
@@ -58,7 +59,7 @@ const Search = () => {
       <FlatList
         data={searchResults}
         renderItem={({ item }) => (
-          <SearchListItem contact={item} isContact={isContact} />
+          <ContactListItem contact={item} isContact={isContact} />
         )}
       />
     </View>

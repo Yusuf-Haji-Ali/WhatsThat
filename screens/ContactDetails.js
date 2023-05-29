@@ -1,29 +1,33 @@
 import { View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
-import ProfileDetails from "../components/Profile/profile-details";
 import { useNavigation, useRoute } from "@react-navigation/native";
+// Components
+import ProfileDetails from "../components/Profile/profile-details";
 import ProfileOption from "../components/Profile/profile-option";
 import Colours from "../components/Reusable/colours";
+import { addUser, deleteUser } from "../components/Contacts/contact-requests";
 
 const ContactDetails = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
   const [isContact, setIsContact] = useState(Route.params.isContact);
   const [isBlocked, setIsBlocked] = useState(false);
+  const user_id = Route.params.user_id;
 
   useEffect(() => {
     Navigation.setOptions({
       headerShown: true,
     });
   }, []);
+
   return (
     <View style={styles.container}>
       <ProfileDetails
         firstname={Route.params.first_name}
         lastname={Route.params.last_name}
         email={Route.params.email}
-        buttonText={"Block User"}
       />
+
       <View style={styles.options}>
         {isContact ? (
           <ProfileOption
@@ -31,7 +35,8 @@ const ContactDetails = () => {
             optionText={"Delete Contact"}
             optionColor={"red"}
             onPress={() => {
-              setIsContact(!isContact);
+              // Delete user
+              deleteUser(user_id);
               console.log("Delete contact");
             }}
           />
@@ -39,21 +44,26 @@ const ContactDetails = () => {
           <ProfileOption
             iconName={"account-plus"}
             optionText={"Add Contact"}
-            optionColor={"green"}
+            optionColor={Colours.blue}
             onPress={() => {
-              setIsContact(!isContact);
+              // Add user
               console.log("Add contact");
+              addUser(user_id);
             }}
           />
         )}
+
         <View style={styles.divider} />
+
         <ProfileOption
           iconName={"account-cancel"}
           optionText={isBlocked ? "Unblock Contact" : "Block Contact"}
-          optionColor={Colours.blue}
+          optionColor={"gray"}
           onPress={() => {
-            setIsBlocked(!isBlocked);
+            // If the user is not blocked then call block function
+            blockUser();
             console.log("Block contact");
+            // Else Call unblock function
           }}
         />
       </View>

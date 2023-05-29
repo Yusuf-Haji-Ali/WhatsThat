@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 
-const ContactListItem = ({ contact }) => {
+const ContactListItem = ({ contact, isContact }) => {
   const Navigation = useNavigation();
 
   return (
@@ -11,20 +11,24 @@ const ContactListItem = ({ contact }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          first_name: contact.first_name,
-          last_name: contact.last_name,
+          user_id: contact.user_id,
+          first_name: contact.first_name || contact.given_name,
+          last_name: contact.last_name || contact.family_name,
           email: contact.email,
-          isContact: true,
+          isContact: isContact,
         })
       }
     >
       <View style={styles.image}>
-        <Text style={styles.imageText}>{contact.first_name[0]}</Text>
+        <Text style={styles.imageText}>
+          {contact.first_name ? contact.first_name[0] : contact.given_name[0]}
+        </Text>
       </View>
 
       <View style={styles.contactDetails}>
         <Text style={styles.name} numberOfLines={1}>
-          {contact.first_name} {contact.last_name}
+          {contact.first_name || contact.given_name}{" "}
+          {contact.last_name || contact.family_name}
         </Text>
 
         <Text style={styles.email} numberOfLines={1}>
