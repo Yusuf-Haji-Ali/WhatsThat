@@ -51,7 +51,7 @@ const ChatDetails = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(`Status: ${response.status} ~ Getting chat details...`);
         setChatDetails(response.data);
       })
       .catch((error) => {

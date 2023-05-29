@@ -54,18 +54,16 @@ export default function SignUp() {
     }
   };
 
-  // post request for signing up
+  // Signing up...
   async function postSignUp() {
     setLoading(true);
 
-    // hit signup end point with POST method
+    // POST sign up details to signup end point
     await axios
       .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
       .then((response) => {
-        console.log(
-          `Status: ${response.status} - New User created with ID: ${response.data.id}`
-        );
-        console.log("Signing up...");
+        console.log(`Status: ${response.status} ~ Signing up... `);
+        console.log(`New User created with ID: ${response.data.id}`);
         setTimeout(() => {
           setLoading(false);
           Navigation.navigate("Confirmation");
@@ -74,8 +72,9 @@ export default function SignUp() {
       .catch((error) => {
         /* The request was made and the server responded with a status code
           that falls out of the range of 2xx */
-        console.log(error.response.status);
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.status}`
+        );
 
         setTimeout(() => {
           setLoading(false);

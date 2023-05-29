@@ -50,7 +50,7 @@ export default function SignIn() {
     await axios
       .post("http://localhost:3333/api/1.0.0/login", loginDetails)
       .then(async (response) => {
-        console.log(response.status, ": Successfull Login!");
+        console.log(`Status: ${response.status} ~ Logging in...`);
         console.log(response.data);
 
         // Mark user as logged in
@@ -72,16 +72,15 @@ export default function SignIn() {
         }, 1500);
       })
       .catch((error) => {
-        let errorMessage;
-        console.log(error.response.data);
-
-        if (error.response.status === 400) {
-          errorMessage = "Invalid email/password supplied!";
-        }
-
         setTimeout(() => {
           setLoading(false);
-          Alert.alert("Error", errorMessage);
+          console.log(
+            `Status: ${error.response.status} ~ ${error.response.data}`
+          );
+
+          if (error.response.status === 400) {
+            Alert.alert("Error", "Invalid email/password supplied!");
+          }
         }, 1500);
       });
   }

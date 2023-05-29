@@ -21,12 +21,13 @@ const Chats = () => {
         },
       })
       .then((response) => {
-        console.log(response.status);
-        console.log(response.data);
+        console.log(`Status: ${response.status} ~ Loading Chats...`);
         setChatData(response.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
       });
   };
 

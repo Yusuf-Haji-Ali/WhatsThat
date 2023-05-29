@@ -25,11 +25,13 @@ const Search = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log(`Status: ${response.status} ~ Searching... ${searchValue}`);
         setSearchResults(response.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
       });
   };
 

@@ -11,7 +11,7 @@ const Message = ({ message, myUserId }) => {
         styles.container,
         // if it's my message show message on right with blue background, else left and white background
         {
-          backgroundColor: myMessage ? "#4194E1" : "white",
+          backgroundColor: myMessage ? "#59b2ff" : "white",
           alignSelf: myMessage ? "flex-end" : "flex-start",
         },
       ]}

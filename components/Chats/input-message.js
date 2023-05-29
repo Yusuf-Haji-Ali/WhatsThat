@@ -22,21 +22,24 @@ const InputMessage = ({ chatId, getMessages }) => {
         },
       })
       .then((response) => {
-        console.log(response.status, response.data);
-        console.log("Sending message:", message.message);
+        console.log(
+          `Status: ${response.status} ~ Sending message: ${message.message}`
+        );
         // once message is sent... empty message input box
         setMessage({ ...message, message: "" });
         // Rerender chatscreen
         getMessages();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
         Alert.alert("Error", error.response.data);
       });
   };
 
   return (
-    <SafeAreaView edges={["bottom"]} style={{ backgroundColor: Colours.light }}>
+    <SafeAreaView style={{ backgroundColor: Colours.light }}>
       <View style={styles.container}>
         {/* Input Box */}
         <View style={styles.inputWrapper}>

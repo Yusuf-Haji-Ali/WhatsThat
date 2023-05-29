@@ -1,8 +1,5 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
 import React from "react";
 import { useRoute } from "@react-navigation/native";
-import Colours from "../components/Reusable/colours";
-import Input from "../components/Reusable/input";
 import EditProfileDetails from "../components/Profile/edit-profile-details";
 
 const EditProfile = () => {

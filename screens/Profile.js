@@ -37,13 +37,15 @@ const Profile = () => {
         },
       })
       .then((response) => {
-        console.log(response.status);
+        console.log(`Status: ${response.status} ~ Getting User's Details...`);
         console.log(response.data);
         // store user data pulled...
         setUserInfo(response.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
       });
 
     // Get user's profile photo if exists
