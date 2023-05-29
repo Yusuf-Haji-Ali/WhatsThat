@@ -5,7 +5,9 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Components
-import ProfileItem from "../components/Profile/profile-details";
+import ProfileDetails from "../components/Profile/profile-details";
+import ProfileOption from "../components/Profile/profile-option";
+import Colours from "../components/Reusable/colours";
 import Button from "../components/Reusable/button";
 import Loader from "../components/Reusable/loader";
 
@@ -111,20 +113,43 @@ const Profile = () => {
     <>
       <Loader visible={loading} loadingMessage={"Logging out"} />
       <View style={styles.container}>
-        <ProfileItem
-          firstname={userInfo.first_name}
-          lastname={userInfo.last_name}
-          email={userInfo.email}
-          buttonText={"Edit Profile"}
-          onPress={() => {
-            Navigation.navigate("Edit Profile", {
-              // pass user details as parameters into profile edit
-              firstname: userInfo.first_name,
-              lastname: userInfo.last_name,
-              email: userInfo.email,
-            });
-          }}
-        />
+        <View>
+          <ProfileDetails
+            firstname={userInfo.first_name}
+            lastname={userInfo.last_name}
+            email={userInfo.email}
+            addUser={true}
+            deleteUser={true}
+            onPress={() => {
+              Navigation.navigate("Edit Profile", {
+                // pass user details as parameters into profile edit
+                firstname: userInfo.first_name,
+                lastname: userInfo.last_name,
+                email: userInfo.email,
+              });
+            }}
+          />
+          <View style={styles.options}>
+            <ProfileOption
+              optionColor={Colours.blue}
+              optionText={"Edit Profile"}
+              iconName={"account-edit"}
+              onPress={() =>
+                Navigation.navigate("Edit Profile", {
+                  firstname: userInfo.first_name,
+                  lastname: userInfo.last_name,
+                  email: userInfo.email,
+                })
+              }
+            />
+            <View style={styles.divider} />
+            <ProfileOption
+              optionColor={"red"}
+              optionText={"Blocked Users"}
+              iconName={"account-cancel"}
+            />
+          </View>
+        </View>
 
         <Button title={"Log out"} onPress={logOut} />
       </View>
@@ -139,5 +164,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     padding: 40,
+  },
+  options: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  divider: {
+    backgroundColor: "lightgray",
+    width: 1,
+    height: "100%",
+    marginHorizontal: 12,
   },
 });

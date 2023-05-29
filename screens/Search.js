@@ -11,6 +11,7 @@ const Search = () => {
   const [searchIn, setSearchIn] = useState("all");
   const [offset, setOffset] = useState(0);
   const [searchResults, setSearchResults] = useState("");
+  const isContact = searchIn === "contacts";
 
   const searchFor = async (searchValue, searchIn, offset) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
@@ -56,7 +57,9 @@ const Search = () => {
       </View>
       <FlatList
         data={searchResults}
-        renderItem={({ item }) => <SearchListItem contact={item} />}
+        renderItem={({ item }) => (
+          <SearchListItem contact={item} isContact={isContact} />
+        )}
       />
     </View>
   );

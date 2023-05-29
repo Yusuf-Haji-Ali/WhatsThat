@@ -11,8 +11,10 @@ const ContactListItem = ({ contact }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          name: contact.first_name,
+          first_name: contact.first_name,
+          last_name: contact.last_name,
           email: contact.email,
+          isContact: true,
         })
       }
     >

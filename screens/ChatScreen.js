@@ -93,6 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   list: {
-    margin: 5,
+    marginHorizontal: 5,
   },
 });

@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 
-const SearchListItem = ({ contact }) => {
+const SearchListItem = ({ contact, isContact }) => {
   const Navigation = useNavigation();
 
   return (
@@ -11,8 +11,10 @@ const SearchListItem = ({ contact }) => {
       style={styles.contact}
       onPress={() =>
         Navigation.navigate("Contact Details", {
-          name: contact.given_name,
+          first_name: contact.given_name,
+          last_name: contact.family_name,
           email: contact.email,
+          isContact: isContact,
         })
       }
     >
