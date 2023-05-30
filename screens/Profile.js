@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,9 +22,11 @@ const Profile = () => {
     profile_photo: "",
   });
 
-  useEffect(() => {
-    getUserDetails();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getUserDetails();
+    }, [])
+  );
 
   async function getUserDetails() {
     // Retrieve user authentication details

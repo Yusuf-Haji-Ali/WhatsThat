@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet, SafeAreaView } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoContactsImage from "../assets/images/no_contacts.png";
@@ -12,9 +13,11 @@ const Contacts = () => {
   const [contacts, setContacts] = useState();
   const Navigation = useNavigation();
 
-  useEffect(() => {
-    getContacts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getContacts();
+    }, [])
+  );
 
   const getContacts = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
