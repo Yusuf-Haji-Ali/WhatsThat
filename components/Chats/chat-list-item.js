@@ -1,17 +1,20 @@
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-  Image,
-  Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 export default function ChatListItem({ chat }) {
   const Navigation = useNavigation();
+
+  // Format timestamp relatively
+  const relativeTimestamp = moment(chat.last_message.timestamp).calendar({
+    // if same day just display military time
+    sameDay: "HH:mm ",
+    // otherwise display military time with relative day/date
+    lastDay: "[Yesterday] HH:mm",
+    lastWeek: "DD/MM/YYYY HH:mm",
+    sameElse: "DD/MM/YYYY HH:mm",
+  });
 
   return (
     <Pressable
@@ -30,7 +33,7 @@ export default function ChatListItem({ chat }) {
           <Text style={styles.name} numberOfLines={1}>
             {chat.name}
           </Text>
-          <Text style={styles.timeStamp}>{chat.last_message.timestamp}</Text>
+          <Text style={styles.timeStamp}>{relativeTimestamp}</Text>
         </View>
 
         {/* Last message: author + message */}
@@ -77,5 +80,6 @@ const styles = StyleSheet.create({
   timeStamp: {
     color: "gray",
     fontSize: 12,
+    fontWeight: "500",
   },
 });

@@ -1,5 +1,6 @@
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoChatsImage from "../assets/images/no_chats.png";
 import axios from "axios";
@@ -7,18 +8,6 @@ import axios from "axios";
 // Components
 import EmptyTemplate from "../components/Reusable/empty-template";
 import ChatListItem from "../components/Chats/chat-list-item";
-
-function relativeDays(timestamp) {
-  const rtf = new Intl.RelativeTimeFormat("en", {
-    numeric: "auto",
-  });
-  const oneDayInMs = 1000 * 60 * 60 * 24;
-  const daysDifference = Math.round(
-    (timestamp - new Date().getTime()) / oneDayInMs
-  );
-
-  return rtf.format(daysDifference, "day");
-}
 
 const Chats = () => {
   const [chatData, setChatData] = useState();
@@ -43,9 +32,11 @@ const Chats = () => {
       });
   };
 
-  useEffect(() => {
-    getChats();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getChats();
+    }, [])
+  );
 
   return chatData ? (
     <SafeAreaView style={styles.container}>

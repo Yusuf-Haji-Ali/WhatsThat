@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 // Navigators
 import MainTabNavigator from "./main-tab-navigator";
 import FormNavigator from "./form-navigator";
@@ -41,22 +41,7 @@ const StackNavigator = ({ initialRoute }) => {
           <Stack.Screen name="Edit Profile" component={EditProfile} />
           <Stack.Screen name="Blocked Users" component={BlockedUsers} />
           <Stack.Screen name="Contact Details" component={ContactDetails} />
-          <Stack.Screen
-            name="Chat Details"
-            component={ChatDetails}
-            options={{
-              headerRight: () => (
-                <MaterialCommunityIcons
-                  name="pencil"
-                  size={20}
-                  color="white"
-                  onPress={() => {
-                    console.log("Edit Chat Details");
-                  }}
-                />
-              ),
-            }}
-          />
+          <Stack.Screen name="Chat Details" component={ChatDetails} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

@@ -1,9 +1,20 @@
 import { View, Text, StyleSheet } from "react-native";
 import * as React from "react";
+import moment from "moment";
 
 const Message = ({ message, myUserId }) => {
   // Check if message is from current logged in user
   const myMessage = message.author.user_id === myUserId;
+
+  // Format timestamp relatively
+  const relativeTimestamp = moment(message.timestamp).calendar({
+    // if same day just display military time
+    sameDay: "HH:mm ",
+    // otherwise display military time with relative day/date
+    lastDay: "[Yesterday] HH:mm",
+    lastWeek: "DD/MM/YYYY HH:mm",
+    sameElse: "DD/MM/YYYY HH:mm",
+  });
 
   return (
     <View
@@ -25,7 +36,7 @@ const Message = ({ message, myUserId }) => {
         )
       }
       <Text style={styles.message}>{message.message}</Text>
-      <Text style={styles.timestamp}>{message.timestamp}</Text>
+      <Text style={styles.timestamp}>{relativeTimestamp}</Text>
     </View>
   );
 };

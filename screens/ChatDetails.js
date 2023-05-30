@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 // Components
 import ContactListItem from "../components/Contacts/contact-list-item";
@@ -21,11 +25,20 @@ const ChatDetails = () => {
     ? `${chatDetails.creator.first_name} ${chatDetails.creator.last_name}`
     : "";
 
-  Navigation.setOptions({
-    headerShown: true,
-  });
-
   useEffect(() => {
+    Navigation.setOptions({
+      headerShown: true,
+      headerRight: () => (
+        <MaterialCommunityIcons
+          name="pencil"
+          size={20}
+          color="white"
+          onPress={() => {
+            console.log("Edit Chat Details");
+          }}
+        />
+      ),
+    });
     getChatDetails();
   }, []);
 
@@ -82,7 +95,9 @@ const ChatDetails = () => {
         <Text style={styles.subtitle}>Members:</Text>
         <FlatList
           data={chatDetails.members}
-          renderItem={({ item }) => <ContactListItem contact={item} />}
+          renderItem={({ item }) => (
+            <ContactListItem contact={item} isContact={true} />
+          )}
         />
       </View>
 
