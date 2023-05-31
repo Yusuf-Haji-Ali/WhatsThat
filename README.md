@@ -16,5 +16,5 @@ E.g: components mainly used by Chats/ChatScreen will be found in the Chats folde
 
 ## Wireframes
 
-I have drawn up a plan of how i wanted the app to look before developing with the Low fidelity wireframe being handrawn and created the High Fidelity Wireframe using Figma.
+I have drawn up a plan of how I wanted the app to look before development. This includes a High Fidelity Wireframe which was made using Figma and it's respective heirarchy of navigation.
 ~ Both can be found in the Assets folder -> Wireframes.

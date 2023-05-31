@@ -89,7 +89,7 @@ export default function SignUp() {
       <Header subTitle="Hello there!" />
 
       <ScrollView style={styles.form}>
-        <Title title={"Sign up"} />
+        <Title title={"Sign up"} size={28} />
 
         <Input
           label={"First Name"}

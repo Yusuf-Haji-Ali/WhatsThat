@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import Colours from "../Reusable/colours";
 import * as React from "react";
 import moment from "moment";
 
@@ -22,7 +23,7 @@ const Message = ({ message, myUserId }) => {
         styles.container,
         // if it's my message show message on right with blue background, else left and white background
         {
-          backgroundColor: myMessage ? "#59b2ff" : "white",
+          backgroundColor: myMessage ? "#4194E1" : "white",
           alignSelf: myMessage ? "flex-end" : "flex-start",
         },
       ]}
@@ -36,7 +37,16 @@ const Message = ({ message, myUserId }) => {
         )
       }
       <Text style={styles.message}>{message.message}</Text>
-      <Text style={styles.timestamp}>{relativeTimestamp}</Text>
+      <Text
+        style={[
+          styles.timestamp,
+          {
+            color: myMessage ? Colours.lightgray : "gray",
+          },
+        ]}
+      >
+        {relativeTimestamp}
+      </Text>
     </View>
   );
 };
@@ -68,9 +78,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   timestamp: {
-    color: "gray",
     alignSelf: "flex-end",
     marginTop: 5,
     fontSize: 10,
+    fontWeight: "500",
   },
 });

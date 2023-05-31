@@ -93,7 +93,7 @@ export default function SignIn() {
       <Header subTitle="Welcome back!" style={styles.header} />
 
       <View style={styles.form}>
-        <Title title={"Sign in"} />
+        <Title title={"Sign in"} size={28} />
 
         <Input
           label={"Email"}

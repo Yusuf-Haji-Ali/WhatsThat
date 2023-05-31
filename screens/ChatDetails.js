@@ -3,16 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import {
-  FontAwesome5,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Components
 import ContactListItem from "../components/Contacts/contact-list-item";
 import Input from "../components/Reusable/input";
 import Colours from "../components/Reusable/colours";
+import Title from "../components/Reusable/title";
 
 const ChatDetails = () => {
   const Navigation = useNavigation();
@@ -56,7 +53,7 @@ const ChatDetails = () => {
         },
       })
       .then((response) => {
-        console.log(`Status: ${response.status} ~ Getting chat details...`);
+        console.log(`Status: ${response.status} ~ Getting Chat details...`);
         setChatDetails(response.data);
       })
       .catch((error) => {
@@ -73,7 +70,11 @@ const ChatDetails = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.image}>
-          <FontAwesome5 name="users" size={75} color="white" />
+          <MaterialCommunityIcons
+            name="account-group"
+            size={75}
+            color="white"
+          />
         </View>
         {(edit && (
           <View style={styles.edit}>
@@ -81,7 +82,7 @@ const ChatDetails = () => {
               placeholder={chatDetails.name}
               defaultValue={chatDetails.name}
             />
-            <MaterialIcons
+            <MaterialCommunityIcons
               name="check-circle"
               size={30}
               color={Colours.blue}
@@ -91,14 +92,18 @@ const ChatDetails = () => {
         )) || <Text style={styles.title}>{chatDetails.name}</Text>}
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.subtitle}>Members:</Text>
+      <View style={styles.members}>
+        <Title title={"Members"} size={18} />
+
+        {/* By default you are a member of the chat */}
+        <ContactListItem you />
         <FlatList
           data={chatDetails.members}
           renderItem={({ item }) => (
+            // Members are contacts by default pass in contact true
             <ContactListItem contact={item} isContact={true} />
           )}
-        />
+        ></FlatList>
       </View>
 
       <Text style={styles.creator}>
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    backgroundColor: "gray",
+    backgroundColor: Colours.lightblack,
     width: 150,
     height: 150,
     borderRadius: 75,
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontWeight: "bold",
   },
-  content: {
+  members: {
     marginBottom: 24,
   },
   edit: {

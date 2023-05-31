@@ -35,7 +35,7 @@ const Profile = () => {
 
     // Request user details from user endpoint using user's ID and Authentication token
     await axios
-      .get("http://localhost:3333/api/1.0.0/user/" + userId, {
+      .get(`http://localhost:3333/api/1.0.0/user/${userId}`, {
         headers: {
           "X-Authorization": userToken,
         },

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     width: 125,
     height: 125,
     borderRadius: 125 / 2,
-    backgroundColor: "black",
+    backgroundColor: Colours.lightblack,
     justifyContent: "center",
   },
   imageText: {

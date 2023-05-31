@@ -2,11 +2,25 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const ContactListItem = ({ contact, isContact, isBlocked }) => {
+const ContactListItem = ({ you, contact, isContact, isBlocked }) => {
   const Navigation = useNavigation();
 
-  return (
+  return you ? (
+    // Check if "you" is passed... if so render general Contact item saying you
+    <Pressable
+      style={styles.contact}
+      onPress={() => Navigation.navigate("Profile")}
+    >
+      <View style={styles.image}>
+        <MaterialCommunityIcons name="account" size={24} color={"white"} />
+      </View>
+      <Text style={styles.name} numberOfLines={1}>
+        You
+      </Text>
+    </Pressable>
+  ) : (
     <Pressable
       style={styles.contact}
       onPress={() =>
@@ -47,18 +61,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 5,
-    height: 80,
+    height: 75,
     padding: 10,
     backgroundColor: "#E8E8E8",
-    borderRadius: 5,
+    borderRadius: 12,
   },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 10,
-    backgroundColor: "#242424",
+    backgroundColor: Colours.lightblack,
     justifyContent: "center",
+    alignItems: "center",
   },
   imageText: {
     textAlign: "center",

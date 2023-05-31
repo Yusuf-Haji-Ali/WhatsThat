@@ -57,8 +57,7 @@ const ChatScreen = () => {
         },
       })
       .then((response) => {
-        console.log(response.status);
-        console.log(response.data.messages);
+        console.log(`Status: ${response.status} ~ Loading Chat messages...`);
         setMessageData(response.data.messages);
       })
       .catch((error) => {

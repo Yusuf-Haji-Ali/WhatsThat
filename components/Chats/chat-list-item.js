@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
+import Colours from "../Reusable/colours";
 
 export default function ChatListItem({ chat }) {
   const Navigation = useNavigation();
@@ -26,19 +28,28 @@ export default function ChatListItem({ chat }) {
         });
       }}
     >
-      {/* <Image style={styles.image} source={{ uri: chat.user.image }} /> */}
+      <View style={styles.image}>
+        <MaterialCommunityIcons
+          name="account-group"
+          color={"white"}
+          size={24}
+        />
+      </View>
 
       <View style={styles.content}>
         <View style={styles.row}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={styles.chatName} numberOfLines={1}>
             {chat.name}
           </Text>
           <Text style={styles.timeStamp}>{relativeTimestamp}</Text>
         </View>
 
         {/* Last message: author + message */}
-        <Text style={styles.subTitle} numberOfLines={2}>
-          {chat.last_message.author.first_name}: {chat.last_message.message}
+        <Text style={styles.lastMessage} numberOfLines={2}>
+          <Text style={styles.author}>
+            {chat.last_message.author.first_name}
+          </Text>
+          : <Text>{chat.last_message.message}</Text>
         </Text>
       </View>
     </Pressable>
@@ -53,33 +64,40 @@ const styles = StyleSheet.create({
     height: 80,
     padding: 10,
     backgroundColor: "#E8E8E8",
-    borderRadius: 5,
+    borderRadius: 12,
     alignItems: "center",
-  },
-  content: {
-    flex: 1,
-  },
-  row: {
-    flexDirection: "row",
-  },
-  name: {
-    flex: 1,
-    fontWeight: "bold",
-    marginBottom: 5,
-    textTransform: "capitalize",
   },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 10,
+    backgroundColor: Colours.lightblack,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  subTitle: {
-    color: "black",
+  content: {
+    flex: 1,
+    height: "100%",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  chatName: {
+    fontWeight: "bold",
+    textTransform: "capitalize",
   },
   timeStamp: {
     color: "gray",
     fontSize: 12,
     fontWeight: "500",
+  },
+  lastMessage: {
+    color: "gray",
+  },
+  author: {
+    fontWeight: "bold",
   },
 });
