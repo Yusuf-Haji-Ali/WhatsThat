@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 24,
     paddingHorizontal: 24,
+    backgroundColor: "white",
   },
   searchIn: {
     width: "100%",

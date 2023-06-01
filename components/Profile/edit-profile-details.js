@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import Colours from "../Reusable/colours";
 import Input from "../Reusable/input";
@@ -34,7 +34,9 @@ export default EditProfileDetails;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 48,
+    flex: 1,
+    paddingTop: 48,
+    backgroundColor: "white",
   },
   imageWrapper: {
     alignItems: "center",

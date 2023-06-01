@@ -1,7 +1,8 @@
-import { Feather, MaterialIcons, AntDesign, Entypo } from "@expo/vector-icons";
-import Colours from "../components/Reusable/colours";
+import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Colours from "../components/Reusable/colours";
 
+// Screens
 import Contacts from "../screens/Contacts";
 import Search from "../screens/Search";
 import Chats from "../screens/Chats";

@@ -98,12 +98,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    backgroundColor: Colours.blue,
-  },
   input: {
     width: "100%",
     padding: 10,

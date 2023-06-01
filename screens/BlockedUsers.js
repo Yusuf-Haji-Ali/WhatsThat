@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, SafeAreaView } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,14 +46,14 @@ const BlockedUsers = () => {
   };
 
   return blockedUsers ? (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={blockedUsers}
         renderItem={({ item }) => (
           <ContactListItem contact={item} isBlocked={true} />
         )}
       />
-    </SafeAreaView>
+    </View>
   ) : (
     // If the user has noone blocked yet... render empty template message showing that
     <EmptyTemplate
@@ -69,6 +69,7 @@ export default BlockedUsers;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    padding: 10,
+    backgroundColor: "white",
   },
 });

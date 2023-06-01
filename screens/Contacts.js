@@ -1,13 +1,12 @@
-import { FlatList, StyleSheet, SafeAreaView } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoContactsImage from "../assets/images/no_contacts.png";
 // Components
 import ContactListItem from "../components/Contacts/contact-list-item";
 import EmptyTemplate from "../components/Reusable/empty-template";
-import { useNavigation } from "@react-navigation/native";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState();
@@ -45,14 +44,14 @@ const Contacts = () => {
   };
 
   return contacts ? (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={contacts}
         renderItem={({ item }) => (
           <ContactListItem contact={item} isContact={true} />
         )}
       />
-    </SafeAreaView>
+    </View>
   ) : (
     // If the user has no contacts yet... render empty template message showing that
     <EmptyTemplate
@@ -72,6 +71,7 @@ export default Contacts;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "white",
   },
 });

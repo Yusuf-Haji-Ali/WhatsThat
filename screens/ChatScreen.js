@@ -29,7 +29,7 @@ const ChatScreen = () => {
           name="menu-open"
           size={24}
           color="white"
-          style={{ marginRight: 10 }}
+          style={{ marginRight: 5 }}
           onPress={() =>
             Navigation.navigate("Chat Details", {
               // pass Chat ID into route for chat details

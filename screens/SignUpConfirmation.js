@@ -11,7 +11,7 @@ const SignUpConfirmation = () => {
       <Text style={styles.text}>You've successfully registered!</Text>
       <Button
         title={"Sign in"}
-        onPress={() => Navigation.navigate("sign-in")}
+        onPress={() => Navigation.navigate("Sign In")}
       />
     </View>
   );

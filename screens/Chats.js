@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -41,7 +41,6 @@ const Chats = () => {
       .then((response) => {
         console.log(`Status: ${response.status} ~ Loading Chats...`);
         setChatData(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(
@@ -61,7 +60,7 @@ const Chats = () => {
       })
       .then((response) => {
         console.log(`Status: ${response.status} ~ Creating chat...`);
-        console.log(`Chat Created with ID: ${response.data}`);
+        console.log(`Chat Created with ID: ${response.data.chat_id}`);
         // Rerender chats
         getChats();
       })
@@ -79,7 +78,7 @@ const Chats = () => {
   );
 
   return chatData ? (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={chatData}
         renderItem={({ item }) => <ChatListItem chat={item} />}
@@ -89,7 +88,7 @@ const Chats = () => {
         setModalVisible={setModalVisible}
         createChat={createNewChat}
       />
-    </SafeAreaView>
+    </View>
   ) : (
     // If the user has no chats yet... render empty template message showing that
     <>
@@ -113,6 +112,6 @@ export default Chats;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 5,
+    backgroundColor: "white",
   },
 });
