@@ -1,56 +1,59 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const ContactListItem = ({ you, contact, isContact, isBlocked }) => {
+const ContactListItem = ({ contact, isContact, isBlocked, myId }) => {
   const Navigation = useNavigation();
 
-  return you ? (
-    // Check if "you" is passed... if so render general Contact item saying you
-    <Pressable
-      style={styles.contact}
-      onPress={() => Navigation.navigate("Profile")}
-    >
-      <View style={styles.image}>
-        <MaterialCommunityIcons name="account" size={24} color={"white"} />
-      </View>
-      <Text style={styles.name} numberOfLines={1}>
-        You
-      </Text>
-    </Pressable>
-  ) : (
-    <Pressable
-      style={styles.contact}
-      onPress={() =>
-        Navigation.navigate("Contact Details", {
-          user_id: contact.user_id,
-          first_name: contact.first_name || contact.given_name,
-          last_name: contact.last_name || contact.family_name,
-          email: contact.email,
-          isContact: isContact,
-          isBlocked: isBlocked,
-        })
-      }
-    >
-      <View style={styles.image}>
-        <Text style={styles.imageText}>
-          {contact.first_name ? contact.first_name[0] : contact.given_name[0]}
-        </Text>
-      </View>
-
-      <View style={styles.contactDetails}>
+  return contact ? (
+    //  If the contact id matches your passed in ID show that is you
+    contact.user_id === myId ? (
+      <TouchableOpacity style={styles.contact}>
+        <View style={styles.image}>
+          <MaterialCommunityIcons name="account" size={24} color={"white"} />
+        </View>
         <Text style={styles.name} numberOfLines={1}>
-          {contact.first_name || contact.given_name}{" "}
-          {contact.last_name || contact.family_name}
+          You
         </Text>
+      </TouchableOpacity>
+    ) : (
+      // Otherwise Show contact
+      <TouchableOpacity
+        style={styles.contact}
+        onPress={() =>
+          Navigation.navigate("Contact Details", {
+            user_id: contact.user_id,
+            first_name: contact.first_name || contact.given_name,
+            last_name: contact.last_name || contact.family_name,
+            email: contact.email,
+            isContact: isContact,
+            isBlocked: isBlocked,
+          })
+        }
+      >
+        <View style={styles.image}>
+          <Text style={styles.imageText}>
+            {contact.first_name ? contact.first_name[0] : contact.given_name[0]}
+          </Text>
+        </View>
 
-        <Text style={styles.email} numberOfLines={1}>
-          {contact.email}
-        </Text>
-      </View>
-    </Pressable>
+        <View style={styles.contactDetails}>
+          <Text style={styles.name} numberOfLines={1}>
+            {/* If first & last name exist from API display that else use given and family name (from search results) */}
+            {contact.first_name || contact.given_name}{" "}
+            {contact.last_name || contact.family_name}{" "}
+          </Text>
+
+          <Text style={styles.email} numberOfLines={1}>
+            {contact.email}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    )
+  ) : (
+    <></>
   );
 };
 

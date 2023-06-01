@@ -49,14 +49,14 @@ const Search = () => {
       <View style={styles.searchIn}>
         <Button
           title={"Contacts"}
-          extraStyle={{ width: "45%" }}
+          extraButtonStyle={{ width: "45%" }}
           onPress={() => {
             setSearchIn("contacts");
           }}
         />
         <Button
           title={"All"}
-          extraStyle={{ width: "45%" }}
+          extraButtonStyle={{ width: "45%" }}
           onPress={() => setSearchIn("all")}
         />
       </View>

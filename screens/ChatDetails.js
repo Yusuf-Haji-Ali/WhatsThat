@@ -102,12 +102,11 @@ const ChatDetails = () => {
         <Title title={"Members"} size={18} />
 
         {/* By default you are a member of the chat */}
-        <ContactListItem you />
         <FlatList
           data={chatDetails.members}
           renderItem={({ item }) => (
             // Members are contacts by default pass in contact true
-            <ContactListItem contact={item} isContact={true} />
+            <ContactListItem contact={item} isContact={true} myId={myId} />
           )}
         ></FlatList>
       </View>

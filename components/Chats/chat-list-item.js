@@ -48,7 +48,7 @@ const ChatListItem = ({ chat }) => {
         <Text style={styles.lastMessage} numberOfLines={2}>
           <Text style={styles.author}>
             {chat.last_message.author
-              ? chat.last_message.author.first_name + ":"
+              ? `${chat.last_message.author.first_name}: `
               : "..."}
           </Text>
           <Text>{chat.last_message.message}</Text>

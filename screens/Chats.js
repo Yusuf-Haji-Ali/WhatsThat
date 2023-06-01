@@ -13,7 +13,6 @@ import NewChatModal from "../components/Chats/new-chat-modal";
 
 const Chats = () => {
   const [chatData, setChatData] = useState();
-  const [chatName, setChatName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const Navigation = useNavigation();
@@ -29,6 +28,7 @@ const Chats = () => {
       />
     ),
   });
+
   const getChats = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
