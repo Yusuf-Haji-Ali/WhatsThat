@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   input: {
-    padding: 15,
+    padding: 13,
     flex: 1,
-    // outlineStyle: "none",
     color: Colours.blue,
   },
   error: {

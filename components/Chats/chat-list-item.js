@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 import Colours from "../Reusable/colours";
 
-export default function ChatListItem({ chat }) {
+const ChatListItem = ({ chat }) => {
   const Navigation = useNavigation();
 
   // Format timestamp relatively
@@ -47,14 +47,16 @@ export default function ChatListItem({ chat }) {
         {/* Last message: author + message */}
         <Text style={styles.lastMessage} numberOfLines={2}>
           <Text style={styles.author}>
-            {chat.last_message.author.first_name}
+            {chat.last_message.author
+              ? chat.last_message.author.first_name + ":"
+              : "..."}
           </Text>
-          : <Text>{chat.last_message.message}</Text>
+          <Text>{chat.last_message.message}</Text>
         </Text>
       </View>
     </Pressable>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -101,3 +103,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default ChatListItem;

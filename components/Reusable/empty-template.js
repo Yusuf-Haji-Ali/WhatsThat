@@ -2,12 +2,12 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import Button from "./button";
 
-const EmptyTemplate = ({ image, text, buttonTitle, onPressFunction }) => {
+const EmptyTemplate = ({ image, text, buttonTitle, ...props }) => {
   return (
     <View style={styles.container}>
       {image && <Image source={image} style={styles.image} />}
       <Text style={styles.text}>{text}</Text>
-      {buttonTitle && <Button title={buttonTitle} onPress={onPressFunction} />}
+      {buttonTitle && <Button title={buttonTitle} {...props} />}
     </View>
   );
 };

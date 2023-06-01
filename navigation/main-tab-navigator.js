@@ -56,14 +56,6 @@ const MainTabNavigator = () => {
               color={color}
             />
           ),
-          headerRight: () => (
-            <Entypo
-              name="new-message"
-              size={20}
-              color={"white"}
-              style={{ marginRight: 15 }}
-            />
-          ),
         }}
       />
       <Tab.Screen

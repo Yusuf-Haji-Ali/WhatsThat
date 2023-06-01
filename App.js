@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StackNavigator from "./navigation/main-stack-navigator";
 
@@ -18,7 +17,6 @@ export default function App() {
       console.log("Logged in:", loggedIn);
       if (loggedIn) {
         setInitialRouteName("Home");
-        console.log(initialRouteName);
       } else {
         setInitialRouteName("Registration");
       }

@@ -1,6 +1,10 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -22,22 +26,24 @@ const ChatDetails = () => {
     ? `${chatDetails.creator.first_name} ${chatDetails.creator.last_name}`
     : "";
 
-  useEffect(() => {
-    Navigation.setOptions({
-      headerShown: true,
-      headerRight: () => (
-        <MaterialCommunityIcons
-          name="pencil"
-          size={20}
-          color="white"
-          onPress={() => {
-            console.log("Edit Chat Details");
-          }}
-        />
-      ),
-    });
-    getChatDetails();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      Navigation.setOptions({
+        headerShown: true,
+        headerRight: () => (
+          <MaterialCommunityIcons
+            name="pencil"
+            size={20}
+            color="white"
+            onPress={() => {
+              setEdit(!edit);
+            }}
+          />
+        ),
+      });
+      getChatDetails();
+    }, [])
+  );
 
   const getChatDetails = async () => {
     // Hit single chat details endpoint
