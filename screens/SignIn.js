@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useState, useCallback } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -13,8 +13,15 @@ import TextLink from "../components/Reusable/text-link";
 import Title from "../components/Reusable/title";
 import Loader from "../components/Reusable/loader";
 
-export default function SignIn() {
+const SignIn = () => {
   const Navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      setErrors(false);
+    }, [])
+  );
+
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -43,7 +50,7 @@ export default function SignIn() {
   };
 
   // Signing in...
-  async function postSignIn() {
+  const postSignIn = async () => {
     setLoading(true);
 
     // Hit log in endpoint with POST method
@@ -83,7 +90,7 @@ export default function SignIn() {
           }
         }, 1500);
       });
-  }
+  };
 
   //Main Frontend Rendering
   return (
@@ -130,7 +137,9 @@ export default function SignIn() {
       <StatusBar style="auto" />
     </View>
   );
-}
+};
+
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {

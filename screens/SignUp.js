@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 // Components
@@ -11,8 +11,14 @@ import Button from "../components/Reusable/button";
 import Title from "../components/Reusable/title";
 import Loader from "../components/Reusable/loader";
 
-export default function SignUp() {
+const SignUp = () => {
   const Navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      setErrors(false);
+    }, [])
+  );
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -55,7 +61,7 @@ export default function SignUp() {
   };
 
   // Signing up...
-  async function postSignUp() {
+  const postSignUp = async () => {
     setLoading(true);
 
     // POST sign up details to signup end point
@@ -81,7 +87,7 @@ export default function SignUp() {
           Alert.alert("Error", error.response.data);
         }, 1500);
       });
-  }
+  };
 
   return (
     <>
@@ -146,7 +152,9 @@ export default function SignUp() {
       </ScrollView>
     </>
   );
-}
+};
+
+export default SignUp;
 
 const styles = StyleSheet.create({
   form: {
