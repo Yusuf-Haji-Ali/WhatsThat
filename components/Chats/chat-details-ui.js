@@ -4,6 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,15 +16,24 @@ import Colours from "../Reusable/colours";
 import Title from "../Reusable/title";
 import SearchContactModal from "../Contacts/searchContactModal";
 
-const ChatDetailsUi = ({ chatDetails, isUserCreator, edit, myId }) => {
+const ChatDetailsUi = ({
+  chatDetails,
+  isUserCreator,
+  edit,
+  setEdit,
+  myId,
+  newChatName,
+}) => {
   const chatCreator = chatDetails
     ? `${chatDetails.creator.first_name} ${chatDetails.creator.last_name}`
     : "";
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [newName, setNewName] = useState({ name: "" });
 
   return (
     <View style={styles.container}>
+      {/* IMAGE & TITLE */}
       <View style={styles.header}>
         <View style={styles.image}>
           <MaterialCommunityIcons
@@ -34,23 +44,42 @@ const ChatDetailsUi = ({ chatDetails, isUserCreator, edit, myId }) => {
         </View>
         {
           // Check if title is being edited, if so show supply input to edit
-          (edit && (
+          edit ? (
             <View style={styles.edit}>
               <Input
                 placeholder={chatDetails.name}
                 defaultValue={chatDetails.name}
+                onChangeText={(value) =>
+                  setNewName({ ...newName, name: value })
+                }
+                style={styles.input}
               />
               <MaterialCommunityIcons
                 name="check-circle"
                 size={30}
-                color={Colours.blue}
-                onPress={() => setEdit(false)}
+                color={
+                  // check new name is not empty and is not the same as default value
+                  newName.name && newName.name !== chatDetails.name
+                    ? Colours.blue
+                    : // gray out the button if so...
+                      "gray"
+                }
+                onPress={() => {
+                  // check new name is not empty and is not the same as default value
+                  if (newName.name && newName.name !== chatDetails.name) {
+                    setEdit(!edit);
+                    newChatName(newName);
+                  }
+                }}
               />
             </View>
-          )) || <Text style={styles.title}>{chatDetails.name}</Text>
+          ) : (
+            <Text style={styles.title}>{chatDetails.name}</Text>
+          )
         }
       </View>
 
+      {/* MEMBERS SECTION */}
       <View style={styles.members}>
         <Title title={"Members"} size={18} />
 
@@ -83,6 +112,7 @@ const ChatDetailsUi = ({ chatDetails, isUserCreator, edit, myId }) => {
         />
       </View>
 
+      {/* CREATOR */}
       <Text style={styles.creator}>
         Created by: {isUserCreator() ? "You" : chatCreator}
       </Text>
@@ -137,5 +167,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 5,
+  },
+  input: {
+    padding: 10,
+    width: "50%",
   },
 });

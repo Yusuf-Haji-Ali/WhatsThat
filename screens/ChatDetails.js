@@ -17,30 +17,38 @@ const ChatDetails = () => {
   const [myId, setMyId] = useState("");
   const [edit, setEdit] = useState(false);
 
+  Navigation.setOptions({
+    headerShown: true,
+    headerRight: () =>
+      !edit ? (
+        <MaterialCommunityIcons
+          name="pencil"
+          size={20}
+          style={{ marginRight: 5 }}
+          color="white"
+          onPress={() => {
+            setEdit(!edit);
+          }}
+        />
+      ) : (
+        <MaterialCommunityIcons
+          name={"cancel"}
+          size={24}
+          color={"white"}
+          style={{ marginRight: 5 }}
+          onPress={() => setEdit(!edit)}
+        />
+      ),
+  });
+
   useFocusEffect(
     useCallback(() => {
-      Navigation.setOptions({
-        headerShown: true,
-        headerRight: () =>
-          isUserCreator() && (
-            <MaterialCommunityIcons
-              name="pencil"
-              size={20}
-              style={{ marginRight: 5 }}
-              color="white"
-              onPress={() => {
-                setEdit(!edit);
-              }}
-            />
-          ),
-      });
       getChatDetails();
     }, [])
   );
 
+  // Hit single chat details endpoint
   const getChatDetails = async () => {
-    // Hit single chat details endpoint
-
     setMyId(JSON.parse(await AsyncStorage.getItem("@user_id")));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
@@ -60,6 +68,27 @@ const ChatDetails = () => {
       });
   };
 
+  // Hit update chat info endpoint
+  const newChatName = async (newName) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    // PATCH send new name to update chat info endpoint
+    await axios
+      .patch(`http://localhost:3333/api/1.0.0/chat/${chatId}`, newName, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Updating Chat...`);
+        // rerender page
+        getChatDetails();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
   // Check if current user's id matches creator of the chat
   const isUserCreator = () => {
     return chatDetails ? chatDetails.creator.user_id === myId : false;
@@ -70,7 +99,9 @@ const ChatDetails = () => {
       chatDetails={chatDetails}
       isUserCreator={isUserCreator}
       edit={edit}
+      setEdit={setEdit}
       myId={myId}
+      newChatName={newChatName}
     />
   );
 };
