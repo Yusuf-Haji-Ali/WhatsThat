@@ -5,9 +5,13 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useEffect, useState } from "react";
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/native";
+import { useCallback, useState } from "react";
 import axios from "axios";
-import { useRoute, useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -20,33 +24,37 @@ const ChatScreen = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
 
-  useEffect(() => {
-    Navigation.setOptions({
-      title: Route.params.name,
-      headerShown: true,
-      headerRight: () => (
-        <MaterialIcons
-          name="menu-open"
-          size={24}
-          color="white"
-          style={{ marginRight: 5 }}
-          onPress={() =>
-            Navigation.navigate("Chat Details", {
-              // pass Chat ID into route for chat details
-              chatId: chatId,
-            })
-          }
-        />
-      ),
-    });
-    getMessages();
-  }, [Route.params.name, messageData]);
+  useFocusEffect(
+    useCallback(() => {
+      getChatData();
+
+      Navigation.setOptions({
+        title: chatName || Route.params.name,
+        headerShown: true,
+        headerRight: () => (
+          <MaterialIcons
+            name="menu-open"
+            size={24}
+            color="white"
+            style={{ marginRight: 5 }}
+            onPress={() =>
+              Navigation.navigate("Chat Details", {
+                // pass Chat ID into route for chat details
+                chatId: chatId,
+              })
+            }
+          />
+        ),
+      });
+    }, [])
+  );
 
   const chatId = Route.params.id;
+  const [chatName, setChatName] = useState("");
   const [messageData, setMessageData] = useState();
   const [userId, setUserId] = useState();
 
-  async function getMessages() {
+  const getChatData = async () => {
     setUserId(JSON.parse(await AsyncStorage.getItem("@user_id")));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
     // request data from get chat by id endpoint
@@ -57,13 +65,14 @@ const ChatScreen = () => {
         },
       })
       .then((response) => {
-        console.log(`Status: ${response.status} ~ Loading Chat messages...`);
+        console.log(`Status: ${response.status} ~ Loading Chat Screen...`);
         setMessageData(response.data.messages);
+        setChatName(response.data.name);
       })
       .catch((error) => {
         console.log(error.response.data);
       });
-  }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -80,7 +89,7 @@ const ChatScreen = () => {
           style={styles.list}
           inverted
         />
-        <InputMessage chatId={chatId} getMessages={getMessages} />
+        <InputMessage chatId={chatId} getChatData={getChatData} />
       </ImageBackground>
     </KeyboardAvoidingView>
   );

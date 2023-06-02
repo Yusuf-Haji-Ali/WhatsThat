@@ -8,6 +8,7 @@ const Input = ({
   error,
   password,
   label,
+  inputMessage,
   onFocus = () => {},
   ...props
 }) => {
@@ -23,10 +24,12 @@ const Input = ({
           styles.inputWrapper,
           {
             borderColor: error ? "red" : isFocused ? Colours.blue : "#E8E8E8",
+            padding: inputMessage ? 10 : 13,
           },
         ]}
       >
         <Icon name={iconName} size={22} color={Colours.blue} />
+
         <TextInput
           style={styles.input}
           {...props}
@@ -75,13 +78,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#E8E8E8",
     borderRadius: 5,
-    paddingHorizontal: 10,
     borderWidth: 1,
   },
   input: {
-    padding: 13,
     flex: 1,
     color: Colours.blue,
+    paddingHorizontal: 10,
   },
   error: {
     color: "red",

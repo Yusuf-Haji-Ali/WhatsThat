@@ -4,7 +4,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -56,7 +55,7 @@ const ChatDetailsUi = ({
               />
               <MaterialCommunityIcons
                 name="check-circle"
-                size={30}
+                size={36}
                 color={
                   // check new name is not empty and is not the same as default value
                   newName.name && newName.name !== chatDetails.name
@@ -136,6 +135,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
+    marginBottom: 5,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    padding: 10,
-    width: "50%",
+    width: "70%",
   },
 });

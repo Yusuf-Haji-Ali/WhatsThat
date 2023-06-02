@@ -8,7 +8,7 @@ import axios from "axios";
 import Colours from "../Reusable/colours";
 import Input from "../Reusable/input";
 
-const InputMessage = ({ chatId, getMessages }) => {
+const InputMessage = ({ chatId, getChatData }) => {
   const [message, setMessage] = useState({ message: "" });
 
   const sendMessage = async () => {
@@ -28,7 +28,7 @@ const InputMessage = ({ chatId, getMessages }) => {
         // once message is sent... empty message input box
         setMessage({ ...message, message: "" });
         // Rerender chatscreen
-        getMessages();
+        getChatData();
       })
       .catch((error) => {
         console.log(
@@ -45,6 +45,7 @@ const InputMessage = ({ chatId, getMessages }) => {
         <View style={styles.inputWrapper}>
           <Input
             style={styles.input}
+            inputMessage
             placeholder={"Type your message"}
             onChangeText={(value) => setMessage({ ...message, message: value })}
             defaultValue={message.message}
@@ -82,7 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    padding: 10,
     flex: 1,
   },
   send: {
@@ -90,6 +90,5 @@ const styles = StyleSheet.create({
     color: Colours.light,
     padding: 7,
     borderRadius: 10,
-    overflow: "hidden",
   },
 });

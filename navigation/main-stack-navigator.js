@@ -37,7 +37,7 @@ const StackNavigator = ({ initialRoute }) => {
         >
           <Stack.Screen name="Home" component={MainTabNavigator} />
           <Stack.Screen name="Registration" component={FormNavigator} />
-          <Stack.Screen name="ChatScreen" component={ChatScreen} />
+          <Stack.Screen name="Chat Screen" component={ChatScreen} />
           <Stack.Screen name="Edit Profile" component={EditProfile} />
           <Stack.Screen name="Blocked Users" component={BlockedUsers} />
           <Stack.Screen name="Contact Details" component={ContactDetails} />

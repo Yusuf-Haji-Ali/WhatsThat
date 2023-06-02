@@ -22,7 +22,7 @@ const ChatListItem = ({ chat }) => {
     <Pressable
       style={styles.container}
       onPress={() => {
-        Navigation.navigate("ChatScreen", {
+        Navigation.navigate("Chat Screen", {
           id: chat.chat_id,
           name: chat.name,
         });

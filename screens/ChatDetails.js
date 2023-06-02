@@ -102,6 +102,7 @@ const ChatDetails = () => {
       setEdit={setEdit}
       myId={myId}
       newChatName={newChatName}
+      getChatDetails={getChatDetails}
     />
   );
 };
