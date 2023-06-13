@@ -6,6 +6,7 @@ import axios from "axios";
 import Input from "../components/Reusable/input";
 import Button from "../components/Reusable/button";
 import ContactListItem from "../components/Contacts/contact-list-item";
+import Colours from "../components/Reusable/colours";
 
 const Search = () => {
   // default search in -> "all" / offset -> 0
@@ -50,7 +51,12 @@ const Search = () => {
       <View style={styles.searchIn}>
         <Button
           title={"Contacts"}
-          extraButtonStyle={{ width: "45%" }}
+          extraButtonStyle={
+            searchIn === "contacts" ? styles.buttonClicked : styles.button
+          }
+          extraTextStyle={{
+            color: searchIn === "contacts" ? Colours.blue : "white",
+          }}
           onPress={() => {
             setSearchIn("contacts");
             searchFor("", "contacts", offset);
@@ -58,7 +64,12 @@ const Search = () => {
         />
         <Button
           title={"All"}
-          extraButtonStyle={{ width: "45%" }}
+          extraButtonStyle={
+            searchIn === "all" ? styles.buttonClicked : styles.button
+          }
+          extraTextStyle={{
+            color: searchIn === "all" ? Colours.blue : "white",
+          }}
           onPress={() => {
             setSearchIn("all");
             searchFor("", "all", offset);
@@ -89,5 +100,15 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly",
+  },
+  button: {
+    width: "45%",
+  },
+  buttonClicked: {
+    width: "45%",
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: Colours.blue,
+    color: Colours.blue,
   },
 });
