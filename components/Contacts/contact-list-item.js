@@ -8,6 +8,7 @@ const ContactListItem = ({
   contact,
   contactsPage,
   searchPage,
+  blockedPage,
   isContact,
   isBlocked,
   myId,
@@ -32,8 +33,8 @@ const ContactListItem = ({
       <TouchableOpacity
         style={styles.contact}
         onPress={() => {
-          // only excute from contacts or search pages
-          if (contactsPage || searchPage) {
+          // only excute from contacts, search or blocked pages
+          if (contactsPage || searchPage || blockedPage) {
             Navigation.navigate("Contact Details", {
               user_id: contact.user_id,
               first_name: contact.first_name || contact.given_name,

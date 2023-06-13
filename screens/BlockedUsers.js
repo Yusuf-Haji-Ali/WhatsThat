@@ -1,24 +1,26 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoContactsImage from "../assets/images/no_contacts.png";
 // Components
 import ContactListItem from "../components/Contacts/contact-list-item";
 import EmptyTemplate from "../components/Reusable/empty-template";
-import { useNavigation } from "@react-navigation/native";
 
 const BlockedUsers = () => {
   const Navigation = useNavigation();
-  const [blockedUsers, setBlockedUsers] = useState();
+  const [blockedUsers, setBlockedUsers] = useState("");
 
-  useEffect(() => {
-    Navigation.setOptions({
-      headerShown: true,
-    });
+  Navigation.setOptions({
+    headerShown: true,
+  });
 
-    getBlockedUser();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getBlockedUser();
+    }, [])
+  );
 
   const getBlockedUser = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
@@ -35,6 +37,7 @@ const BlockedUsers = () => {
           console.log(`Status: ${response.status} ~ Getting Blocked Users...`);
           setBlockedUsers(response.data);
         } else {
+          setBlockedUsers("");
           console.log("No Blocked Users...");
         }
       })
@@ -50,7 +53,7 @@ const BlockedUsers = () => {
       <FlatList
         data={blockedUsers}
         renderItem={({ item }) => (
-          <ContactListItem contact={item} isBlocked={true} />
+          <ContactListItem contact={item} isBlocked blockedPage />
         )}
       />
     </View>

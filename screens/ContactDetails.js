@@ -12,7 +12,7 @@ const ContactDetails = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
   const [isContact, setIsContact] = useState(Route.params.isContact);
-  const [isBlocked, setIsBlocked] = useState(Route.params.isBlocked);
+  const isBlocked = Route.params.isBlocked;
   const user_id = Route.params.user_id;
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ContactDetails = () => {
         console.log(
           `Status: ${error.response.status} ~ ${error.response.data}`
         );
-        Alert.alert("Error", error.response.data);
+        Alert.alert("Add Contact Error", error.response.data);
       });
   };
 
@@ -57,7 +57,8 @@ const ContactDetails = () => {
       })
       .then((response) => {
         console.log(`Status: ${response.status} ~ Deleting user...`);
-        setIsContact(!isContact);
+        // Go back to previous screen
+        Navigation.goBack();
       })
       .catch((error) => {
         console.log(
@@ -80,13 +81,14 @@ const ContactDetails = () => {
       })
       .then((response) => {
         console.log(`Status: ${response.status} ~ Blocking user...`);
-        setIsBlocked(!isBlocked);
+        // Go back to previous screen
+        Navigation.goBack();
       })
       .catch((error) => {
         console.log(
           `Status: ${error.response.status} ~ ${error.response.data}`
         );
-        Alert.alert("Error", error.response.data);
+        Alert.alert("Block User Error", error.response.data);
       });
   };
 
@@ -102,14 +104,15 @@ const ContactDetails = () => {
         },
       })
       .then((response) => {
-        console.log(`Status: ${response.status} ~ Blocking user...`);
-        setIsBlocked(!isBlocked);
+        console.log(`Status: ${response.status} ~ Unblocking user...`);
+        // Go back to previous screen
+        Navigation.goBack();
       })
       .catch((error) => {
         console.log(
           `Status: ${error.response.status} ~ ${error.response.data}`
         );
-        Alert.alert("Error", error.response.data);
+        Alert.alert("Unblock User Error", error.response.data);
       });
   };
 
@@ -122,9 +125,9 @@ const ContactDetails = () => {
       />
       <View style={styles.options}>
         {
-          // Check if the user is a contact
-          isContact ? (
-            // if so render the options of delete and block user
+          // Check if the user is a contact and not blocked
+          isContact && !isBlocked ? (
+            // if so render the options to delete/block user
             <>
               <ProfileOption
                 iconName={"account-remove"}
@@ -150,21 +153,33 @@ const ContactDetails = () => {
                 }}
               />
               <View style={styles.divider} />
-
               <ProfileOption
+                // If the user is not blocked give option to block
                 iconName={"account-cancel"}
                 optionText={isBlocked ? "Unblock Contact" : "Block Contact"}
                 optionColor={"gray"}
                 onPress={() => {
-                  // If the user is not blocked then call block function
-                  blockUser(user_id);
-                  // Else Call unblock function
+                  Alert.alert(
+                    "Block User",
+                    "Are you sure you want to block this user?",
+                    [
+                      // cancel
+                      {
+                        text: "cancel",
+                      },
+                      // Delete user
+                      {
+                        text: "block",
+                        style: "destructive",
+                        onPress: () => blockUser(user_id),
+                      },
+                    ]
+                  );
                 }}
               />
             </>
-          ) : // otherwise check if the user is blocked
-          isBlocked ? (
-            // if so show option to unblock
+          ) : isBlocked ? (
+            //check if the user is blocked...if so show option to unblock
             <ProfileOption
               iconName={"account-plus"}
               optionText={"Unblock User"}
@@ -175,7 +190,7 @@ const ContactDetails = () => {
               }}
             />
           ) : (
-            // else show button to add
+            // else show option to add user
             <ProfileOption
               iconName={"account-plus"}
               optionText={"Add Contact"}
