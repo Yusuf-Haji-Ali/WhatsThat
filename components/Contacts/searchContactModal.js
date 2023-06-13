@@ -1,32 +1,104 @@
-import { Text, Modal, SafeAreaView, StyleSheet, Alert } from "react-native";
-import React from "react";
+import {
+  Text,
+  Modal,
+  SafeAreaView,
+  StyleSheet,
+  View,
+  FlatList,
+} from "react-native";
+import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Search from "../../screens/Search";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+// Components
+import Input from "../Reusable/input";
 import Colours from "../Reusable/colours";
+import ContactListItem from "../Contacts/contact-list-item";
 
-const SearchContactModal = ({ modalVisible, setModalVisible }) => {
+const SearchContactModal = ({ modalVisible, setModalVisible, chatId }) => {
+  const searchIn = "contacts";
+  const [offset, setOffset] = useState(0);
+  const [searchResults, setSearchResults] = useState("");
+  const isContact = searchIn === "contacts";
+
+  // SEARCH FOR CONTACTS
+  const searchFor = async (searchValue, searchIn, offset) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    await axios
+      .get(
+        `http://localhost:3333/api/1.0.0/search?q=${searchValue}&search_in=${searchIn}&limit=20&offset=${offset}`,
+        {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(
+          `Status: ${response.status} ~ Searching: ${searchValue} ~ In: ${searchIn}`
+        );
+        setSearchResults(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
+
+  const addToChat = async (user_id) => {
+    // Session token for authorization
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/chat/${chatId}/user/${user_id}`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Adding user to chat...`);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
+
   return (
-    <>
-      <Modal
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setVisible(!modalVisible);
-        }}
-      >
-        <SafeAreaView style={styles.container}>
-          <MaterialCommunityIcons
-            name="close"
-            size={30}
-            style={styles.close}
-            onPress={() => setModalVisible(!modalVisible)}
+    <Modal animationType="slide" visible={modalVisible}>
+      <SafeAreaView style={styles.container}>
+        <MaterialCommunityIcons
+          name="close"
+          size={30}
+          style={styles.close}
+          onPress={() => setModalVisible(!modalVisible)}
+        />
+
+        <Text style={styles.modalText}>Search From Contacts:</Text>
+
+        <View style={styles.search}>
+          <Input
+            iconName={"account-search-outline"}
+            placeholder={"Who are you looking for?"}
+            onChangeText={(value) => searchFor(value, searchIn, offset)}
           />
-          <Text style={styles.modalText}>Enter User to add to chat:</Text>
-          <Search />
-        </SafeAreaView>
-      </Modal>
-    </>
+
+          <FlatList
+            data={searchResults}
+            renderItem={({ item }) => (
+              <ContactListItem
+                contact={item}
+                isContact={isContact}
+                addToChat={addToChat}
+              />
+            )}
+          />
+        </View>
+      </SafeAreaView>
+    </Modal>
   );
 };
 
@@ -45,5 +117,11 @@ const styles = StyleSheet.create({
   modalText: {
     marginTop: 15,
     textAlign: "center",
+  },
+  search: {
+    flex: 1,
+    paddingTop: 24,
+    paddingHorizontal: 24,
+    backgroundColor: "white",
   },
 });

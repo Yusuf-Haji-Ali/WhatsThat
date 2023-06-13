@@ -16,6 +16,7 @@ import Title from "../Reusable/title";
 import SearchContactModal from "../Contacts/searchContactModal";
 
 const ChatDetailsUi = ({
+  chatId,
   chatDetails,
   isUserCreator,
   edit,
@@ -98,6 +99,7 @@ const ChatDetailsUi = ({
           <SearchContactModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            chatId={chatId}
           />
         </TouchableOpacity>
 
@@ -106,7 +108,12 @@ const ChatDetailsUi = ({
           renderItem={({ item }) => (
             // Members are contacts by default pass in contact true
             // By default you are a member of the chat
-            <ContactListItem contact={item} isContact={true} myId={myId} />
+            <ContactListItem
+              contact={item}
+              isContact
+              myId={myId}
+              removeFromChat={removeFromChat}
+            />
           )}
         />
       </View>

@@ -9,7 +9,7 @@ import ContactListItem from "../components/Contacts/contact-list-item";
 import EmptyTemplate from "../components/Reusable/empty-template";
 
 const Contacts = () => {
-  const [contacts, setContacts] = useState();
+  const [contacts, setContacts] = useState("");
   const Navigation = useNavigation();
 
   useFocusEffect(
@@ -33,6 +33,7 @@ const Contacts = () => {
           console.log(`Status: ${response.status} ~ Getting contacts...`);
           setContacts(response.data);
         } else {
+          setContacts("");
           console.log("No Contacts... :(");
         }
       })
@@ -48,7 +49,7 @@ const Contacts = () => {
       <FlatList
         data={contacts}
         renderItem={({ item }) => (
-          <ContactListItem contact={item} isContact={true} />
+          <ContactListItem contact={item} isContact={true} contactsPage />
         )}
       />
     </View>
@@ -58,7 +59,7 @@ const Contacts = () => {
       image={NoContactsImage}
       text={"You have no contacts :("}
       buttonTitle={"Add new contact"}
-      onPressFunction={() => {
+      onPress={() => {
         console.log("Navigating to search...");
         Navigation.navigate("Search");
       }}

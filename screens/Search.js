@@ -28,7 +28,7 @@ const Search = () => {
       )
       .then((response) => {
         console.log(
-          `Status: ${response.status} ~ Searching: ${searchValue} ~ In: ${searchIn}`
+          `Status: ${response.status} ~ Searching... ~ In: ${searchIn}`
         );
         setSearchResults(response.data);
       })
@@ -46,24 +46,30 @@ const Search = () => {
         placeholder={"Who are you looking for?"}
         onChangeText={(value) => searchFor(value, searchIn, offset)}
       />
+
       <View style={styles.searchIn}>
         <Button
           title={"Contacts"}
           extraButtonStyle={{ width: "45%" }}
           onPress={() => {
             setSearchIn("contacts");
+            searchFor("", "contacts", offset);
           }}
         />
         <Button
           title={"All"}
           extraButtonStyle={{ width: "45%" }}
-          onPress={() => setSearchIn("all")}
+          onPress={() => {
+            setSearchIn("all");
+            searchFor("", "all", offset);
+          }}
         />
       </View>
+
       <FlatList
         data={searchResults}
         renderItem={({ item }) => (
-          <ContactListItem contact={item} isContact={isContact} />
+          <ContactListItem contact={item} isContact={isContact} searchPage />
         )}
       />
     </View>

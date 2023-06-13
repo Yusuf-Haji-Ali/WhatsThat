@@ -96,6 +96,7 @@ const ChatDetails = () => {
 
   return (
     <ChatDetailsUi
+      chatId={chatId}
       chatDetails={chatDetails}
       isUserCreator={isUserCreator}
       edit={edit}

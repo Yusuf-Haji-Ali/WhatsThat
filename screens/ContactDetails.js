@@ -1,17 +1,12 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 // Components
 import ProfileDetails from "../components/Profile/profile-details";
 import ProfileOption from "../components/Profile/profile-option";
 import Colours from "../components/Reusable/colours";
-// Contact requests to API
-import {
-  addUser,
-  deleteUser,
-  blockUser,
-  unblockUser,
-} from "../components/Contacts/contact-requests";
 
 const ContactDetails = () => {
   const Route = useRoute();
@@ -25,6 +20,98 @@ const ContactDetails = () => {
       headerShown: true,
     });
   }, []);
+
+  // ADD USER
+  const addUser = async (user_id) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
+    // POST user details to be added as contact
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/contact`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Adding user...`);
+        setIsContact(!isContact);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+        Alert.alert("Error", error.response.data);
+      });
+  };
+
+  // DELETE USER
+  const deleteUser = async (user_id) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
+    // DELETE request to contact enpoint with user details
+    await axios
+      .delete(`http://localhost:3333/api/1.0.0/user/${user_id}/contact`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Deleting user...`);
+        setIsContact(!isContact);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+        Alert.alert("Error", error.response.data);
+      });
+  };
+
+  // BLOCK USER
+  const blockUser = async (user_id) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
+    // POST user details to be blocked
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/block`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Blocking user...`);
+        setIsBlocked(!isBlocked);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+        Alert.alert("Error", error.response.data);
+      });
+  };
+
+  // UNBLOCK USER
+  const unblockUser = async (user_id) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
+    // DELETE request to block endpoint with user details
+    await axios
+      .delete(`http://localhost:3333/api/1.0.0/user/${user_id}/block`, {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Blocking user...`);
+        setIsBlocked(!isBlocked);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+        Alert.alert("Error", error.response.data);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -58,7 +145,6 @@ const ContactDetails = () => {
                 onPress={() => {
                   // If the user is not blocked then call block function
                   blockUser(user_id);
-                  console.log("Block contact");
                   // Else Call unblock function
                 }}
               />
@@ -71,8 +157,7 @@ const ContactDetails = () => {
               optionText={"Unblock User"}
               optionColor={Colours.blue}
               onPress={() => {
-                // Add user
-                console.log("unblock contact");
+                // unblock user
                 unblockUser(user_id);
               }}
             />
@@ -84,7 +169,6 @@ const ContactDetails = () => {
               optionColor={Colours.blue}
               onPress={() => {
                 // Add user
-                console.log("Add contact");
                 addUser(user_id);
               }}
             />

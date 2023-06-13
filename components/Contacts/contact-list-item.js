@@ -4,7 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const ContactListItem = ({ contact, isContact, isBlocked, myId }) => {
+const ContactListItem = ({
+  contact,
+  contactsPage,
+  searchPage,
+  isContact,
+  isBlocked,
+  myId,
+  addToChat,
+  removeFromChat,
+}) => {
   const Navigation = useNavigation();
 
   return contact ? (
@@ -22,16 +31,18 @@ const ContactListItem = ({ contact, isContact, isBlocked, myId }) => {
       // Otherwise Show contact
       <TouchableOpacity
         style={styles.contact}
-        onPress={() =>
-          Navigation.navigate("Contact Details", {
-            user_id: contact.user_id,
-            first_name: contact.first_name || contact.given_name,
-            last_name: contact.last_name || contact.family_name,
-            email: contact.email,
-            isContact: isContact,
-            isBlocked: isBlocked,
-          })
-        }
+        onPress={() => {
+          if (contactsPage || searchPage) {
+            Navigation.navigate("Contact Details", {
+              user_id: contact.user_id,
+              first_name: contact.first_name || contact.given_name,
+              last_name: contact.last_name || contact.family_name,
+              email: contact.email,
+              isContact: isContact,
+              isBlocked: isBlocked,
+            });
+          }
+        }}
       >
         <View style={styles.image}>
           <Text style={styles.imageText}>
@@ -50,6 +61,29 @@ const ContactListItem = ({ contact, isContact, isBlocked, myId }) => {
             {contact.email}
           </Text>
         </View>
+
+        <>
+          {addToChat && (
+            <MaterialCommunityIcons
+              name={"account-plus"}
+              color={Colours.blue}
+              size={22}
+              style={styles.option}
+              onPress={() => {
+                addToChat(contact.user_id);
+              }}
+            />
+          )}
+
+          {removeFromChat && (
+            <MaterialCommunityIcons
+              name={"delete"}
+              color={"red"}
+              size={22}
+              style={styles.option}
+            />
+          )}
+        </>
       </TouchableOpacity>
     )
   ) : (
@@ -92,5 +126,9 @@ const styles = StyleSheet.create({
   email: {
     marginTop: 5,
     fontSize: 12,
+  },
+  option: {
+    position: "absolute",
+    right: 12,
   },
 });
