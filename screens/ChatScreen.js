@@ -23,7 +23,6 @@ import InputMessage from "../components/Chats/input-message";
 const ChatScreen = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
-
   useFocusEffect(
     useCallback(() => {
       getChatData();

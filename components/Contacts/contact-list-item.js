@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
@@ -17,8 +17,8 @@ const ContactListItem = ({
   const Navigation = useNavigation();
 
   return contact ? (
-    //  If the contact id matches your passed in ID show that is you
     contact.user_id === myId ? (
+      //  If the contact id matches your passed in ID show that it is you
       <TouchableOpacity style={styles.contact}>
         <View style={styles.image}>
           <MaterialCommunityIcons name="account" size={24} color={"white"} />
@@ -32,6 +32,7 @@ const ContactListItem = ({
       <TouchableOpacity
         style={styles.contact}
         onPress={() => {
+          // only excute from contacts or search pages
           if (contactsPage || searchPage) {
             Navigation.navigate("Contact Details", {
               user_id: contact.user_id,
@@ -81,6 +82,24 @@ const ContactListItem = ({
               color={"red"}
               size={22}
               style={styles.option}
+              onPress={() => {
+                Alert.alert(
+                  "Remove User",
+                  "Are you sure you want to remove this user?",
+                  [
+                    // cancel
+                    {
+                      text: "cancel",
+                    },
+                    // remove user
+                    {
+                      text: "remove",
+                      style: "destructive",
+                      onPress: () => removeFromChat(contact.user_id),
+                    },
+                  ]
+                );
+              }}
             />
           )}
         </>

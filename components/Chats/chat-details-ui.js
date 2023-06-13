@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Components
@@ -18,6 +20,7 @@ import SearchContactModal from "../Contacts/searchContactModal";
 const ChatDetailsUi = ({
   chatId,
   chatDetails,
+  getChatDetails,
   isUserCreator,
   edit,
   setEdit,
@@ -30,6 +33,34 @@ const ChatDetailsUi = ({
 
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState({ name: "" });
+
+  // REMOVE USER FROM CHAT
+  const removeFromChat = async (user_id) => {
+    // Session token for authorization
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    await axios
+      .delete(
+        `http://localhost:3333/api/1.0.0/chat/${chatId}/user/${user_id}`,
+        {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(
+          `Status: ${response.status} ~ Removing user from the chat...`
+        );
+        // Rerender Chat Details Page
+        getChatDetails();
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
 
   return (
     <View style={styles.container}>

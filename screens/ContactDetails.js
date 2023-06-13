@@ -131,9 +131,22 @@ const ContactDetails = () => {
                 optionText={"Delete Contact"}
                 optionColor={"red"}
                 onPress={() => {
-                  // Delete user
-                  deleteUser(user_id);
-                  console.log("Delete contact");
+                  Alert.alert(
+                    "Delete User",
+                    "Are you sure you want to delete this user?",
+                    [
+                      // cancel
+                      {
+                        text: "cancel",
+                      },
+                      // Delete user
+                      {
+                        text: "delete",
+                        style: "destructive",
+                        onPress: () => deleteUser(user_id),
+                      },
+                    ]
+                  );
                 }}
               />
               <View style={styles.divider} />
