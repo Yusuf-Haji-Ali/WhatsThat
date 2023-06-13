@@ -1,5 +1,6 @@
 import { View, StyleSheet, FlatList } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 // Components
@@ -13,9 +14,15 @@ const Search = () => {
   const [searchIn, setSearchIn] = useState("all");
   const [offset, setOffset] = useState(0);
   const [searchResults, setSearchResults] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const isContact = searchIn === "contacts";
 
-  const searchFor = async (searchValue, searchIn, offset) => {
+  useEffect(() => {
+    // Re-search every time offset, searchIn or searchValue state changes
+    searchFor(searchIn);
+  }, [offset, searchIn, searchValue]);
+
+  const searchFor = async (searchIn) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
     await axios
@@ -29,7 +36,7 @@ const Search = () => {
       )
       .then((response) => {
         console.log(
-          `Status: ${response.status} ~ Searching... ~ In: ${searchIn}`
+          `Status: ${response.status} ~ Searching...  In: ${searchIn}...  Offset: ${offset}`
         );
         setSearchResults(response.data);
       })
@@ -45,7 +52,9 @@ const Search = () => {
       <Input
         iconName={"account-search-outline"}
         placeholder={"Who are you looking for?"}
-        onChangeText={(value) => searchFor(value, searchIn, offset)}
+        onChangeText={(value) => {
+          setSearchValue(value);
+        }}
       />
 
       <View style={styles.searchIn}>
@@ -59,7 +68,8 @@ const Search = () => {
           }}
           onPress={() => {
             setSearchIn("contacts");
-            searchFor("", "contacts", offset);
+            // reset offset
+            setOffset(0);
           }}
         />
         <Button
@@ -72,7 +82,33 @@ const Search = () => {
           }}
           onPress={() => {
             setSearchIn("all");
-            searchFor("", "all", offset);
+            // reset offset
+            setOffset(0);
+          }}
+        />
+      </View>
+
+      <View style={styles.pagination}>
+        <MaterialCommunityIcons
+          name="skip-previous"
+          size={24}
+          color={offset >= 20 ? Colours.blue : "gray"}
+          onPress={() => {
+            if (offset >= 20) {
+              setOffset(offset - 20);
+            }
+          }}
+        />
+
+        <MaterialCommunityIcons
+          name="skip-next"
+          size={24}
+          // if search results reaches 20 contacts give option to go to next page
+          color={searchResults.length >= 20 ? Colours.blue : "gray"}
+          onPress={() => {
+            if (searchResults.length >= 20) {
+              setOffset(offset + 20);
+            }
           }}
         />
       </View>
@@ -110,5 +146,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colours.blue,
     color: Colours.blue,
+  },
+  pagination: {
+    marginBottom: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
   },
 });
