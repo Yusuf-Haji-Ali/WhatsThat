@@ -69,7 +69,7 @@ const SignUp = () => {
       .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
       .then((response) => {
         console.log(`Status: ${response.status} ~ Signing up... `);
-        console.log(`New User created with ID: ${response.data.id}`);
+        console.log(`New User created with ID: ${response.data}`);
         setTimeout(() => {
           setLoading(false);
           Navigation.navigate("Confirmation");

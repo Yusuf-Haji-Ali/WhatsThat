@@ -75,12 +75,11 @@ const Profile = () => {
     //   });
   }
 
-  async function logOut() {
+  const logOut = async () => {
+    setLoading(true);
     await AsyncStorage.removeItem("@session_token");
     await AsyncStorage.removeItem("@user_id");
     await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
-
-    setLoading(true);
     setTimeout(() => {
       setLoading(false);
       Navigation.navigate("Registration");
@@ -88,28 +87,31 @@ const Profile = () => {
 
     // TO BE FINISHED!
 
-    // setLoading(true);
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
-    // let userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
-    // console.log("User Token: ", userToken);
-    // await axios
-    //   .post("http://localhost:3333/api/1.0.0/logout", {
-    //     headers: {
-    //       "X-Authorization": userToken,
-    //     },
-    //   })
-    //   .then(async (response) => {
-    //     console.log(response.data);
-    //     await AsyncStorage.removeItem("@session_token");
-    //     setTimeout(() => {
-    //       setLoading(false);
-    //       Navigation.navigate("Registration");
-    //     }, 1500);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
-  }
+    console.log(`User Token ~ ${userToken}`);
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/logout`, {
+        headers: {
+          accept: "*/*",
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setTimeout(async () => {
+          setLoading(false);
+          Navigation.navigate("Registration");
+          // Reset all logged in user Authentication
+          await AsyncStorage.removeItem("@session_token");
+          await AsyncStorage.removeItem("@user_id");
+          await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
 
   return (
     <>

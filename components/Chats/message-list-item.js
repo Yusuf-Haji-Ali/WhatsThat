@@ -1,14 +1,21 @@
+import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Colours from "../Reusable/colours";
-import * as React from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import moment from "moment";
+// Components
+import MessageOptionModal from "./message-option-modal";
+import Colours from "../Reusable/colours";
 
-const Message = ({ message, myUserId }) => {
+const Message = ({ messageData, myUserId, getChatData, chatId }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   // Check if message is from current logged in user
-  const myMessage = message.author.user_id === myUserId;
+  const myMessage = messageData.author.user_id === myUserId;
 
-  // Format timestamp relatively
-  const relativeTimestamp = moment(message.timestamp).calendar({
+  // FORMAT DATA RELATIVELY
+  const relativeTimestamp = moment(messageData.timestamp).calendar({
     // if same day just display military time
     sameDay: "HH:mm ",
     // otherwise display military time with relative day/date
@@ -17,36 +24,98 @@ const Message = ({ message, myUserId }) => {
     sameElse: "DD/MM/YYYY HH:mm",
   });
 
-  return (
-    <View
-      style={[
-        styles.container,
-        // if it's my message show message on right with blue background, else left and white background
+  // UPDATE MESSAGE
+  const updateMessage = async (message_id, updatedMessage) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    // send updated message data
+    await axios
+      .patch(
+        `http://localhost:3333/api/1.0.0/chat/${chatId}/message/${message_id}`,
+        updatedMessage,
         {
-          backgroundColor: myMessage ? "#4194E1" : "white",
-          alignSelf: myMessage ? "flex-end" : "flex-start",
-        },
-      ]}
-    >
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Updating Message...`);
+        // Then rerender chatscreen
+        getChatData();
+        // Finally close modal
+        setModalVisible(!modalVisible);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
+
+  // DELETE MESSAGE
+  const deleteMessage = async (message_id) => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    // send message data of message to be deleted
+    await axios
+      .delete(
+        `http://localhost:3333/api/1.0.0/chat/${chatId}/message/${message_id}`,
+        {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(`Status: ${response.status} ~ Deleting Message...`);
+        // Then rerender chatscreen
+        getChatData();
+        // Finally close modal
+        setModalVisible(!modalVisible);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
+
+  return (
+    <View style={[styles.container, myMessage && styles.myMessageContainer]}>
       {
         // Only show authors name if it's not my message
         !myMessage && (
           <Text style={styles.author}>
-            {message.author.first_name} {message.author.last_name}
+            {messageData.author.first_name} {messageData.author.last_name}
           </Text>
         )
       }
-      <Text style={styles.message}>{message.message}</Text>
-      <Text
-        style={[
-          styles.timestamp,
-          {
-            color: myMessage ? Colours.lightgray : "gray",
-          },
-        ]}
-      >
+
+      <View style={styles.message}>
+        {
+          // If it's my message display chevron for options
+          myMessage && (
+            <MaterialCommunityIcons
+              name="chevron-down"
+              size={16}
+              style={styles.messageButton}
+              onPress={() => setModalVisible(!modalVisible)}
+            />
+          )
+        }
+        <Text style={styles.messageText}>{messageData.message}</Text>
+      </View>
+
+      <Text style={[styles.timestamp, myMessage && styles.myMessageTimestamp]}>
         {relativeTimestamp}
       </Text>
+
+      <MessageOptionModal
+        messageData={messageData}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        updateMessage={updateMessage}
+        deleteMessage={deleteMessage}
+      />
     </View>
   );
 };
@@ -59,6 +128,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     maxWidth: "80%",
+    backgroundColor: "white",
+    alignSelf: "flex-start",
 
     // Shadows
     shadowColor: "#000",
@@ -70,6 +141,11 @@ const styles = StyleSheet.create({
     shadowRadius: 1.0,
     elevation: 1,
   },
+  myMessageContainer: {
+    // if it's my message show message on right with blue background
+    backgroundColor: "#42A1FF",
+    alignSelf: "flex-end",
+  },
   author: {
     fontWeight: "bold",
     marginBottom: 5,
@@ -77,10 +153,18 @@ const styles = StyleSheet.create({
   message: {
     marginBottom: 5,
   },
+  messageButton: {
+    color: Colours.light,
+    alignSelf: "flex-end",
+  },
   timestamp: {
     alignSelf: "flex-end",
     marginTop: 5,
     fontSize: 10,
     fontWeight: "500",
+    color: "gray",
+  },
+  myMessageTimestamp: {
+    color: Colours.light,
   },
 });

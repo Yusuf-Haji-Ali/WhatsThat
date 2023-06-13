@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    padding: 10,
+    paddingHorizontal: 10,
   },
   modalText: {
     marginBottom: 15,

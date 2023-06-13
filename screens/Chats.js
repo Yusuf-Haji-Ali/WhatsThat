@@ -12,23 +12,11 @@ import ChatListItem from "../components/Chats/chat-list-item";
 import NewChatModal from "../components/Chats/new-chat-modal";
 
 const Chats = () => {
+  const Navigation = useNavigation();
   const [chatData, setChatData] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const Navigation = useNavigation();
-
-  Navigation.setOptions({
-    headerRight: () => (
-      <Ionicons
-        name="create-outline"
-        size={24}
-        color="white"
-        style={{ marginRight: 15 }}
-        onPress={() => setModalVisible(!modalVisible)}
-      />
-    ),
-  });
-
+  // GET CHATS
   const getChats = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
@@ -49,6 +37,7 @@ const Chats = () => {
       });
   };
 
+  // CREATE NEW CHAT
   const createNewChat = async (chatName) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
@@ -71,39 +60,51 @@ const Chats = () => {
       });
   };
 
+  // Chats Tab OnFocus run getChats to render chats
   useFocusEffect(
     useCallback(() => {
       getChats();
+
+      Navigation.setOptions({
+        headerRight: () => (
+          <Ionicons
+            name="create-outline"
+            size={24}
+            color="white"
+            style={{ marginRight: 15 }}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        ),
+      });
     }, [])
   );
 
-  return chatData ? (
+  // Render list of user's chats if it exists...
+  return (
     <View style={styles.container}>
+      <NewChatModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        createChat={createNewChat}
+      />
+
       <FlatList
         data={chatData}
         renderItem={({ item }) => <ChatListItem chat={item} />}
       />
-      <NewChatModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        createChat={createNewChat}
-      />
+
+      {
+        // If the user has no chats yet... render empty template message showing that
+        !chatData && (
+          <EmptyTemplate
+            image={NoChatsImage}
+            text={"You have no chats :("}
+            buttonTitle={"Create new chat"}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        )
+      }
     </View>
-  ) : (
-    // If the user has no chats yet... render empty template message showing that
-    <>
-      <EmptyTemplate
-        image={NoChatsImage}
-        text={"You have no chats :("}
-        buttonTitle={"Create new chat"}
-        onPress={() => setModalVisible(!modalVisible)}
-      />
-      <NewChatModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        createChat={createNewChat}
-      />
-    </>
   );
 };
 

@@ -46,7 +46,7 @@ const ChatScreen = () => {
           />
         ),
       });
-    }, [])
+    }, [getChatData])
   );
 
   const chatId = Route.params.id;
@@ -54,6 +54,7 @@ const ChatScreen = () => {
   const [messageData, setMessageData] = useState();
   const [userId, setUserId] = useState();
 
+  // GET CHAT DATA from chat details endpoint
   const getChatData = async () => {
     setUserId(JSON.parse(await AsyncStorage.getItem("@user_id")));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
@@ -84,7 +85,12 @@ const ChatScreen = () => {
         <FlatList
           data={messageData}
           renderItem={({ item }) => (
-            <Message message={item} myUserId={userId} />
+            <Message
+              messageData={item}
+              myUserId={userId}
+              chatId={chatId}
+              getChatData={getChatData}
+            />
           )}
           style={styles.list}
           inverted
@@ -100,6 +106,7 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   bg: {
     flex: 1,
+    backgroundColor: "whitesmoke",
   },
   list: {
     marginHorizontal: 5,

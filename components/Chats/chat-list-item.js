@@ -41,15 +41,23 @@ const ChatListItem = ({ chat }) => {
           <Text style={styles.chatName} numberOfLines={1}>
             {chat.name}
           </Text>
-          <Text style={styles.timeStamp}>{relativeTimestamp}</Text>
+          <Text style={styles.timeStamp}>
+            {
+              // If timestamp exist render it relatively
+              chat.last_message.timestamp && relativeTimestamp
+            }
+          </Text>
         </View>
 
         {/* Last message: author + message */}
         <Text style={styles.lastMessage} numberOfLines={2}>
           <Text style={styles.author}>
-            {chat.last_message.author
-              ? `${chat.last_message.author.first_name}: `
-              : "..."}
+            {
+              // If there is a last message then render it otherwise render '...'
+              chat.last_message.author
+                ? `${chat.last_message.author.first_name}: `
+                : "..."
+            }
           </Text>
           <Text>{chat.last_message.message}</Text>
         </Text>
