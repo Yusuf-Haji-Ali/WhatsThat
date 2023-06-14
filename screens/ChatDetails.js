@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   useNavigation,
   useRoute,
@@ -17,29 +17,32 @@ const ChatDetails = () => {
   const [myId, setMyId] = useState("");
   const [edit, setEdit] = useState(false);
 
-  Navigation.setOptions({
-    headerShown: true,
-    headerRight: () =>
-      !edit ? (
-        <MaterialCommunityIcons
-          name="pencil"
-          size={20}
-          style={{ marginRight: 5 }}
-          color="white"
-          onPress={() => {
-            setEdit(!edit);
-          }}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          name={"cancel"}
-          size={24}
-          color={"white"}
-          style={{ marginRight: 5 }}
-          onPress={() => setEdit(!edit)}
-        />
-      ),
-  });
+  useEffect(() => {
+    // Option to edit on header...rerenders each time the edit state is changes.
+    Navigation.setOptions({
+      headerShown: true,
+      headerRight: () =>
+        !edit ? (
+          <MaterialCommunityIcons
+            name="pencil"
+            size={20}
+            style={{ marginRight: 5 }}
+            color="white"
+            onPress={() => {
+              setEdit(!edit);
+            }}
+          />
+        ) : (
+          <MaterialCommunityIcons
+            name={"cancel"}
+            size={24}
+            color={"white"}
+            style={{ marginRight: 5 }}
+            onPress={() => setEdit(!edit)}
+          />
+        ),
+    });
+  }, [edit]);
 
   useFocusEffect(
     useCallback(() => {

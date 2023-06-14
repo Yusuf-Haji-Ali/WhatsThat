@@ -73,6 +73,7 @@ const ChatDetailsUi = ({
             color="white"
           />
         </View>
+
         {
           // Check if title is being edited, if so show supply input to edit
           edit ? (
@@ -105,6 +106,7 @@ const ChatDetailsUi = ({
               />
             </View>
           ) : (
+            // If not being edited display chat name
             <Text style={styles.title}>{chatDetails.name}</Text>
           )
         }
@@ -137,8 +139,7 @@ const ChatDetailsUi = ({
         <FlatList
           data={chatDetails.members}
           renderItem={({ item }) => (
-            // Members are contacts by default pass in contact true
-            // By default you are a member of the chat
+            // Members are contacts by default... pass in contact true
             <ContactListItem
               contact={item}
               isContact

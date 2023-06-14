@@ -10,7 +10,7 @@ import {
   useNavigation,
   useFocusEffect,
 } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -23,37 +23,40 @@ import InputMessage from "../components/Chats/input-message";
 const ChatScreen = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
-  useFocusEffect(
-    useCallback(() => {
-      getChatData();
-
-      Navigation.setOptions({
-        title: chatName || Route.params.name,
-        headerShown: true,
-        headerRight: () => (
-          <MaterialIcons
-            name="menu-open"
-            size={24}
-            color="white"
-            style={{ marginRight: 5 }}
-            onPress={() =>
-              Navigation.navigate("Chat Details", {
-                // pass Chat ID into route for chat details
-                chatId: chatId,
-              })
-            }
-          />
-        ),
-      });
-    }, [getChatData])
-  );
 
   const chatId = Route.params.id;
   const [chatName, setChatName] = useState("");
   const [messageData, setMessageData] = useState();
   const [userId, setUserId] = useState();
 
-  // GET CHAT DATA from chat details endpoint
+  useEffect(() => {
+    Navigation.setOptions({
+      title: chatName ? chatName : Route.params.name,
+      headerShown: true,
+      headerRight: () => (
+        <MaterialIcons
+          name="menu-open"
+          size={24}
+          color="white"
+          style={{ marginRight: 5 }}
+          onPress={() =>
+            Navigation.navigate("Chat Details", {
+              // pass Chat ID into route for chat details
+              chatId: chatId,
+            })
+          }
+        />
+      ),
+    });
+  }, [messageData]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getChatData();
+    }, [])
+  );
+
+  // GET CHAT DATA
   const getChatData = async () => {
     setUserId(JSON.parse(await AsyncStorage.getItem("@user_id")));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));

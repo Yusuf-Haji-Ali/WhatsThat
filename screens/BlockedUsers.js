@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,9 +12,11 @@ const BlockedUsers = () => {
   const Navigation = useNavigation();
   const [blockedUsers, setBlockedUsers] = useState("");
 
-  Navigation.setOptions({
-    headerShown: true,
-  });
+  useEffect(() => {
+    Navigation.setOptions({
+      headerShown: true,
+    });
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
