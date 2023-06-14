@@ -19,10 +19,10 @@ const Search = () => {
 
   useEffect(() => {
     // Re-search every time offset, searchIn or searchValue state changes
-    searchFor(searchIn);
+    searchFor();
   }, [offset, searchIn, searchValue]);
 
-  const searchFor = async (searchIn) => {
+  const searchFor = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
     await axios

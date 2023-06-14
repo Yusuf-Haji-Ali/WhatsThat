@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,6 +16,8 @@ const ContactListItem = ({
   removeFromChat,
 }) => {
   const Navigation = useNavigation();
+
+  const [added, setAdded] = useState(false);
 
   return contact ? (
     contact.user_id === myId ? (
@@ -67,12 +69,14 @@ const ContactListItem = ({
         <>
           {addToChat && (
             <MaterialCommunityIcons
-              name={"account-plus"}
-              color={Colours.blue}
+              // if the user is added show checked icon
+              name={added ? "account-check" : "account-plus"}
+              color={added ? "green" : Colours.blue}
               size={22}
               style={styles.option}
               onPress={() => {
                 addToChat(contact.user_id);
+                setAdded(true);
               }}
             />
           )}

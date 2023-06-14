@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { Alert, StyleSheet, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import EditProfileInfo from "../components/Profile/edit-profile-details";
@@ -16,40 +16,40 @@ const EditProfile = () => {
     last_name: "",
     email: "",
   });
-  const [newUserInfo, setNewUserInfo] = useState("");
-  console.log(newUserInfo);
+  const [newUserInfo, setNewUserInfo] = useState({});
+
+  Navigation.setOptions({
+    headerShown: true,
+    headerLeft: () =>
+      editing && (
+        <Text
+          style={styles.headerText}
+          onPress={() => {
+            setEditing(null);
+          }}
+        >
+          Cancel
+        </Text>
+      ),
+    headerRight: () =>
+      editing && (
+        <Text
+          style={styles.headerText}
+          onPress={() => {
+            setEditing(null);
+            if (newUserInfo) {
+              updateUserInfo();
+            }
+          }}
+        >
+          Done
+        </Text>
+      ),
+  });
 
   useEffect(() => {
     getUserInfo();
-    Navigation.setOptions({
-      headerShown: true,
-      headerLeft: () =>
-        editing && (
-          <Text
-            style={styles.headerText}
-            onPress={() => {
-              setEditing(null);
-            }}
-          >
-            Cancel
-          </Text>
-        ),
-      headerRight: () =>
-        editing && (
-          <Text
-            style={styles.headerText}
-            onPress={() => {
-              setEditing(null);
-              if (newUserInfo) {
-                updateUserInfo(newUserInfo);
-              }
-            }}
-          >
-            Done
-          </Text>
-        ),
-    });
-  }, [editing]);
+  }, []);
 
   async function getUserInfo() {
     // Retrieve user authentication details
@@ -76,7 +76,7 @@ const EditProfile = () => {
   }
 
   // HIT update user information endpoint
-  const updateUserInfo = async (newUserInfo) => {
+  const updateUserInfo = async () => {
     const user_id = JSON.parse(await AsyncStorage.getItem("@user_id"));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
@@ -96,6 +96,7 @@ const EditProfile = () => {
       })
       .catch((error) => {
         console.log(error.response.data);
+        Alert.alert("Error", error.response.data);
       });
   };
 
