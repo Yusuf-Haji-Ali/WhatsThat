@@ -8,6 +8,7 @@ const EditProfileInfo = ({
   newUserInfo,
   setNewUserInfo,
   setEditing,
+  setCancel,
 }) => {
   return (
     <View style={styles.container}>
@@ -30,8 +31,9 @@ const EditProfileInfo = ({
             if (value && value !== userInfo.first_name) {
               setEditing(true);
               setNewUserInfo({ ...newUserInfo, first_name: value });
-            } else {
-              setEditing(null);
+            } else if (!value || value === userInfo.first_name) {
+              setEditing(false);
+              setCancel(true);
             }
           }}
         />
@@ -47,8 +49,9 @@ const EditProfileInfo = ({
             if (value && value !== userInfo.last_name) {
               setEditing(true);
               setNewUserInfo({ ...newUserInfo, last_name: value });
-            } else {
-              setEditing(null);
+            } else if (!value || value === userInfo.last_name) {
+              setEditing(false);
+              setCancel(true);
             }
           }}
         />
@@ -58,12 +61,13 @@ const EditProfileInfo = ({
           defaultValue={userInfo.email}
           onChangeText={(value) => {
             // Only show options & add new Info if input is not empty and does not match existing Info
-            value && value !== userInfo.email
-              ? () => {
-                  setEditing(true);
-                  setNewUserInfo({ ...newUserInfo, email: value });
-                }
-              : setEditing(null);
+            if (value && value !== userInfo.email) {
+              setEditing(true);
+              setNewUserInfo({ ...newUserInfo, email: value });
+            } else if (!value || value === userInfo.email) {
+              setEditing(false);
+              setCancel(true);
+            }
           }}
         />
         <Input
@@ -76,7 +80,7 @@ const EditProfileInfo = ({
               setEditing(true);
               setNewUserInfo({ ...newUserInfo, password: value });
             } else {
-              setEditing(null);
+              setEditing(false);
             }
           }}
         />

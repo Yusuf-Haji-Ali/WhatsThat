@@ -56,13 +56,12 @@ const MessageOptionModal = ({
               />
             </View>
           ) : (
-            <>
+            <View style={styles.update}>
               <Text style={styles.modalText}>Update Message:</Text>
               <Input
                 iconName={"update"}
                 placeholder={messageData.message}
                 defaultValue={messageData.message}
-                style={styles.input}
                 onChangeText={(value) => {
                   setUpdatedMessage({ ...updatedMessage, message: value });
                 }}
@@ -97,7 +96,7 @@ const MessageOptionModal = ({
                   }}
                 />
               </View>
-            </>
+            </View>
           )}
         </View>
       </SafeAreaView>
@@ -136,9 +135,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     padding: 5,
   },
-  input: {
+  update: {
     width: "100%",
-    paddingHorizontal: 10,
   },
   modalText: {
     marginBottom: 15,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -49,6 +49,7 @@ const Message = ({ messageData, myUserId, getChatData, chatId }) => {
         console.log(
           `Status: ${error.response.status} ~ ${error.response.data}`
         );
+        Alert.alert("Update Error", error.response.data);
       });
   };
 

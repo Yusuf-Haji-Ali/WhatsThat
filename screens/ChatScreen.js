@@ -4,6 +4,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  View,
 } from "react-native";
 import {
   useRoute,
@@ -48,7 +49,7 @@ const ChatScreen = () => {
         />
       ),
     });
-  }, [messageData]);
+  }, [chatName]);
 
   useFocusEffect(
     useCallback(() => {
@@ -94,7 +95,7 @@ const ChatScreen = () => {
               getChatData={getChatData}
             />
           )}
-          style={styles.list}
+          style={styles.messages}
           inverted
         />
         <InputMessage chatId={chatId} getChatData={getChatData} />
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "whitesmoke",
   },
-  list: {
-    marginHorizontal: 5,
+  messages: {
+    paddingHorizontal: 5,
   },
 });

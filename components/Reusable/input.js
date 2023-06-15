@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Platform } from "react-native";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colours from "../Reusable/colours";
@@ -8,7 +8,6 @@ const Input = ({
   error,
   password,
   label,
-  inputMessage,
   onFocus = () => {},
   ...props
 }) => {
@@ -24,16 +23,16 @@ const Input = ({
           styles.inputWrapper,
           {
             borderColor: error ? "red" : isFocused ? Colours.blue : "#E8E8E8",
-            padding: inputMessage ? 10 : 13,
           },
         ]}
       >
         <Icon name={iconName} size={22} color={Colours.blue} />
 
         <TextInput
-          style={styles.input}
+          style={[styles.input, Platform.OS === "web" && { outline: "none" }]}
           {...props}
           autoCorrect={false}
+          placeholderTextColor={"gray"}
           onFocus={() => {
             onFocus();
             setIsFocused(true);
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   inputLabel: {
-    marginVertical: 5,
+    marginVertical: 7,
     color: "grey",
     fontSize: 14,
   },
@@ -79,6 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8E8E8",
     borderRadius: 5,
     borderWidth: 1,
+    padding: 10,
   },
   input: {
     flex: 1,

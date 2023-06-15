@@ -9,7 +9,8 @@ const EditProfile = () => {
   const Route = useRoute();
   const Navigation = useNavigation();
   // edit options
-  const [editing, setEditing] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [cancel, setCancel] = useState(false);
   // userDetails
   const [userInfo, setUserInfo] = useState({
     first_name: "",
@@ -18,38 +19,38 @@ const EditProfile = () => {
   });
   const [newUserInfo, setNewUserInfo] = useState({});
 
-  Navigation.setOptions({
-    headerShown: true,
-    headerLeft: () =>
-      editing && (
-        <Text
-          style={styles.headerText}
-          onPress={() => {
-            setEditing(null);
-          }}
-        >
-          Cancel
-        </Text>
-      ),
-    headerRight: () =>
-      editing && (
-        <Text
-          style={styles.headerText}
-          onPress={() => {
-            setEditing(null);
-            if (newUserInfo) {
-              updateUserInfo();
-            }
-          }}
-        >
-          Done
-        </Text>
-      ),
-  });
-
   useEffect(() => {
     getUserInfo();
-  }, []);
+
+    Navigation.setOptions({
+      headerShown: true,
+      headerRight: () =>
+        editing ? (
+          <Text
+            style={styles.headerText}
+            onPress={() => {
+              if (newUserInfo) {
+                updateUserInfo();
+                setEditing(false);
+              }
+            }}
+          >
+            Done
+          </Text>
+        ) : (
+          cancel && (
+            <Text
+              style={styles.headerText}
+              onPress={() => {
+                setCancel(false);
+              }}
+            >
+              Cancel
+            </Text>
+          )
+        ),
+    });
+  }, [editing, cancel, newUserInfo]);
 
   async function getUserInfo() {
     // Retrieve user authentication details
@@ -106,6 +107,7 @@ const EditProfile = () => {
       newUserInfo={newUserInfo}
       setNewUserInfo={setNewUserInfo}
       setEditing={setEditing}
+      setCancel={setCancel}
     />
   );
 };

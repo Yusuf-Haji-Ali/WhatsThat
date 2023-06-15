@@ -12,12 +12,13 @@ const ContactListItem = ({
   isContact,
   isBlocked,
   myId,
+  inChat,
   addToChat,
   removeFromChat,
 }) => {
   const Navigation = useNavigation();
 
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState(inChat);
 
   return contact ? (
     contact.user_id === myId ? (
@@ -75,8 +76,25 @@ const ContactListItem = ({
               size={22}
               style={styles.option}
               onPress={() => {
-                addToChat(contact.user_id);
-                setAdded(true);
+                Alert.alert(
+                  "Remove User",
+                  "Are you sure you want to remove this user?",
+                  [
+                    // cancel
+                    {
+                      text: "cancel",
+                    },
+                    // Add user
+                    {
+                      text: "add",
+                      style: "destructive",
+                      onPress: () => {
+                        addToChat(contact.user_id);
+                        setAdded(true);
+                      },
+                    },
+                  ]
+                );
               }}
             />
           )}
