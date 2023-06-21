@@ -107,9 +107,9 @@ const SignIn = () => {
           iconName={"email-outline"}
           placeholder={"Enter your email address"}
           onFocus={() => setErrors({ ...errors, email: null })}
-          onChangeText={(email) => {
-            setLoginDetails({ ...loginDetails, email: email });
-          }}
+          onChangeText={(email) =>
+            setLoginDetails({ ...loginDetails, email: email.toLowerCase() })
+          }
           error={errors.email}
         />
 

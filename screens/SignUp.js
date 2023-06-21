@@ -60,7 +60,7 @@ const SignUp = () => {
     }
   };
 
-  // Signing up...
+  // SIGNING UP...
   const postSignUp = async () => {
     setLoading(true);
 
@@ -69,7 +69,7 @@ const SignUp = () => {
       .post("http://localhost:3333/api/1.0.0/user", signUpDetails)
       .then((response) => {
         console.log(`Status: ${response.status} ~ Signing up... `);
-        console.log(`New User created with ID: ${response.data}`);
+        console.log(`New User created with ID: ${response.data.user_id}`);
         setTimeout(() => {
           setLoading(false);
           Navigation.navigate("Confirmation");
@@ -124,7 +124,7 @@ const SignUp = () => {
           iconName={"email-outline"}
           placeholder={"Enter your email address"}
           onChangeText={(email) =>
-            setSignUpDetails({ ...signUpDetails, email: email })
+            setSignUpDetails({ ...signUpDetails, email: email.toLowerCase() })
           }
           error={errors.email}
           onFocus={() => setErrors({ ...errors, email: null })}

@@ -16,11 +16,12 @@ export default EmptyTemplate;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
+    width: "100%",
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    padding: 75,
+    paddingHorizontal: 50,
   },
   text: {
     fontSize: 18,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: "70%",
+    height: "60%",
     overflow: "visible",
   },
 });
