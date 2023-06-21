@@ -63,7 +63,7 @@ const EditProfileInfo = ({
             // Only show options & add new Info if input is not empty and does not match existing Info
             if (value && value !== userInfo.email) {
               setEditing(true);
-              setNewUserInfo({ ...newUserInfo, email: value });
+              setNewUserInfo({ ...newUserInfo, email: value.toLowerCase() });
             } else if (!value || value === userInfo.email) {
               setEditing(false);
               setCancel(true);

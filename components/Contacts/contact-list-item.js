@@ -22,7 +22,7 @@ const ContactListItem = ({
 
   return contact ? (
     contact.user_id === myId ? (
-      //  If the contact id matches your passed in ID show that it is you
+      //  If the contact id matches your passed in ID, show that it is you
       <TouchableOpacity style={styles.contact}>
         <View style={styles.image}>
           <MaterialCommunityIcons name="account" size={24} color={"white"} />

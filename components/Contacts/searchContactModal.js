@@ -76,13 +76,14 @@ const SearchContactModal = ({ modalVisible, setModalVisible, chatId }) => {
   return (
     <Modal animationType="slide" visible={modalVisible}>
       <SafeAreaView style={styles.container}>
-        <MaterialCommunityIcons
-          name="close"
-          size={30}
-          style={styles.close}
-          onPress={() => setModalVisible(!modalVisible)}
-        />
-
+        <View>
+          <MaterialCommunityIcons
+            name="close"
+            size={30}
+            style={styles.closeButton}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        </View>
         <Text style={styles.modalText}>Search From Contacts:</Text>
 
         <View style={styles.search}>
@@ -141,14 +142,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  close: {
-    alignSelf: "flex-end",
-    marginRight: 15,
+  closeButton: {
+    position: "absolute",
+    right: 5,
     color: Colours.blue,
     fontWeight: "bold",
   },
   modalText: {
-    marginTop: 15,
+    marginTop: 30,
     textAlign: "center",
   },
   search: {

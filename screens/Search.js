@@ -1,5 +1,5 @@
 import { View, StyleSheet, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -8,6 +8,7 @@ import Input from "../components/Reusable/input";
 import Button from "../components/Reusable/button";
 import ContactListItem from "../components/Contacts/contact-list-item";
 import Colours from "../components/Reusable/colours";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Search = () => {
   // default search in -> "all" / offset -> 0
@@ -17,10 +18,12 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const isContact = searchIn === "contacts";
 
-  useEffect(() => {
-    // Re-search every time offset, searchIn or searchValue state changes
-    searchFor();
-  }, [offset, searchIn, searchValue]);
+  useFocusEffect(
+    useCallback(() => {
+      // Re-search every time offset, searchIn or searchValue state changes
+      searchFor();
+    }, [offset, searchIn, searchValue])
+  );
 
   const searchFor = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));

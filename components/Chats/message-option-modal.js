@@ -88,10 +88,7 @@ const MessageOptionModal = ({
                   onPress={() => {
                     if (isMessageUpdated) {
                       // Update Message then chatscreen rerender and modal close within update function
-                      updateMessage(
-                        messageData.message_id,
-                        updatedMessage.message
-                      );
+                      updateMessage(messageData.message_id, updatedMessage);
                     }
                   }}
                 />
@@ -131,8 +128,9 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
+    right: 5,
+    top: 5,
     color: Colours.blue,
-    alignSelf: "flex-end",
     padding: 5,
   },
   update: {

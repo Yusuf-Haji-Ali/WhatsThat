@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +27,7 @@ const ContactDetails = () => {
 
     // POST user details to be added as contact
     await axios
-      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/contact`, {
+      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/contact`, "", {
         headers: {
           "X-Authorization": userToken,
         },
@@ -47,6 +47,7 @@ const ContactDetails = () => {
   // DELETE USER
   const deleteUser = async (user_id) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+    console.log(userToken);
 
     // DELETE request to contact enpoint with user details
     await axios
@@ -71,12 +72,11 @@ const ContactDetails = () => {
   // BLOCK USER
   const blockUser = async (user_id) => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
-
     console.log(userToken);
 
     // POST user details to be blocked
     await axios
-      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/block`, {
+      .post(`http://localhost:3333/api/1.0.0/user/${user_id}/block`, "", {
         headers: {
           "X-Authorization": userToken,
         },
@@ -136,22 +136,22 @@ const ContactDetails = () => {
                 optionText={"Delete Contact"}
                 optionColor={"red"}
                 onPress={() => {
-                  Alert.alert(
-                    "Delete User",
-                    "Are you sure you want to delete this user?",
-                    [
-                      // cancel
-                      {
-                        text: "cancel",
-                      },
-                      // Delete user
-                      {
-                        text: "delete",
-                        style: "destructive",
-                        onPress: () => deleteUser(user_id),
-                      },
-                    ]
-                  );
+                  Platform === "web"
+                    ? alert("Must be using ios or android!")
+                    : Alert.alert(
+                        "Delete User",
+                        "Are you sure you want to delete this user?",
+                        [
+                          {
+                            text: "cancel",
+                          },
+                          {
+                            text: "delete",
+                            style: "destructive",
+                            onPress: () => deleteUser(user_id),
+                          },
+                        ]
+                      );
                 }}
               />
               <View style={styles.divider} />
@@ -160,24 +160,22 @@ const ContactDetails = () => {
                 iconName={"account-cancel"}
                 optionText={isBlocked ? "Unblock Contact" : "Block Contact"}
                 optionColor={"gray"}
-                onPress={() => {
+                onPress={() =>
                   Alert.alert(
                     "Block User",
                     "Are you sure you want to block this user?",
                     [
-                      // cancel
                       {
                         text: "cancel",
                       },
-                      // Delete user
                       {
                         text: "block",
                         style: "destructive",
                         onPress: () => blockUser(user_id),
                       },
                     ]
-                  );
-                }}
+                  )
+                }
               />
             </>
           ) : isBlocked ? (

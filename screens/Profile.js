@@ -77,40 +77,29 @@ const Profile = () => {
 
   const logOut = async () => {
     setLoading(true);
-    await AsyncStorage.removeItem("@session_token");
-    await AsyncStorage.removeItem("@user_id");
-    await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
-    setTimeout(() => {
-      setLoading(false);
-      Navigation.navigate("Registration");
-    }, 1500);
 
-    // TO BE FINISHED!
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
-    // const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
-
-    // console.log(`User Token ~ ${userToken}`);
-    // await axios
-    //   .post(`http://localhost:3333/api/1.0.0/logout`, {
-    //     headers: {
-    //       accept: "*/*",
-    //       "X-Authorization": userToken,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setTimeout(async () => {
-    //       setLoading(false);
-    //       Navigation.navigate("Registration");
-    //       // Reset all logged in user Authentication
-    //       await AsyncStorage.removeItem("@session_token");
-    //       await AsyncStorage.removeItem("@user_id");
-    //       await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
-    //     }, 1500);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
+    await axios
+      .post(`http://localhost:3333/api/1.0.0/logout`, "", {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setTimeout(async () => {
+          setLoading(false);
+          Navigation.navigate("Registration");
+          // Reset all logged in user Authentication
+          await AsyncStorage.removeItem("@session_token");
+          await AsyncStorage.removeItem("@user_id");
+          await AsyncStorage.setItem("@logged_in", JSON.stringify(false));
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   return (
@@ -122,17 +111,11 @@ const Profile = () => {
             firstname={userInfo.first_name}
             lastname={userInfo.last_name}
             email={userInfo.email}
-            addUser={true}
-            deleteUser={true}
             onPress={() => {
-              Navigation.navigate("Edit Profile", {
-                // pass user details as parameters into profile edit
-                firstname: userInfo.first_name,
-                lastname: userInfo.last_name,
-                email: userInfo.email,
-              });
+              Navigation.navigate("Edit Profile");
             }}
           />
+
           <View style={styles.options}>
             <ProfileOption
               optionColor={Colours.blue}
@@ -146,7 +129,9 @@ const Profile = () => {
                 })
               }
             />
+
             <View style={styles.divider} />
+
             <ProfileOption
               optionColor={"gray"}
               optionText={"Blocked Users"}
