@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Alert } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
@@ -12,6 +11,7 @@ import Button from "../components/Reusable/button";
 import TextLink from "../components/Reusable/text-link";
 import Title from "../components/Reusable/title";
 import Loader from "../components/Reusable/loader";
+import AlertModal from "../components/Reusable/alert-modal";
 
 const SignIn = () => {
   const Navigation = useNavigation();
@@ -23,6 +23,10 @@ const SignIn = () => {
   );
 
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
+  const [signInModal, setSignInModal] = useState({
+    visibility: false,
+    message: "Invalid email/password supplied!",
+  });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -86,7 +90,8 @@ const SignIn = () => {
           );
 
           if (error.response.status === 400) {
-            Alert.alert("Error", "Invalid email/password supplied!");
+            // Alert.alert("Error", "Invalid email/password supplied!");
+            setSignInModal({ ...signInModal, visibility: true });
           }
         }, 1500);
       });
@@ -134,7 +139,9 @@ const SignIn = () => {
           onPress={() => Navigation.navigate("Sign Up")}
         />
       </View>
-      <StatusBar style="auto" />
+
+      {/* SIGNIN ALERT MODAL */}
+      <AlertModal modal={signInModal} setModal={setSignInModal} />
     </View>
   );
 };

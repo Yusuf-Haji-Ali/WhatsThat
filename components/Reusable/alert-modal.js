@@ -4,35 +4,33 @@ import React, { useState } from "react";
 import Colours from "../Reusable/colours";
 import Button from "../Reusable/button";
 
-const AlertModal = ({ alertText, alertFunction, alertButtonTitle }) => {
-  const [visible, setVisible] = useState(true);
-
+const AlertModal = ({ modal, setModal, alertFunction }) => {
   return (
-    <Modal animationType="slide" transparent={true} visible={visible}>
+    <Modal animationType="slide" transparent={true} visible={modal.visibility}>
       <SafeAreaView style={styles.container}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>{alertText}</Text>
+          <Text style={styles.modalText}>{modal.message}</Text>
 
           <View style={styles.modalButtons}>
             <Button
-              title={"Cancel"}
+              title={alertFunction ? "Cancel" : "OK"}
               extraButtonStyle={styles.modalButton}
-              onPress={() => {
-                setVisible(false);
-              }}
+              onPress={() => setModal({ ...modal, visibility: false })}
             />
 
-            <Button
-              title={alertButtonTitle}
-              extraButtonStyle={[
-                styles.modalButton,
-                { backgroundColor: "#d0342c" },
-              ]}
-              onPress={() => {
-                setVisible(false);
-                alertFunction();
-              }}
-            />
+            {alertFunction && (
+              <Button
+                title={modal.buttonTitle}
+                extraButtonStyle={[
+                  styles.modalButton,
+                  { backgroundColor: "#d0342c" },
+                ]}
+                onPress={() => {
+                  setModal({ ...modal, visibility: false });
+                  alertFunction();
+                }}
+              />
+            )}
           </View>
         </View>
       </SafeAreaView>

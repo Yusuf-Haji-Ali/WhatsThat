@@ -46,7 +46,7 @@ const InputMessage = ({ chatId, getChatData }) => {
           <Input
             style={styles.input}
             inputMessage
-            placeholder={"Type your message"}
+            placeholder={"Type your message..."}
             onChangeText={(value) => setMessage({ ...message, message: value })}
             defaultValue={message.message}
           />

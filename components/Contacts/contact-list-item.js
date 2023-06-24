@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colours from "../Reusable/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AlertModal from "../Reusable/alert-modal";
 
 const ContactListItem = ({
   contact,
@@ -19,9 +20,20 @@ const ContactListItem = ({
   const Navigation = useNavigation();
 
   const [added, setAdded] = useState(inChat);
+  const [addModal, setAddModal] = useState({
+    visibility: false,
+    message: "Add user to the chat?",
+    buttonTitle: "Add",
+  });
+  const [removeModal, setRemoveModal] = useState({
+    visibility: false,
+    message: "Are you sure you want to remove this user?",
+    buttonTitle: "Remove",
+  });
 
-  return contact ? (
-    contact.user_id === myId ? (
+  return (
+    contact &&
+    (contact.user_id === myId ? (
       //  If the contact id matches your passed in ID, show that it is you
       <TouchableOpacity style={styles.contact}>
         <View style={styles.image}>
@@ -32,7 +44,7 @@ const ContactListItem = ({
         </Text>
       </TouchableOpacity>
     ) : (
-      // Otherwise Show contact
+      // Otherwise display contact
       <TouchableOpacity
         style={styles.contact}
         onPress={() => {
@@ -75,27 +87,7 @@ const ContactListItem = ({
               color={added ? "green" : Colours.blue}
               size={22}
               style={styles.option}
-              onPress={() => {
-                Alert.alert(
-                  "Remove User",
-                  "Are you sure you want to remove this user?",
-                  [
-                    // cancel
-                    {
-                      text: "cancel",
-                    },
-                    // Add user
-                    {
-                      text: "add",
-                      style: "destructive",
-                      onPress: () => {
-                        addToChat(contact.user_id);
-                        setAdded(true);
-                      },
-                    },
-                  ]
-                );
-              }}
+              onPress={() => setAddModal({ ...addModal, visibility: true })}
             />
           )}
 
@@ -105,31 +97,25 @@ const ContactListItem = ({
               color={"red"}
               size={22}
               style={styles.option}
-              onPress={() => {
-                Alert.alert(
-                  "Remove User",
-                  "Are you sure you want to remove this user?",
-                  [
-                    // cancel
-                    {
-                      text: "cancel",
-                    },
-                    // remove user
-                    {
-                      text: "remove",
-                      style: "destructive",
-                      onPress: () => removeFromChat(contact.user_id),
-                    },
-                  ]
-                );
-              }}
+              onPress={() => setRemoveModal(true)}
             />
           )}
         </>
+
+        {/* ADD ALERT MODAL */}
+        <AlertModal
+          modal={addModal}
+          setModal={setAddModal}
+          alertFunction={() => addToChat(contact.user_id)}
+        />
+        {/* REMOVE ALERT MODAL */}
+        <AlertModal
+          modal={removeModal}
+          setModal={setRemoveModal}
+          alertFunction={() => removeFromChat(contact.user_id)}
+        />
       </TouchableOpacity>
-    )
-  ) : (
-    <></>
+    ))
   );
 };
 

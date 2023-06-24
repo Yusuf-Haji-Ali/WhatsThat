@@ -16,15 +16,7 @@ const NewChatModal = ({ modalVisible, setModalVisible, createChat }) => {
 
   return (
     <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setVisible(!modalVisible);
-        }}
-      >
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <SafeAreaView style={styles.container}>
           <View style={styles.modalView}>
             <View style={styles.modalContent}>
