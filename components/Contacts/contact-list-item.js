@@ -1,25 +1,34 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Colours from "../Reusable/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+// Components
+import Colours from "../Reusable/colours";
 import AlertModal from "../Reusable/alert-modal";
 
 const ContactListItem = ({
   contact,
+  myContacts,
+  isBlocked,
+  myId,
+  chatMembers,
+  addToChat,
+  removeFromChat,
   contactsPage,
   searchPage,
   blockedPage,
-  isContact,
-  isBlocked,
-  myId,
-  inChat,
-  addToChat,
-  removeFromChat,
 }) => {
-  const Navigation = useNavigation();
+  // Check the contact is in User's contact list by matching ID
+  const isMyContact =
+    myContacts &&
+    myContacts.some((element) => element.user_id === contact.user_id);
+  // Check if contact is in Chat by matching ID
+  const isInChat =
+    chatMembers &&
+    chatMembers.some((element) => element.user_id === contact.user_id);
 
-  const [added, setAdded] = useState(inChat);
+  const Navigation = useNavigation();
+  const [added, setAdded] = useState(isInChat);
   const [addModal, setAddModal] = useState({
     visibility: false,
     message: "Add user to the chat?",
@@ -31,91 +40,93 @@ const ContactListItem = ({
     buttonTitle: "Remove",
   });
 
-  return (
-    contact &&
-    (contact.user_id === myId ? (
-      //  If the contact id matches your passed in ID, show that it is you
-      <TouchableOpacity style={styles.contact}>
-        <View style={styles.image}>
-          <MaterialCommunityIcons name="account" size={24} color={"white"} />
-        </View>
-        <Text style={styles.name} numberOfLines={1}>
-          You
+  return contact.user_id === myId ? (
+    //  If the contact id matches your passed in ID, show that it is you
+    <TouchableOpacity style={styles.contact}>
+      <View style={styles.image}>
+        <MaterialCommunityIcons name="account" size={24} color={"white"} />
+      </View>
+      <Text style={styles.name} numberOfLines={1}>
+        You
+      </Text>
+    </TouchableOpacity>
+  ) : (
+    // Otherwise display contact
+    <TouchableOpacity
+      style={styles.contact}
+      onPress={() => {
+        // only excute from contacts, search or blocked pages
+        if (contactsPage || searchPage || blockedPage) {
+          Navigation.navigate("Contact Details", {
+            user_id: contact.user_id,
+            first_name: contact.first_name || contact.given_name,
+            last_name: contact.last_name || contact.family_name,
+            email: contact.email,
+            isMyContact: isMyContact,
+            isBlocked: isBlocked,
+          });
+        }
+      }}
+    >
+      <View style={styles.image}>
+        <Text style={styles.imageText}>
+          {contact.first_name ? contact.first_name[0] : contact.given_name[0]}
         </Text>
-      </TouchableOpacity>
-    ) : (
-      // Otherwise display contact
-      <TouchableOpacity
-        style={styles.contact}
-        onPress={() => {
-          // only excute from contacts, search or blocked pages
-          if (contactsPage || searchPage || blockedPage) {
-            Navigation.navigate("Contact Details", {
-              user_id: contact.user_id,
-              first_name: contact.first_name || contact.given_name,
-              last_name: contact.last_name || contact.family_name,
-              email: contact.email,
-              isContact: isContact,
-              isBlocked: isBlocked,
-            });
-          }
+      </View>
+
+      <View style={styles.contactDetails}>
+        <Text style={styles.name} numberOfLines={1}>
+          {/* If first & last name exist from API display that else use given and family name (from search results) */}
+          {contact.first_name || contact.given_name}{" "}
+          {contact.last_name || contact.family_name}{" "}
+        </Text>
+
+        <Text style={styles.email} numberOfLines={1}>
+          {contact.email}
+        </Text>
+      </View>
+
+      <>
+        {addToChat && (
+          <MaterialCommunityIcons
+            // if the user is added show checked icon
+            name={added ? "account-check" : "account-plus"}
+            color={added ? "green" : Colours.blue}
+            size={22}
+            style={styles.option}
+            onPress={() =>
+              !isInChat && setAddModal({ ...addModal, visibility: true })
+            }
+          />
+        )}
+
+        {removeFromChat && (
+          <MaterialCommunityIcons
+            name={"delete"}
+            color={"red"}
+            size={22}
+            style={styles.option}
+            onPress={() => setRemoveModal({ ...removeModal, visibility: true })}
+          />
+        )}
+      </>
+
+      {/* ADD ALERT MODAL */}
+      <AlertModal
+        modal={addModal}
+        setModal={setAddModal}
+        alertFunction={() => {
+          addToChat(contact.user_id);
+          setAdded(true);
         }}
-      >
-        <View style={styles.image}>
-          <Text style={styles.imageText}>
-            {contact.first_name ? contact.first_name[0] : contact.given_name[0]}
-          </Text>
-        </View>
-
-        <View style={styles.contactDetails}>
-          <Text style={styles.name} numberOfLines={1}>
-            {/* If first & last name exist from API display that else use given and family name (from search results) */}
-            {contact.first_name || contact.given_name}{" "}
-            {contact.last_name || contact.family_name}{" "}
-          </Text>
-
-          <Text style={styles.email} numberOfLines={1}>
-            {contact.email}
-          </Text>
-        </View>
-
-        <>
-          {addToChat && (
-            <MaterialCommunityIcons
-              // if the user is added show checked icon
-              name={added ? "account-check" : "account-plus"}
-              color={added ? "green" : Colours.blue}
-              size={22}
-              style={styles.option}
-              onPress={() => setAddModal({ ...addModal, visibility: true })}
-            />
-          )}
-
-          {removeFromChat && (
-            <MaterialCommunityIcons
-              name={"delete"}
-              color={"red"}
-              size={22}
-              style={styles.option}
-              onPress={() => setRemoveModal(true)}
-            />
-          )}
-        </>
-
-        {/* ADD ALERT MODAL */}
-        <AlertModal
-          modal={addModal}
-          setModal={setAddModal}
-          alertFunction={() => addToChat(contact.user_id)}
-        />
-        {/* REMOVE ALERT MODAL */}
-        <AlertModal
-          modal={removeModal}
-          setModal={setRemoveModal}
-          alertFunction={() => removeFromChat(contact.user_id)}
-        />
-      </TouchableOpacity>
-    ))
+      />
+      {/* REMOVE ALERT MODAL */}
+      <AlertModal
+        modal={removeModal}
+        setModal={setRemoveModal}
+        alertFunction={() => removeFromChat(contact.user_id)}
+      />
+    </TouchableOpacity>
   );
 };
 

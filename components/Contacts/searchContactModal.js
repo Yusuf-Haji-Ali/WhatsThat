@@ -15,7 +15,13 @@ import Input from "../Reusable/input";
 import Colours from "../Reusable/colours";
 import ContactListItem from "../Contacts/contact-list-item";
 
-const SearchContactModal = ({ modalVisible, setModalVisible, chatId }) => {
+const SearchContactModal = ({
+  modalVisible,
+  setModalVisible,
+  chatMembers,
+  chatId,
+  getChatDetails,
+}) => {
   const searchIn = "contacts";
   const [offset, setOffset] = useState(0);
   const [searchResults, setSearchResults] = useState("");
@@ -53,18 +59,25 @@ const SearchContactModal = ({ modalVisible, setModalVisible, chatId }) => {
       });
   };
 
+  // ADD USER TO CHAT
   const addToChat = async (user_id) => {
     // Session token for authorization
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
     await axios
-      .post(`http://localhost:3333/api/1.0.0/chat/${chatId}/user/${user_id}`, {
-        headers: {
-          "X-Authorization": userToken,
-        },
-      })
+      .post(
+        `http://localhost:3333/api/1.0.0/chat/${chatId}/user/${user_id}`,
+        "",
+        {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }
+      )
       .then((response) => {
         console.log(`Status: ${response.status} ~ Adding user to chat...`);
+        // Re-render Chat Details Screen
+        getChatDetails();
       })
       .catch((error) => {
         console.log(
@@ -125,7 +138,7 @@ const SearchContactModal = ({ modalVisible, setModalVisible, chatId }) => {
             renderItem={({ item }) => (
               <ContactListItem
                 contact={item}
-                isContact={isContact}
+                chatMembers={chatMembers}
                 addToChat={addToChat}
               />
             )}

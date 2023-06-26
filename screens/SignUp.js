@@ -10,6 +10,7 @@ import TextLink from "../components/Reusable/text-link";
 import Button from "../components/Reusable/button";
 import Title from "../components/Reusable/title";
 import Loader from "../components/Reusable/loader";
+import AlertModal from "../components/Reusable/alert-modal";
 
 const SignUp = () => {
   const Navigation = useNavigation();
@@ -22,6 +23,11 @@ const SignUp = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [signUpModal, setSignUpModal] = useState({
+    visibility: false,
+    message:
+      "Email must be valid and password must be greater than 8 characters (including: one uppercase, one number and one special)",
+  });
   const [signUpDetails, setSignUpDetails] = useState({
     first_name: "",
     last_name: "",
@@ -78,20 +84,20 @@ const SignUp = () => {
       .catch((error) => {
         /* The request was made and the server responded with a status code
           that falls out of the range of 2xx */
-        console.log(
-          `Status: ${error.response.status} ~ ${error.response.status}`
-        );
 
         setTimeout(() => {
           setLoading(false);
-          Alert.alert("Error", error.response.data);
+          console.log(
+            `Status: ${error.response.status} ~ ${error.response.status}`
+          );
+          setSignUpModal({ ...signUpModal, visibility: true });
         }, 1500);
       });
   };
 
   return (
     <>
-      <Loader visible={loading} loadingMessage={"Signing you up"} />
+      <Loader visible={loading} loadingMessage={"Signing up"} />
       <Header subTitle="Hello there!" />
 
       <ScrollView style={styles.form}>
@@ -149,6 +155,8 @@ const SignUp = () => {
           linkText={"Sign in"}
           onPress={() => Navigation.navigate("Sign In")}
         />
+        {/* SIGNUP ALERT MODAL */}
+        <AlertModal modal={signUpModal} setModal={setSignUpModal} />
       </ScrollView>
     </>
   );

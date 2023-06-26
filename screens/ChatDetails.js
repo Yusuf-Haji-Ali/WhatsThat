@@ -217,7 +217,7 @@ const ChatDetails = () => {
             // Members are contacts by default... pass in contact true
             <ContactListItem
               contact={item}
-              isContact
+              myContacts={chatDetails.members}
               myId={myId}
               removeFromChat={removeFromChat}
             />
@@ -233,7 +233,9 @@ const ChatDetails = () => {
       <SearchContactModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        chatMembers={chatDetails.members}
         chatId={chatId}
+        getChatDetails={getChatDetails}
       />
     </View>
   );

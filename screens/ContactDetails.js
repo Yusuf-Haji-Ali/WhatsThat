@@ -22,7 +22,7 @@ const ContactDetails = () => {
     message: "Are you sure you want to block this contact?",
     buttonTitle: "Block",
   });
-  const [isContact, setIsContact] = useState(Route.params.isContact);
+  const [isMyContact, setIsMyContact] = useState(Route.params.isMyContact);
   const isBlocked = Route.params.isBlocked;
   const user_id = Route.params.user_id;
 
@@ -45,7 +45,7 @@ const ContactDetails = () => {
       })
       .then((response) => {
         console.log(`Status: ${response.status} ~ Adding user...`);
-        setIsContact(true);
+        setIsMyContact(true);
       })
       .catch((error) => {
         console.log(
@@ -138,7 +138,7 @@ const ContactDetails = () => {
       />
 
       <View style={styles.options}>
-        {isContact && !isBlocked ? (
+        {isMyContact && !isBlocked ? (
           // Check if the user is a contact and not blocked... if so render the options to delete/block user
           <>
             <ProfileOption

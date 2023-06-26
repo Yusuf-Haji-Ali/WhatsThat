@@ -49,7 +49,7 @@ const Contacts = () => {
       <FlatList
         data={contacts}
         renderItem={({ item }) => (
-          <ContactListItem contact={item} isContact={true} contactsPage />
+          <ContactListItem contact={item} myContacts={contacts} contactsPage />
         )}
       />
     </View>

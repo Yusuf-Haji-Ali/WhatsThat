@@ -16,15 +16,17 @@ const Search = () => {
   const [offset, setOffset] = useState(0);
   const [searchResults, setSearchResults] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const isContact = searchIn === "contacts";
+  const [myContacts, setMyContacts] = useState("");
 
   useFocusEffect(
     useCallback(() => {
+      getContacts();
       // Re-search every time offset, searchIn or searchValue state changes
       searchFor();
     }, [offset, searchIn, searchValue])
   );
 
+  // SEARCH
   const searchFor = async () => {
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
@@ -42,6 +44,33 @@ const Search = () => {
           `Status: ${response.status} ~ Searching...  In: ${searchIn}...  Offset: ${offset}`
         );
         setSearchResults(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
+      });
+  };
+
+  // GET USER'S CONTACTS
+  const getContacts = async () => {
+    const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
+
+    await axios
+      .get("http://localhost:3333/api/1.0.0/contacts", {
+        headers: {
+          "X-Authorization": userToken,
+        },
+      })
+      .then((response) => {
+        // check if user has contacts (if array length of data returned > 0)
+        if (response.data.length > 0) {
+          console.log(`Status: ${response.status} ~ Getting contacts...`);
+          setMyContacts(response.data);
+        } else {
+          setMyContacts("");
+          console.log("No Contacts... :(");
+        }
       })
       .catch((error) => {
         console.log(
@@ -119,7 +148,7 @@ const Search = () => {
       <FlatList
         data={searchResults}
         renderItem={({ item }) => (
-          <ContactListItem contact={item} isContact={isContact} searchPage />
+          <ContactListItem contact={item} myContacts={myContacts} searchPage />
         )}
       />
     </View>

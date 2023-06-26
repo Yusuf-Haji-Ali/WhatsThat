@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
 import axios from "axios";
@@ -88,11 +88,7 @@ const SignIn = () => {
           console.log(
             `Status: ${error.response.status} ~ ${error.response.data}`
           );
-
-          if (error.response.status === 400) {
-            // Alert.alert("Error", "Invalid email/password supplied!");
-            setSignInModal({ ...signInModal, visibility: true });
-          }
+          setSignInModal({ ...signInModal, visibility: true });
         }, 1500);
       });
   };
