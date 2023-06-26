@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Navigators
-import MainTabNavigator from "./navigation/main-tab-navigator";
+import TabNavigator from "./navigation/tab-navigator";
 import FormNavigator from "./navigation/form-navigator";
 // Screens
 import ChatScreen from "./screens/ChatScreen";
@@ -58,7 +58,7 @@ export default function App() {
             headerBackTitleVisible: false,
           }}
         >
-          <Stack.Screen name="Home" component={MainTabNavigator} />
+          <Stack.Screen name="Home" component={TabNavigator} />
           <Stack.Screen name="Registration" component={FormNavigator} />
           <Stack.Screen name="Chat Screen" component={ChatScreen} />
           <Stack.Screen name="Edit Profile" component={EditProfile} />

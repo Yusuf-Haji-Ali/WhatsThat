@@ -4,6 +4,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import EditProfileInfo from "../components/Profile/edit-profile-details";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const EditProfile = () => {
   const Navigation = useNavigation();
@@ -19,6 +21,7 @@ const EditProfile = () => {
   const [newUserInfo, setNewUserInfo] = useState({});
 
   useEffect(() => {
+    AuthenticateUser(Navigation);
     getUserInfo();
 
     Navigation.setOptions({

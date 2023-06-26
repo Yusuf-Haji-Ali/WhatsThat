@@ -10,6 +10,8 @@ import ProfileOption from "../components/Profile/profile-option";
 import Colours from "../components/Reusable/colours";
 import Button from "../components/Reusable/button";
 import Loader from "../components/Reusable/loader";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const Profile = () => {
   const Navigation = useNavigation();
@@ -24,6 +26,7 @@ const Profile = () => {
 
   useFocusEffect(
     useCallback(() => {
+      AuthenticateUser(Navigation);
       getUserDetails();
     }, [])
   );
@@ -87,7 +90,9 @@ const Profile = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(
+          `Status: ${response.status} ${response.data} ~ Logging out...`
+        );
         setTimeout(async () => {
           setLoading(false);
           Navigation.navigate("Registration");
@@ -98,7 +103,9 @@ const Profile = () => {
         }, 1500);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(
+          `Status: ${error.response.status} ~ ${error.response.data}`
+        );
       });
   };
 

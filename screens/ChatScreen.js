@@ -15,11 +15,12 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 // Components
 import bg from "../assets/images/BG.png";
 import Message from "../components/Chats/message-list-item";
 import InputMessage from "../components/Chats/input-message";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const ChatScreen = () => {
   const Route = useRoute();
@@ -31,6 +32,7 @@ const ChatScreen = () => {
   const [userId, setUserId] = useState();
 
   useEffect(() => {
+    AuthenticateUser(Navigation);
     Navigation.setOptions({
       title: chatName ? chatName : Route.params.name,
       headerShown: true,

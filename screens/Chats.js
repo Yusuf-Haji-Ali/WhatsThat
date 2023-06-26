@@ -5,11 +5,12 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoChatsImage from "../assets/images/no_chats.png";
 import axios from "axios";
-
 // Components
 import EmptyTemplate from "../components/Reusable/empty-template";
 import ChatListItem from "../components/Chats/chat-list-item";
 import NewChatModal from "../components/Chats/new-chat-modal";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const Chats = () => {
   const Navigation = useNavigation();
@@ -63,6 +64,8 @@ const Chats = () => {
   // Chats Tab OnFocus run getChats to render chats
   useFocusEffect(
     useCallback(() => {
+      AuthenticateUser(Navigation);
+
       getChats();
 
       Navigation.setOptions({

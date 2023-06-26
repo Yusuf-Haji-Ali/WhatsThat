@@ -21,6 +21,8 @@ import Input from "../components/Reusable/input";
 import Colours from "../components/Reusable/colours";
 import Title from "../components/Reusable/title";
 import SearchContactModal from "../components/Contacts/searchContactModal";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const ChatDetails = () => {
   const Navigation = useNavigation();
@@ -42,6 +44,7 @@ const ChatDetails = () => {
     : "";
 
   useEffect(() => {
+    AuthenticateUser(Navigation);
     // Option to edit on header...rerenders each time the edit state is changes.
     Navigation.setOptions({
       headerShown: true,

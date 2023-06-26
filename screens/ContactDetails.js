@@ -8,6 +8,8 @@ import ProfileDetails from "../components/Profile/profile-details";
 import ProfileOption from "../components/Profile/profile-option";
 import Colours from "../components/Reusable/colours";
 import AlertModal from "../components/Reusable/alert-modal";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const ContactDetails = () => {
   const Route = useRoute();
@@ -27,6 +29,7 @@ const ContactDetails = () => {
   const user_id = Route.params.user_id;
 
   useEffect(() => {
+    AuthenticateUser(Navigation);
     Navigation.setOptions({
       headerShown: true,
     });

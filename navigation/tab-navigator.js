@@ -10,7 +10,7 @@ import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
-const MainTabNavigator = () => {
+const TabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Chats"
@@ -72,4 +72,4 @@ const MainTabNavigator = () => {
   );
 };
 
-export default MainTabNavigator;
+export default TabNavigator;

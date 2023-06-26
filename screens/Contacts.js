@@ -7,6 +7,8 @@ import NoContactsImage from "../assets/images/no_contacts.png";
 // Components
 import ContactListItem from "../components/Contacts/contact-list-item";
 import EmptyTemplate from "../components/Reusable/empty-template";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState("");
@@ -15,6 +17,7 @@ const Contacts = () => {
   useFocusEffect(
     useCallback(() => {
       getContacts();
+      AuthenticateUser(Navigation);
     }, [])
   );
 

@@ -8,7 +8,9 @@ import Input from "../components/Reusable/input";
 import Button from "../components/Reusable/button";
 import ContactListItem from "../components/Contacts/contact-list-item";
 import Colours from "../components/Reusable/colours";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+// Authenticator
+import AuthenticateUser from "../navigation/main-authentication";
 
 const Search = () => {
   // default search in -> "all" / offset -> 0
@@ -17,9 +19,11 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [myContacts, setMyContacts] = useState("");
+  const Navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
+      AuthenticateUser(Navigation);
       getContacts();
       // Re-search every time offset, searchIn or searchValue state changes
       searchFor();
