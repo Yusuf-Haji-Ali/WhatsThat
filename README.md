@@ -17,4 +17,8 @@ E.g: components mainly used by Chats/ChatScreen will be found in the Chats folde
 ## Wireframes
 
 I have drawn up a plan of how I wanted the app to look before development. This includes a High Fidelity Wireframe which was made using Figma and it's respective heirarchy of navigation.
-~ Both can be found in the Assets folder -> Wireframes.
+Both can be found in the Assets folder -> Wireframes.
+
+## Repository
+
+`https://github.com/Yusuf-Haji-Ali/WhatsThatApp`

@@ -56,26 +56,22 @@ const Profile = () => {
       });
 
     // Get user's profile photo if exists
-    // await axios
-    //   .get(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-    //     headers: {
-    //       "X-Authorization": userToken,
-    //       // accept: JSON.parse("*/*"),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log(response.status);
-    //     if (!response.data) {
-    //       console.log("No image found");
-    //     } else {
-    //       console.log(response.data);
-    //       // add user photo pulled into user's details...
-    //       setUserInfo({ ...userInfo, profile_photo: response.data });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
+    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+      headers: {
+        "X-Authorization": userToken,
+      },
+    })
+      .then((res) => {
+        return res.blob();
+      })
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        console.log(data);
+        setUserInfo({ ...userInfo, profile_photo: data });
+      })
+      .catch((error) => {
+        console.log(`Status: ${error} `);
+      });
   }
 
   const logOut = async () => {
@@ -118,6 +114,7 @@ const Profile = () => {
             firstname={userInfo.first_name}
             lastname={userInfo.last_name}
             email={userInfo.email}
+            profile_photo={userInfo.profile_photo}
             onPress={() => {
               Navigation.navigate("Edit Profile");
             }}
@@ -128,13 +125,7 @@ const Profile = () => {
               optionColor={Colours.blue}
               optionText={"Edit Profile"}
               iconName={"account-edit"}
-              onPress={() =>
-                Navigation.navigate("Edit Profile", {
-                  firstname: userInfo.first_name,
-                  lastname: userInfo.last_name,
-                  email: userInfo.email,
-                })
-              }
+              onPress={() => Navigation.navigate("Edit Profile")}
             />
 
             <View style={styles.divider} />

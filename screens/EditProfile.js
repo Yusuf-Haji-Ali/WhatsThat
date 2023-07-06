@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, Text } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import EditProfileInfo from "../components/Profile/edit-profile-details";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -17,6 +17,7 @@ const EditProfile = () => {
     first_name: "",
     last_name: "",
     email: "",
+    profile_photo: "",
   });
   const [newUserInfo, setNewUserInfo] = useState({});
 
@@ -75,6 +76,24 @@ const EditProfile = () => {
         console.log(
           `Status: ${error.response.status} ~ ${error.response.data}`
         );
+      });
+
+    // Get user's profile photo if exists
+    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+      headers: {
+        "X-Authorization": userToken,
+      },
+    })
+      .then((res) => {
+        return res.blob();
+      })
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        console.log(data);
+        setUserInfo({ ...userInfo, profile_photo: data });
+      })
+      .catch((error) => {
+        console.log(`Status: ${error} `);
       });
   }
 

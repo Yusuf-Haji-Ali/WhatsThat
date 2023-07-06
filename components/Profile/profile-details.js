@@ -1,13 +1,17 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import Colours from "../Reusable/colours";
 
-const ProfileDetails = ({ firstname, lastname, email }) => {
+const ProfileDetails = ({ firstname, lastname, email, profile_photo }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.image}>
-        <Text style={styles.imageText}>{firstname[0]}</Text>
-      </View>
+      {profile_photo ? (
+        <Image source={{ uri: profile_photo }} style={styles.image} />
+      ) : (
+        <View style={styles.image}>
+          <Text style={styles.imageText}>{firstname[0]}</Text>
+        </View>
+      )}
 
       <View style={styles.content}>
         <Text style={styles.name}>
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 125 / 2,
     backgroundColor: Colours.lightblack,
     justifyContent: "center",
+    alignItems: "center",
   },
   imageText: {
     textAlign: "center",
