@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import Colours from "../Reusable/colours";
 import Input from "../Reusable/input";
@@ -6,6 +6,7 @@ import Input from "../Reusable/input";
 const EditProfileInfo = ({
   userInfo,
   newUserInfo,
+  profilePhoto,
   setNewUserInfo,
   setEditing,
   setCancel,
@@ -13,9 +14,13 @@ const EditProfileInfo = ({
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
-        <View style={styles.image}>
-          <Text style={styles.imageText}>{userInfo.first_name[0]}</Text>
-        </View>
+        {profilePhoto ? (
+          <Image source={{ uri: profilePhoto }} style={styles.image} />
+        ) : (
+          <View style={styles.image}>
+            <Text style={styles.imageText}>{userInfo.first_name[0]}</Text>
+          </View>
+        )}
         <Text style={styles.editText} onPress={() => {}}>
           Edit
         </Text>

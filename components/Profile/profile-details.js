@@ -2,11 +2,11 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import Colours from "../Reusable/colours";
 
-const ProfileDetails = ({ firstname, lastname, email, profile_photo }) => {
+const ProfileDetails = ({ firstname, lastname, email, profilePhoto }) => {
   return (
     <View style={styles.container}>
-      {profile_photo ? (
-        <Image source={{ uri: profile_photo }} style={styles.image} />
+      {profilePhoto ? (
+        <Image source={{ uri: profilePhoto }} style={styles.image} />
       ) : (
         <View style={styles.image}>
           <Text style={styles.imageText}>{firstname[0]}</Text>

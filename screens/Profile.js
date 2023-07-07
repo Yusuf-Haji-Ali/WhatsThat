@@ -21,8 +21,8 @@ const Profile = () => {
     last_name: "",
     email: "",
     id: "",
-    profile_photo: "",
   });
+  const [profilePhoto, setProfilePhoto] = useState("");
 
   useFocusEffect(
     useCallback(() => {
@@ -36,44 +36,54 @@ const Profile = () => {
     const userId = JSON.parse(await AsyncStorage.getItem("@user_id"));
     const userToken = JSON.parse(await AsyncStorage.getItem("@session_token"));
 
-    // Request user details from user endpoint using user's ID and Authentication token
-    await axios
-      .get(`http://localhost:3333/api/1.0.0/user/${userId}`, {
-        headers: {
-          "X-Authorization": userToken,
-        },
-      })
-      .then((response) => {
-        console.log(`Status: ${response.status} ~ Getting User's Details...`);
-        console.log(response.data);
-        // store user data pulled...
-        setUserInfo(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          `Status: ${error.response.status} ~ ${error.response.data}`
-        );
-      });
+    // execute simultaneous requests
+    axios
+      .all([
+        // Request user details from user endpoint using user's ID and Authentication token
+        axios.get(`http://localhost:3333/api/1.0.0/user/${userId}`, {
+          headers: {
+            "X-Authorization": userToken,
+          },
+        }),
+        // Get user's profile photo
+        axios.get(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
+          headers: {
+            "X-Authorization": userToken,
+          },
+          responseType: "blob",
+        }),
+      ])
+      .then(
+        axios.spread((userDetailsResponse, profilePhotoResponse) => {
+          // HANDLING USER DETAILS RESPONSE
+          console.log(
+            `Status: ${userDetailsResponse.status} ~ Getting User's Details...`
+          );
+          // store user data pulled...
+          setUserInfo(userDetailsResponse.data);
 
-    // Get user's profile photo if exists
-    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/photo`, {
-      headers: {
-        "X-Authorization": userToken,
-      },
-    })
-      .then((res) => {
-        return res.blob();
-      })
-      .then((resBlob) => {
-        let data = URL.createObjectURL(resBlob);
-        console.log(data);
-        setUserInfo({ ...userInfo, profile_photo: data });
-      })
-      .catch((error) => {
-        console.log(`Status: ${error} `);
-      });
+          // HANDLING PROFILE PHOTO RESPONSE
+          console.log(
+            `Status: ${profilePhotoResponse.status} ~ Getting User's Profile Photo...`
+          );
+          const imageData = URL.createObjectURL(profilePhotoResponse.data);
+          // Store user's profile photo
+          setProfilePhoto(imageData);
+        })
+      )
+      .catch(
+        axios.spread((userDetailsError, profilePhotoError) => {
+          console.log(
+            `Status: ${userDetailsError.response.status} ~ ${userDetailsError.response.data}`
+          );
+          console.log(
+            `Status: ${profilePhotoError.response.status} ~ ${profilePhotoError.response.data}`
+          );
+        })
+      );
   }
 
+  // LOG OUT...
   const logOut = async () => {
     setLoading(true);
 
@@ -114,7 +124,7 @@ const Profile = () => {
             firstname={userInfo.first_name}
             lastname={userInfo.last_name}
             email={userInfo.email}
-            profile_photo={userInfo.profile_photo}
+            profilePhoto={profilePhoto}
             onPress={() => {
               Navigation.navigate("Edit Profile");
             }}
