@@ -8,6 +8,12 @@ This is the WhatsThat App code for the Mobile Applications Development (6G6Z1104
 2. In the terminal, navigate to the directory where you have cloned the repository and run `npm install` to install the dependencies
 3. Run the app with `npx expo start`
 
+## Running the Server
+
+1. Navigate to the assets/WhatsThatApp directory.
+2. Run the server with `npm run dev`.
+3. Test everything is working using Postman. The API documentation can be found by navigating to http://localhost:3333/api/1.0.0/documentation in your browser.
+
 ## Components
 
 Components are split into their respective uses throughout the app.
