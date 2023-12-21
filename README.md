@@ -1,6 +1,6 @@
 # WhatsThat?
 
-This is the WhatsThat App code for the Mobile Applications Development (6G6Z1104_2223_9Z6) Assignment.
+WhatsThat? is a totally unique, non-plagiarised messaging platform which allows users to communicate with each other. Users sign up for an account with WhatsThat? and can then search for and add contacts and create chats with individuals or groups of contacts. 
 
 ## Running the App
 
